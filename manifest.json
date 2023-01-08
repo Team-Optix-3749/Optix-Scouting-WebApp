@@ -1,0 +1,14 @@
+{
+    "name": "Optix Scouting",
+    "short_name": "OptixScouting",
+    "start_url": "index.html",
+    "display": "standalone",
+    "background_color": "#fdfdfd",
+    "theme_color": "#db4938",
+    "icons": [
+      {
+        "src": "optix.png",
+        "type": "image/png", "sizes": "280x280"
+      }
+    ]
+  }

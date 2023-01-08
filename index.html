@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <body>
+            <div padding="100px">
+                <p id="lmao">helo</p>
+                <br>
+                <div>
+                    <script src="html5-qrcode.min.js">
+                        function onScanSuccess(decodedText, decodedResult) {
+                            // Handle on success condition with the decoded text or result.
+                            console.log(`Scan result: ${decodedText}`, decodedResult);
+                        }
+    
+                        var html5QrcodeScanner = new Html5QrcodeScanner(
+                            "reader", { fps: 10, qrbox: 250 });
+                        html5QrcodeScanner.render(onScanSuccess);
+                    </script>
+                </div>
+            </div>
+        </body>
+    </head>
+
+
+    <!-- <script type="module" src="/camera.js"></script> -->
+    <link rel="manifest" href="manifest.json" />
+    <script>
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", function() {
+                navigator.serviceWorker
+                .register("/serviceWorker.js")
+                .then(res => console.log("service worker registered"))
+                .catch(err => console.log("service worker not registered", err))
+            })
+        }
+    </script>
+</html>
