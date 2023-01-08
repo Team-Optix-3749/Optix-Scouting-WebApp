@@ -4,7 +4,6 @@ const assets = [
   "/index.html",
   "/optix.png",
   "/html5-qrcode.min.js",
-  "/index.js",
 ]
 
 self.addEventListener("install", installEvent => {
