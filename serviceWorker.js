@@ -3,6 +3,9 @@ const assets = [
   "/",
   "/index.html",
   "/optix.png",
+  "/html5-qrcode.min.js",
+  "index.js",
+  "camera.js"
 ]
 
 self.addEventListener("install", installEvent => {
