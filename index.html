@@ -7,32 +7,109 @@
 
     <body>
         <div style="padding: 100px;">
-            <p id="lmao">helo</p>
+            <p id="test">test</p>
             <br>
+            <p id="statusText">Status: Not Scanned</p> 
+            <div>
+
+            </div>
             <div style="width: 500px; background-color: black; padding: 10px;">
                 <div style="width: 500px; background-color: white;" id="reader">
-                    <p>Oops! Something went wrong</p>
+                    <p>Camera Not Working</p>
                 </div>
             </div>
         </div>
+
+        <div>
+            <table id="matches">
+                <tr>
+                    <th>Team Number</th>
+                    <th>Match Number</th>
+                    <th>Upper Scored</th>
+                    <th>Middle Scored</th>
+                    <th>Lower Scored</th>
+                </tr>
+            </table>
+        </div>
+
+        <script>
+            if ("serviceWorker" in navigator) {
+            window.addEventListener("load", function() {
+                navigator.serviceWorker
+                .register("/serviceWorker.js")
+                .then(res => console.log("service worker registered"))
+                .catch(err => console.log("service worker not registered", err))
+            })
+            }
+        </script>
     </body>
 
     <script src="html5-qrcode.min.js"></script>
-    <script>        
+    <script>      
+
+        // testing data storage and usage
+        var scannedText  
+        var barc = '{ "teamNumber": 3749, "matchNumber": 42, "events": [ { "name": "Lower", "x": 3, "y": 4 },{ "name": "Middle", "x": 3, "y": 4 } ] }'
+        var barc2 = '{ "teamNumber": 3749, "matchNumber": 43, "events": [ { "name": "Upper", "x": 5, "y": 4 } ] }'
+
+        var dat = JSON.parse(barc)
+        var dat2 = JSON.parse(barc2)
+
+        identifier = dat.teamNumber + "_" + dat.matchNumber
+        identifier2 = dat2.teamNumber + "_" + dat2.matchNumber
+
+        identifiers = [identifier, identifier2]
+
+        jason = '{ "' + identifier + '": ' + barc + ', "' + identifier2 + '": ' + barc2 + ' }'
+
+        key = "ScoutingData"
+
+        localStorage.setItem(key, jason)
+
+        var data = JSON.parse(localStorage.getItem(key))
+        var data1 = JSON.parse(localStorage.getItem(key)).identifier
+        var data2 = JSON.parse(localStorage.getItem(key)).identifier2
+
+        for(var i in data) {
+            dataStor = data[i]
+            const team = dataStor.teamNumber
+            const match = dataStor.matchNumber
+            var UpperScores = 0
+            var MiddleScores = 0
+            var LowerScores = 0
+            dataStor.events.forEach(element => {
+                if(element.name == "Upper"){
+                    UpperScores++
+                } else if(element.name == "Middle"){
+                    MiddleScores++
+                } else if(element.name == "Lower"){
+                    LowerScores++
+                }
+            });
+            document.getElementById("matches").innerHTML += "<tr><td>"+ team +"</td><td>"+ match+ "</td><td>"+ UpperScores +"</td><td>"+ MiddleScores + "</td><td>"+ LowerScores +"</td></tr>"
+        }
+
         // This method will trigger user permissions
         Html5Qrcode.getCameras().then(devices => {
 
         if (devices && devices.length) {
             var cameraId = devices[0].id;
-            const html5QrCode = new Html5Qrcode(/* element id */ "reader", verbose=false);
+            const html5QrCode = new Html5Qrcode("reader", verbose=false);
             html5QrCode.start(
                 cameraId, 
                 {
-                    fps: 10,    // Optional, frame per seconds for qr code scanning
-                    qrbox: { width: 250, height: 250 }  // Optional, if you want bounded box UI
+                    fps: 10,
+                    qrbox: {height:250, width:250}
                 },
                 (decodedText, decodedResult) => {
-                    console.log(decodedText)
+                    document.getElementById("statusText").innerHTML = "Status: Scanned"
+                    // csv support
+                    if (decodedText!= null){
+                        scannedText = decodedText.replaceAll("---", "\n")
+                        scannedText = scannedText.replace("team,match,type,x_pos,y_pos", "")
+                        console.log(scannedText)
+
+                    }
                 },
                 (errorMessage) => {
                     // parse error, ignore it.
@@ -45,15 +122,9 @@
             // handle err
             });
 
-    </script>
-    <script>
-        if ("serviceWorker" in navigator) {
-        window.addEventListener("load", function() {
-            navigator.serviceWorker
-            .register("/serviceWorker.js")
-            .then(res => console.log("service worker registered"))
-            .catch(err => console.log("service worker not registered", err))
-        })
-        }
+            // testing
+            document.getElementById("test").onclick = function(){
+            }
+
     </script>
 </html>
