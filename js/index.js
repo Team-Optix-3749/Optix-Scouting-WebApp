@@ -6,7 +6,7 @@
             .catch(err => console.log("service worker not registered", err))
         })
     }
-    
+
    // testing data storage and usage
     var scannedText = ''
 
@@ -42,12 +42,6 @@
 
         localStorage.setItem(storageKey, newStorage)
         }
-    }
-
-    var longText = localStorage.getItem("StorageData");
-    var dataUri = "data:text/plain;base64," + btoa(longText);
-    document.getElementById("statusText").onclick = function(){
-        document.getElementById("downloadLinkJSON").setAttribute("href", dataUri)
     }
 
     // This method will trigger user permissions

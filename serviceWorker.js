@@ -2,8 +2,14 @@ const staticWebsite = "scouting-site-v1"
 const assets = [
   "/",
   "/index.html",
+  "/files.html",
+  "/table.html",
+  "/css/table.css",
+  "/js/files.js",
+  "/js/html5-qrcode.min.js",
+  "/js/index.js",
+  "/js/table.js",
   "/optix.png",
-  "/html5-qrcode.min.js",
 ]
 
 self.addEventListener("install", installEvent => {
