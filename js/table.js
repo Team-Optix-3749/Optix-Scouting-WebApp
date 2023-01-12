@@ -24,12 +24,16 @@ function loadData(run){
 
             var tr = document.createElement("tr");
 
-            var properties = [team, match, UpperScores, MiddleScores, LowerScores]
+            var properties = [team, match, UpperScores, MiddleScores, LowerScores, "Delete"]
 
             for (var i of properties){
                 var td = document.createElement("td")
                 td.innerHTML = i
     
+                if(i == "Delete"){
+                    td.onclick=removeMatch
+                }
+
                 tr.appendChild(td)
             }
 
@@ -65,4 +69,39 @@ function updateFilter(){
         }
     }
 
+}
+
+function removeMatch(event){
+    console.log("runs")
+
+    var removeTd = event.currentTarget
+    var tr = removeTd.parentElement
+    var matchNum = tr.getElementsByTagName("td")[1].innerHTML
+    var teamNum = tr.getElementsByTagName("td")[0].innerHTML
+    var key = teamNum + matchNum
+
+    var storage = JSON.parse(localStorage.getItem("StorageData"))
+
+    storage = storage.filter((element) => {
+    var key2 = element.teamNumber.toString() + element.matchNumber.toString()
+    console.log(key, key2)
+        if(key === key2){
+            return false
+        } else return true
+    })
+    localStorage.setItem("StorageData", JSON.stringify(storage))
+    clearTable()
+    loadData(false)
+}
+
+function clearTable(){
+    document.getElementById("matches").innerHTML = `         
+    <tr>
+        <th>Team Number</th>
+        <th>Match Number</th>
+        <th>Upper Scored</th>
+        <th>Middle Scored</th>
+        <th>Lower Scored</th>
+        <th>Delete</th>
+    </tr>`
 }
