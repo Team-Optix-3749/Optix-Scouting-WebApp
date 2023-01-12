@@ -10,6 +10,15 @@
         </p>
 
         <div style="padding: 100px">
+            <label for="filters">Filter Search</label>
+            <select name="filters" id="filters" onchange="updateFilter()">
+              <option value="comp">Comptetition</option>
+              <option value="teamname">Team Name</option>
+              <option value="teamnum">Team Number</option>
+              <option value="matchnum">Match Number</option>
+            </select>
+            <br>
+            <input type="text" id="filter" onkeyup="updateFilter()">
             <table id="matches">
                 <tr>
                     <th>Team Number</th>

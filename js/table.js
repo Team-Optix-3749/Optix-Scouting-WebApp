@@ -35,7 +35,34 @@ function loadData(run){
 
             document.getElementById("matches").appendChild(tr)
 
-            // document.getElementById("matches").innerHTML += "<tr><td>"+ team +"</td><td>"+ match+ "</td><td>"+ UpperScores +"</td><td>"+ MiddleScores + "</td><td>"+ LowerScores +"</td></tr>"
         }
     }
+}
+
+function updateFilter(){
+
+    var filters = document.getElementById("filters").value
+
+    var value = document.getElementById("filter").value
+
+    var table = document.getElementById("matches")
+    var trs = table.getElementsByTagName("tr")
+
+    for (const i of trs) {
+        if(i.getElementsByTagName("td").length === 0){
+            continue
+        }
+        var td;
+        if(filters == "teamnum"){
+            td = i.getElementsByTagName("td")[0]
+        } else if(filters == "matchnum"){
+            td = i.getElementsByTagName("td")[1]
+        }
+        if(td.innerHTML.includes(value)){
+            i.style.display = ""
+        } else {
+            i.style.display = "none"
+        }
+    }
+
 }
