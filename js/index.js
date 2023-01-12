@@ -14,30 +14,17 @@
         if(scannedText != undefined){
         var scannedTextJSON = JSON.parse(scannedText)
 
-        const key = scannedTextJSON.teamNumber + "_" + scannedTextJSON.matchNumber
-
-        // keyKey = "MatchKeys"
-
-        // if (localStorage.getItem(keyKey) == undefined){
-        //     localStorage.setItem(keyKey, key)
-        // } else{
-        //     localStorage.setItem(keyKey, localStorage.getItem(keyKey) +  " " + key)
-        // }
-
-        // var keys = []
-        // keys.push(key)
-
         const storageKey = 'StorageData'
 
         var newStorage = ''
 
-        if(localStorage.getItem(storageKey) == undefined){
-            newStorage = '{ "' + key + '": ' + scannedText + ' }'
+        if(localStorage.getItem(storageKey) == null){
+            newStorage = '[ ' + scannedText + ' ]'
         } else {
-            var existingStorage = localStorage.getItem(storageKey)
-            var existingStorageSpace = existingStorage.substr(0, existingStorage.length - 2)
+            var existingStorage = JSON.parse(localStorage.getItem(storageKey))
+            existingStorage.push(JSON.parse(scannedText))
 
-            newStorage = existingStorageSpace + ', "' + key + '": ' + scannedText + ' }'
+            newStorage = JSON.stringify(existingStorage)
         }
 
         localStorage.setItem(storageKey, newStorage)
