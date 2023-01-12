@@ -1,11 +1,12 @@
 var hasRun = false
-
+loadData(hasRun)
 function loadData(run){
     if(!run){
         var data = JSON.parse(localStorage.getItem("StorageData"))
 
-        for(var i in data) {
-            dataStor = data[i]
+        for(var i of data) {
+            console.log(i)
+            dataStor = i
             const team = dataStor.teamNumber
             const match = dataStor.matchNumber
             var UpperScores = 0
@@ -72,7 +73,6 @@ function updateFilter(){
 }
 
 function removeMatch(event){
-    console.log("runs")
 
     var removeTd = event.currentTarget
     var tr = removeTd.parentElement
