@@ -88,7 +88,6 @@ function removeMatch(event){
 
     storage = storage.filter((element) => {
     var key2 = element.teamNumber.toString() + element.matchNumber.toString()
-    console.log(key, key2)
         if(key === key2){
             return false
         } else return true

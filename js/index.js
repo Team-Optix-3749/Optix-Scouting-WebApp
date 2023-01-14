@@ -12,7 +12,6 @@
 
     function storeScannedData(scannedText) {
         if(scannedText != undefined){
-        var scannedTextJSON = JSON.parse(scannedText)
 
         const storageKey = 'StorageData'
 
@@ -45,9 +44,8 @@
             },
             (decodedText, decodedResult) => {
                 document.getElementById("statusText").innerHTML = "Status: Scanned"
-                // csv support
                 if (decodedText!= null){
-                    scannedText = decodedText
+                    storeScannedData(decodedText)
                 }
             },
             (errorMessage) => {
