@@ -3,19 +3,18 @@ var teamNum = 0
 var matches = 0
 var data = [[2,0,0,2,0,0,2,0,0],[0,0,0,1,0,2,1,0,0],[0,1,0,0,0,0,0,1,1]]
 var canvas = document.getElementById("canva")
-var height = 900
+var height = 1800
 canvas.height = height
-var width = 300
+var width = 600
 canvas.width = width
-canvas.style.width = 150
-canvas.style.height = 450
+canvas.style.width = "150px"
+canvas.style.height = "450px"
 
 document.getElementById("input").onsubmit = function(event) {
     event.preventDefault()
     matches = 0
     teamNum = document.getElementById("teamNum").value
     updateHeatmap()
-    console.log(teamNum)
 }
 
 function updateHeatmap(){
@@ -42,10 +41,28 @@ function updateHeatmap(){
             ctx.fillStyle = `rgb(${e * 255} , 0, 0)`
             ctx.fillRect(i * sq, j * sq, sq, sq)
             ctx.fillStyle = `rgb(255, 255, 255)`
-            ctx.font = `${sq/5}px comic sans ms`;
-            ctx.fillText((e.toFixed(3)), i * sq + sq/5, j * sq + sq/2)
+            ctx.font = `${sq/4}px comic sans ms`;
+            ctx.fillText((e.toFixed(2)), i * sq + sq/4, j * sq + sq/1.75)
             j++
         });
         i++
     });
+}
+
+var clicked = 0
+document.getElementById("border").onclick = function(){
+    if(clicked % 2 == 0){
+        var ctx = canvas.getContext("2d")
+        var sq = height/9
+        ctx.fillStyle = "rgb(255, 255, 255)"
+        ctx.fillRect(sq - sq/100, 0, sq/50, sq * 9)
+        ctx.fillRect(sq + sq - sq/100, 0, sq/50, sq * 9)
+        for (let i = 1; i < 9; i++) {
+            ctx.fillRect(0, sq * i - sq/100, sq * 3, sq / 50)
+        }
+    } else {
+        matches = 0
+        updateHeatmap()
+    }
+    clicked++
 }
