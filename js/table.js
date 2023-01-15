@@ -115,7 +115,7 @@ function deleteAll(){
     if(deleteAllPressed % 2 == 1){
         localStorage.clear()
         loadData(false)
-    } else{
+    } else {
         document.getElementById("deleteAll").innerHTML = "Are You Sure?"
     }
     deleteAllPressed++

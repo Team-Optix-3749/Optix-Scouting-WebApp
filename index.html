@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
-    <a href="table.html">Table Page</a>
+    <a href="/table.html">Table Page</a>
     <br>
-    <a href="files.html">File Page</a>
+    <a href="/files.html">File Page</a>
+    <br>
+    <a href="/heatmap.html">Heatmap Page</a>
     <head>
         <link rel="manifest" href="/manifest.json">
     </head>
@@ -10,6 +12,7 @@
     <body>
         <div style="padding: 100px;">
             <p id="test">test</p>
+            <p id="text" onclick="document.getElementById('text').innerHTML = localStorage.getItem('StorageData')">data</p>
             <br>
             <p id="statusText">Status: Not Scanned</p> 
             <div>

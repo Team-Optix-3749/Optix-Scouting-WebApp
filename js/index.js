@@ -34,7 +34,7 @@
     Html5Qrcode.getCameras().then(devices => {
 
     if (devices && devices.length) {
-        var cameraId = devices[1].id;
+        var cameraId = devices[0].id;
         const html5QrCode = new Html5Qrcode("reader", verbose=false);
         html5QrCode.start(
             cameraId, 
@@ -44,8 +44,10 @@
             },
             (decodedText, decodedResult) => {
                 document.getElementById("statusText").innerHTML = "Status: Scanned"
+                console.log(decodedText)
                 if (decodedText!= null){
                     storeScannedData(decodedText)
+                    html5QrCode.close()
                 }
             },
             (errorMessage) => {
