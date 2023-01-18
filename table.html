@@ -14,7 +14,7 @@
         <div style="padding: 100px">
             <label for="filters">Filter Search</label>
             <select name="filters" id="filters" onchange="updateFilter()">
-              <option value="comp">Comptetition</option>
+              <option value="comp">Competition</option>
               <option value="teamname">Team Name</option>
               <option value="teamnum">Team Number</option>
               <option value="matchnum">Match Number</option>
@@ -23,11 +23,14 @@
             <input type="text" id="filter" onkeyup="updateFilter()">
             <table id="matches">
                 <tr>
+                    <th>Competition</th>
                     <th>Team Number</th>
                     <th>Match Number</th>
                     <th>Upper Scored</th>
                     <th>Middle Scored</th>
                     <th>Lower Scored</th>
+                    <th>Total Points</th>
+                    <th>Auto Points</th>
                     <th id="deleteAll" onclick="deleteAll()">Delete</th>
                 </tr>
             </table>

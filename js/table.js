@@ -7,28 +7,44 @@ function loadData(run){
         } else {
             var data = JSON.parse(localStorage.getItem("StorageData"))
 
+            var check = [0]
+            var id = 0
+
             for(var i of data) {
-                console.log(i)
-                dataStor = i
+                var dataStor = i
                 const team = dataStor.teamNumber
                 const match = dataStor.matchNumber
-                var UpperScores = 0
-                var MiddleScores = 0
-                var LowerScores = 0
-                dataStor.events.forEach(element => {
-                    if(element.name == "Upper"){
-                        UpperScores++
-                    } else if(element.name == "Middle"){
-                        MiddleScores++
-                    } else if(element.name == "Lower"){
-                        LowerScores++
-                    }
-                });
+                const comp = dataStor.comp
+                // upper, lower, middle
+                var scores = [0, 0, 0]
+                dataStor.events.forEach((element, index) => {
+                    element.forEach(e => {
+                        scores[index] += e > 0 ? 1 : 0
+                    })
+                })
+                var [upperScores, middleScores, lowerScores] = scores
+
+                var score = 0
+                var autoScore = 0
+                var scoreValuesAuto = [6,4,3]
+                var scoreValuesTele = [5, 3, 2]
+
+                dataStor.events.forEach((element, index) => {
+                    element.forEach(e => {
+                        if(e==2){
+                            autoScore += scoreValuesAuto[index]
+                            score += scoreValuesAuto[index]
+                        } else if (e==1){
+                            score += scoreValuesTele[index]
+                        }
+                    })
+                })
+
                 hasRun = true
 
                 var tr = document.createElement("tr");
 
-                var properties = [team, match, UpperScores, MiddleScores, LowerScores, "Delete"]
+                var properties = [comp, team, match, upperScores, middleScores, lowerScores, score, autoScore, "Delete"]
 
                 for (var i of properties){
                     var td = document.createElement("td")
@@ -42,7 +58,6 @@ function loadData(run){
                 }
 
                 document.getElementById("matches").appendChild(tr)
-
             }
         }
     }
@@ -80,14 +95,14 @@ function removeMatch(event){
 
     var removeTd = event.currentTarget
     var tr = removeTd.parentElement
-    var matchNum = tr.getElementsByTagName("td")[1].innerHTML
-    var teamNum = tr.getElementsByTagName("td")[0].innerHTML
-    var key = teamNum + matchNum
+    var matchNum = tr.getElementsByTagName("td")[2].innerHTML
+    var teamNum = tr.getElementsByTagName("td")[1].innerHTML
+    var comp = tr.getElementsByTagName("td")[0].innerHTML
+    var key = comp + teamNum + matchNum
 
     var storage = JSON.parse(localStorage.getItem("StorageData"))
-
     storage = storage.filter((element) => {
-    var key2 = element.teamNumber.toString() + element.matchNumber.toString()
+    var key2 = element.comp.toString() + element.teamNumber.toString() + element.matchNumber.toString()
         if(key === key2){
             return false
         } else return true
@@ -97,6 +112,11 @@ function removeMatch(event){
     loadData(false)
 }
 
+function calculateTotalScore(event){
+
+}
+
+
 function clearTable(){
     document.getElementById("matches").innerHTML = 
     `<tr>
@@ -105,6 +125,7 @@ function clearTable(){
         <th>Upper Scored</th>
         <th>Middle Scored</th>
         <th>Lower Scored</th>
+        <th>Total Points</th>
         <th>Delete</th>
     </tr>`
 }

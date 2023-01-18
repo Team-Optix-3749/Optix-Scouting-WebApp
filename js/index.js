@@ -9,9 +9,12 @@
 
    // testing data storage and usage
     var scannedText = ''
+    var scanned = false
 
     function storeScannedData(scannedText) {
-        if(scannedText != undefined){
+        if (scanned) return;
+
+        if(scannedText == undefined) return;
 
         const storageKey = 'StorageData'
 
@@ -21,13 +24,20 @@
             newStorage = '[ ' + scannedText + ' ]'
         } else {
             var existingStorage = JSON.parse(localStorage.getItem(storageKey))
-            existingStorage.push(JSON.parse(scannedText))
+            var parseText = JSON.parse(scannedText)
+            var key = parseText.comp.toString() + parseText.teamNumber.toString() + parseText.matchNumber.toString()
+            existingStorage = existingStorage.filter(element =>{
+                var key2 = element.comp.toString() + element.teamNumber.toString() + element.matchNumber.toString()
+                if(key == key2){
+                    return false
+                } else return true
+            })
+            existingStorage.push(parseText)
 
             newStorage = JSON.stringify(existingStorage)
         }
 
         localStorage.setItem(storageKey, newStorage)
-        }
     }
 
     // This method will trigger user permissions
@@ -46,9 +56,9 @@
                 document.getElementById("statusText").innerHTML = "Status: Scanned"
                 console.log(decodedText)
                 if (decodedText!= null){
-                    storeScannedData(decodedText)
-                    html5QrCode.close()
+                    scannedText = decodedText
                 }
+                storeScannedData(scannedText)
             },
             (errorMessage) => {
                 // parse error, ignore it.
