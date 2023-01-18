@@ -1,18 +1,50 @@
 <!DOCTYPE html>
 <html>
-    <a href="/index.html">Home Page</a>
-    <br>
-    <a href="/table.html">Table Page</a>
-    <br>
-    <a href="/files.html">File Page</a>
-
+    <head>
+        <a href="/index.html">Home Page</a>
+        <br>
+        <a href="/table.html">Table Page</a>
+        <br>
+        <a href="/files.html">File Page</a>
+    </head>
+    <link rel="stylesheet" href="css/table.css">
     <div style="padding: 100px;">
-        <p id="border">border?</p>
-        <form id="input">
-            <input type="text" id="teamNum">
-            <input type="submit" id="submit">
-        </form>
-        <canvas width="150" height="450" id="canva" style="border: 4px solid #000000;"></canvas>
+        <div>
+            <p id="border">border?</p>
+            <form id="input">
+                <input type="text" id="teamNum">
+                <input type="submit" id="submit">
+            </form>
+            <div style="display: flex; justify-content: space-around; align-items: center;">
+                <canvas width="150" height="450" id="canva" style="border: 4px solid #000000;"></canvas>
+
+                <div>
+                    <label for="filters">Filter Search</label>
+                    <select name="filters" id="filters" onchange="updateFilter()">
+                        <option value="comp">Competition</option>
+                        <option value="teamname">Team Name</option>
+                        <option value="teamnum">Team Number</option>
+                        <option value="matchnum">Match Number</option>
+                    </select>
+                    <br>
+                    <input type="text" id="filter" onkeyup="updateFilter()">
+                    <table id="matches">
+                        <tr>
+                            <th>Competition</th>
+                            <th>Team Number</th>
+                            <th>Match Number</th>
+                            <th>Upper Scored</th>
+                            <th>Middle Scored</th>
+                            <th>Lower Scored</th>
+                            <th>Total Points</th>
+                            <th>Auto Points</th>
+                            <th id="deleteAll" onclick="deleteAll()">Delete</th>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
     <script src="js/heatmap.js"></script>
+    <script src="js/table.js"></script>
 </html>

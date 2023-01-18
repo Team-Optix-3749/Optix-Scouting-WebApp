@@ -15,6 +15,22 @@ document.getElementById("input").onsubmit = function(event) {
     matches = 0
     teamNum = document.getElementById("teamNum").value
     updateHeatmap()
+
+    var table = document.getElementById("matches")
+
+    var trs = table.getElementsByTagName("tr")
+
+    for (const i of trs) {
+        if(i.getElementsByTagName("td").length === 0){
+            continue
+        }
+        var td = i.getElementsByTagName("td")[1]
+        if(td.innerHTML.includes(teamNum)){
+            i.style.display = ""
+        } else {
+            i.style.display = "none"
+        }
+    }
 }
 
 function updateHeatmap(){
