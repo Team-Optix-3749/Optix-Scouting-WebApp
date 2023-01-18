@@ -20,6 +20,15 @@ document.getElementById("input").onsubmit = function(event) {
 
     var trs = table.getElementsByTagName("tr")
 
+    // var avg = document.createElement("tr")
+
+    // avg = trs[0]
+
+    
+
+    // table.appendChild(avg)
+    
+
     for (const i of trs) {
         if(i.getElementsByTagName("td").length === 0){
             continue

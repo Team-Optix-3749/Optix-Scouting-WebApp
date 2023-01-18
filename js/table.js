@@ -1,4 +1,6 @@
 var hasRun = false
+var totalPoints = 0
+var totalAutoPoints = 0
 loadData(hasRun)
 function loadData(run){
     if(!run){
@@ -13,6 +15,7 @@ function loadData(run){
             for(var i of data) {
                 var dataStor = i
                 const team = dataStor.teamNumber
+                const teamName = dataStor.teamName
                 const match = dataStor.matchNumber
                 const comp = dataStor.comp
                 // upper, lower, middle
@@ -42,9 +45,12 @@ function loadData(run){
 
                 hasRun = true
 
+                totalPoints += score
+                totalAutoPoints += autoScore
+
                 var tr = document.createElement("tr");
 
-                var properties = [comp, team, match, upperScores, middleScores, lowerScores, score, autoScore, "Delete"]
+                var properties = [comp, team, teamName,match, upperScores, middleScores, lowerScores, score, autoScore, "Delete"]
 
                 for (var i of properties){
                     var td = document.createElement("td")
@@ -67,7 +73,7 @@ function updateFilter(){
 
     var filters = document.getElementById("filters").value
 
-    var value = document.getElementById("filter").value
+    var value = document.getElementById("filter").value.toLowerCase()
 
     var table = document.getElementById("matches")
     var trs = table.getElementsByTagName("tr")
@@ -77,12 +83,16 @@ function updateFilter(){
             continue
         }
         var td;
-        if(filters == "teamnum"){
+        if(filters == "comp"){
             td = i.getElementsByTagName("td")[0]
-        } else if(filters == "matchnum"){
+        } else if(filters == "teamname"){
+            td = i.getElementsByTagName("td")[2]
+        } else if(filters == "teamnum"){
             td = i.getElementsByTagName("td")[1]
+        } else if(filters == "matchnum"){
+            td = i.getElementsByTagName("td")[3]
         }
-        if(td.innerHTML.includes(value)){
+        if(td.innerHTML.toLowerCase().includes(value)){
             i.style.display = ""
         } else {
             i.style.display = "none"
