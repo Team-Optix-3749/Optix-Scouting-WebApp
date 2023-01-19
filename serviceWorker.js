@@ -4,11 +4,13 @@ const assets = [
   "/index.html",
   "/files.html",
   "/table.html",
+  "/heatmap.html",
   "/css/table.css",
   "/js/files.js",
   "/js/html5-qrcode.min.js",
   "/js/index.js",
   "/js/table.js",
+  "/js/heatmap.js",
   "/optix.png",
 ]
 
