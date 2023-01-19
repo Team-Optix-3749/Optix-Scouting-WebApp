@@ -9,9 +9,6 @@ function loadData(run){
         } else {
             var data = JSON.parse(localStorage.getItem("StorageData"))
 
-            var check = [0]
-            var id = 0
-
             for(var i of data) {
                 var dataStor = i
                 const team = dataStor.teamNumber
@@ -150,4 +147,50 @@ function deleteAll(){
         document.getElementById("deleteAll").innerHTML = "Are You Sure?"
     }
     deleteAllPressed++
+}
+
+function getScores(teamNum){
+    var data = JSON.parse(localStorage.getItem("StorageData"))
+    var teams = data.filter((element) =>{
+        if (element.teamNumber.toString().includes(teamNum)){
+            return true
+        } else return false
+    })
+    var list = [0, 0, 0]
+
+    for(var i of teams) {
+        var dataStor = i
+        const team = dataStor.teamNumber
+        const teamName = dataStor.teamName
+        const match = dataStor.matchNumber
+        const comp = dataStor.comp
+        // upper, lower, middle
+        var scores = [0, 0, 0]
+        dataStor.events.forEach((element, index) => {
+            element.forEach(e => {
+                scores[index] += e > 0 ? 1 : 0
+            })
+        })
+        var [upperScores, middleScores, lowerScores] = scores
+
+        var score = 0
+        var autoScore = 0
+        var scoreValuesAuto = [6,4,3]
+        var scoreValuesTele = [5, 3, 2]
+
+        dataStor.events.forEach((element, index) => {
+            element.forEach(e => {
+                if(e==2){
+                    autoScore += scoreValuesAuto[index]
+                    score += scoreValuesAuto[index]
+                } else if (e==1){
+                    score += scoreValuesTele[index]
+                }
+            })
+        })
+        list[0] += score
+        list[1] += autoScore
+        list[2]++
+    }
+    return list
 }

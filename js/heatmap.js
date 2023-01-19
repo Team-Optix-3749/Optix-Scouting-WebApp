@@ -1,5 +1,5 @@
 var storage = JSON.parse(localStorage.getItem("StorageData"))
-var teamNum = 0
+var teamNum = ""
 var matches = 0
 var data = [[2,0,0,2,0,0,2,0,0],[0,0,0,1,0,2,1,0,0],[0,1,0,0,0,0,0,1,1]]
 var canvas = document.getElementById("canva")
@@ -14,20 +14,15 @@ document.getElementById("input").onsubmit = function(event) {
     event.preventDefault()
     matches = 0
     teamNum = document.getElementById("teamNum").value
+
+    document.getElementById("totalAvg").innerHTML += `${getScores(teamNum)[0]} / ${getScores(teamNum)[2]} or ` + getScores(teamNum)[0] / getScores(teamNum)[2]
+    document.getElementById("autoAvg").innerHTML += `${getScores(teamNum)[1]} / ${getScores(teamNum)[2]} or ` + getScores(teamNum)[1] / getScores(teamNum)[2]
+
     updateHeatmap()
 
     var table = document.getElementById("matches")
 
     var trs = table.getElementsByTagName("tr")
-
-    // var avg = document.createElement("tr")
-
-    // avg = trs[0]
-
-    
-
-    // table.appendChild(avg)
-    
 
     for (const i of trs) {
         if(i.getElementsByTagName("td").length === 0){
