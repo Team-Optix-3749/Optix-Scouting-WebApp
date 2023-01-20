@@ -2,16 +2,17 @@ const staticWebsite = "scouting-site-v1"
 const assets = [
   "/",
   "/index.html",
+  "/heatmap.html",
   "/files.html",
   "/table.html",
-  "/heatmap.html",
   "/css/table.css",
   "/js/files.js",
+  "/js/heatmap.js",
   "/js/html5-qrcode.min.js",
   "/js/index.js",
   "/js/table.js",
-  "/js/heatmap.js",
   "/optix.png",
+  "manifest.json"
 ]
 
 self.addEventListener("install", installEvent => {
