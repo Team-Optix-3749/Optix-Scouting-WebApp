@@ -15,8 +15,20 @@ document.getElementById("input").onsubmit = function(event) {
     matches = 0
     teamNum = document.getElementById("teamNum").value
 
-    document.getElementById("totalAvg").innerHTML += `${getScores(teamNum)[0]} / ${getScores(teamNum)[2]} or ` + getScores(teamNum)[0] / getScores(teamNum)[2]
-    document.getElementById("autoAvg").innerHTML += `${getScores(teamNum)[1]} / ${getScores(teamNum)[2]} or ` + getScores(teamNum)[1] / getScores(teamNum)[2]
+    var tr = document.getElementById("averagesData")
+    tr.innerHTML = ""
+
+    var scoreInfo = getScores(teamNum);
+    var avg = (i) => i/scoreInfo.matches;
+
+
+    var fields = [teamNum, scoreInfo.matches, avg(scoreInfo.upper), avg(scoreInfo.middle), avg(scoreInfo.lower), scoreInfo.score/scoreInfo.matches, scoreInfo.autoScore/scoreInfo.matches, avg(scoreInfo.breakdowns)]
+
+    for (var field of fields){
+        var td = document.createElement("td")
+        td.innerHTML = field
+        tr.appendChild(td)
+    }
 
     updateHeatmap()
 

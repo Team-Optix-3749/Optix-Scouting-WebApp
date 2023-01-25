@@ -130,6 +130,7 @@ function clearTable(){
         <th>Middle Scored</th>
         <th>Lower Scored</th>
         <th>Total Points</th>
+        <th>Broke Down</th>
         <th>Delete</th>
     </tr>`
 }
@@ -148,33 +149,42 @@ function deleteAll(){
 
 function getScores(teamNum){
     var data = JSON.parse(localStorage.getItem("StorageData"))
-    var teams = data.filter((element) =>{
+    var filteredMatches = data.filter((element) =>{
         if (element.teamNumber.toString().includes(teamNum)){
             return true
         } else return false
     })
-    var list = [0, 0, 0]
+    var obj = {score: 0, autoScore: 0, matches: 0, upper: 0, middle: 0, lower: 0, breakdowns: 0}
 
-    for(var i of teams) {
+    for(var i of filteredMatches) {
 
         var score = 0
         var autoScore = 0
-        var scoreValuesAuto = [6,4,3]
+        var scoreValuesAuto = [6, 4, 3]
         var scoreValuesTele = [5, 3, 2]
+        var counts = [0,0,0]
 
         i.events.forEach((element, index) => {
             element.forEach(e => {
                 if(e==2){
                     autoScore += scoreValuesAuto[index]
                     score += scoreValuesAuto[index]
+                    counts[index]++
                 } else if (e==1){
                     score += scoreValuesTele[index]
+                    counts[index]++
                 }
             })
         })
-        list[0] += score
-        list[1] += autoScore
-        list[2]++
+        if(i.break){
+            obj.breakdowns++
+        }
+        obj.score += score
+        obj.autoScore += autoScore
+        obj.matches++
+        obj.upper += counts[0]
+        obj.middle += counts[1]
+        obj.lower += counts[2]
     }
-    return list
+    return obj
 }
