@@ -15,6 +15,7 @@ function loadData(run){
                 const teamName = dataStor.teamName
                 const match = dataStor.matchNumber
                 const comp = dataStor.comp
+                const brokeDown = dataStor.break
                 // upper, lower, middle
                 var scores = [0, 0, 0]
                 dataStor.events.forEach((element, index) => {
@@ -47,7 +48,7 @@ function loadData(run){
 
                 var tr = document.createElement("tr");
 
-                var properties = [comp, team, teamName,match, upperScores, middleScores, lowerScores, score, autoScore, "Delete"]
+                var properties = [comp, team, teamName,match, upperScores, middleScores, lowerScores, score, autoScore, brokeDown ? "Yes" : "No","Delete"]
 
                 for (var i of properties){
                     var td = document.createElement("td")
