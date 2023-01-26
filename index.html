@@ -1,16 +1,11 @@
 <!DOCTYPE html>
 <html>
-    <link rel="manifest" href="/manifest.json">
-    <a href="/table.html">Table Page</a>
-    <br>
-    <a href="/files.html">File Page</a>
-    <br>
-    <a href="/heatmap.html">Heatmap Page</a>
     <head>
+        <link rel="manifest" href="/manifest.json">
     </head>
 
     <body>
-        <div style="padding: 100px;">
+        <div style="padding: 100px;" id="content">
             <p id="test">test</p>
             <p id="text" onclick="document.getElementById('text').innerHTML = localStorage.getItem('StorageData')">data</p>
             <br>
@@ -25,6 +20,8 @@
             </div>
         </div>
     </body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script src="js/nav.js"></script>
     <script src="js/html5-qrcode.min.js"></script>
     <script src="js/index.js"></script>
 </html>
