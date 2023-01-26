@@ -7,18 +7,29 @@
         })
     }
 
+    document.getElementById("scanNext").onclick = () => {
+        scannedText = ""
+        scanned = false
+        document.getElementById("statusText").innerHTML = "Status: Not Scanned"
+    }
+
+    document.getElementById("save").onclick = () => {
+        storeScannedData(scannedText)
+    }
+
    // testing data storage and usage
     var scannedText = ''
     var scanned = false
 
     function storeScannedData(scannedText) {
-        if (scanned) return;
-
+        
         if(scannedText == undefined) return;
 
         const storageKey = 'StorageData'
 
         var newStorage = ''
+
+        console.log("saving", scannedText)
 
         if(localStorage.getItem(storageKey) == null){
             newStorage = '[ ' + scannedText + ' ]'
@@ -53,12 +64,14 @@
                 qrbox: {height:250, width:250}
             },
             (decodedText, decodedResult) => {
+                if (scanned) return
+                scanned = true
+
                 document.getElementById("statusText").innerHTML = "Status: Scanned"
                 console.log(decodedText)
                 if (decodedText!= null){
                     scannedText = decodedText
                 }
-                storeScannedData(scannedText)
             },
             (errorMessage) => {
                 // parse error, ignore it.

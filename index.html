@@ -6,13 +6,13 @@
 
     <body>
         <div style="padding: 100px;" id="content">
-            <p id="test">test</p>
             <p id="text" onclick="document.getElementById('text').innerHTML = localStorage.getItem('StorageData')">data</p>
             <br>
             <p id="statusText">Status: Not Scanned</p> 
-            <div>
+            
+            <button class="btn btn-primary mb-3" id="scanNext">Scan Next </button>
+            <button class="btn btn-secondary mb-3" id="save">Save</button>
 
-            </div>
             <div style="width: 500px; background-color: black; padding: 10px;">
                 <div style="width: 500px; background-color: white;" id="reader">
                     <p>Camera Not Working</p>
