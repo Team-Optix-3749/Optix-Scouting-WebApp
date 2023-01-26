@@ -16,3 +16,6 @@ table {
     background-color: #04AA6D;
     color: white;
   }
+.small-width {
+  width:15em !important;
+}

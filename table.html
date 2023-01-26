@@ -6,15 +6,14 @@
 
     <body>
         <div style="padding: 100px" id="content">
-            <label for="filters">Filter Search</label>
-            <select name="filters" id="filters" onchange="updateFilter()">
+            <label class="mb-3" for="filters" >Filter Search: </label>
+            <select class="mb-3 form-select small-width name="filters" id="filters" onchange="updateFilter()">
               <option value="comp">Competition</option>
               <option value="teamname">Team Name</option>
               <option value="teamnum">Team Number</option>
               <option value="matchnum">Match Number</option>
             </select>
-            <br>
-            <input type="text" id="filter" onkeyup="updateFilter()">
+            <input class="form-control mb-3 small-width" type="text" id="filter" onkeyup="updateFilter()">
             <table id="matches">
                 <tr>
                     <th>Competition</th>
