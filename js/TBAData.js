@@ -38,12 +38,16 @@ async function getTeamKeys(comp){
     return keys
 }
 
-getTeamKeys("2022casd").then((data) => {
-    data.forEach(element => {
-        getSpecificTeamScore(element, "2022casd").then(val => {
-            console.log(element + ": " + val)
-        })
-    })
-})
+// getTeamKeys("2022casd").then((data) => {
+//     data.forEach(element => {
+//         getSpecificTeamScore(element, "2022casd").then(val => {
+//             console.log(element + ": " + val)
+//         })
+//     })
+// })
+
+function getTeamOpr(teamKey, compKey){
+
+}
 
 

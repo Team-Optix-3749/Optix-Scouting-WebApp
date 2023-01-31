@@ -31,6 +31,9 @@ document.getElementById("fileUpload").onsubmit = async function(event){
 }
 
 function exportCSV(){
+
+    if (localStorage.getItem("StorageData") == undefined) return;
+
     var data = JSON.parse(localStorage.getItem("StorageData"))
     var csvData = 'Competition,Team Number,Team Name,Match Number,Upper Scored,Middle Scored,Lower Scored,Total Points,Auto Points'
     data.forEach(el => {
