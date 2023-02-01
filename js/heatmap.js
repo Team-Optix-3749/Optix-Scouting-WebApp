@@ -22,7 +22,7 @@ document.getElementById("input").onsubmit = function(event) {
     var avg = (i) => i/scoreInfo.matches;
 
 
-    var fields = [teamNum, scoreInfo.matches, avg(scoreInfo.upper), avg(scoreInfo.middle), avg(scoreInfo.lower), scoreInfo.score/scoreInfo.matches, scoreInfo.autoScore/scoreInfo.matches, avg(scoreInfo.breakdowns)]
+    var fields = [teamNum, scoreInfo.matches, avg(scoreInfo.upper), avg(scoreInfo.middle), avg(scoreInfo.lower), scoreInfo.score/scoreInfo.matches, scoreInfo.autoScore/scoreInfo.matches, avg(scoreInfo.offense), avg(scoreInfo.defense), avg(scoreInfo.breakdowns)]
 
     for (var field of fields){
         var td = document.createElement("td")

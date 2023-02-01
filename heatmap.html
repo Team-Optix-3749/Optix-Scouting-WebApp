@@ -8,8 +8,8 @@
         <div>
             <p id="border">border?</p>
             <form id="input">
-                <input type="text" id="teamNum">
-                <input type="submit" id="submit">
+                <input type="text" id="teamNum" class="mb-3 form-control small-width">
+                <input type="submit" id="submit" class="btn btn-primary mb-3">
             </form>
             <div style="display: flex; justify-content: space-around; align-items: center;">
                 <canvas width="150" height="450" id="canva" style="border: 4px solid #000000;"></canvas>
@@ -37,6 +37,8 @@
                             <th>Lower Scored</th>
                             <th>Points</th>
                             <th>Auto Points</th>
+                            <th>Offense</th>
+                            <th>Defense</th>
                             <th>Breakdowns</th>
                         </tr>
                         <tr id="averagesData">
@@ -54,7 +56,10 @@
                             <th>Lower Scored</th>
                             <th>Total Points</th>
                             <th>Auto Points</th>
+                            <th>Offense (1-10)</th>
+                            <th>Defense (1-10)</th>
                             <th>Breakdown?</th>
+                            <th>Comments</th>
                             <th id="deleteAll" onclick="deleteAll()">Delete</th>
                         </tr>
                     </table>

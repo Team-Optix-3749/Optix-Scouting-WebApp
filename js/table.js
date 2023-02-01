@@ -16,6 +16,9 @@ function loadData(run){
                 const match = dataStor.matchNumber
                 const comp = dataStor.comp
                 const brokeDown = dataStor.break
+                const comment = dataStor.notes
+                const offence = dataStor.offense
+                const defence = dataStor.defense
                 // upper, lower, middle
                 var scores = [0, 0, 0]
                 dataStor.events.forEach((element, index) => {
@@ -48,7 +51,7 @@ function loadData(run){
 
                 var tr = document.createElement("tr");
 
-                var properties = [comp, team, teamName,match, upperScores, middleScores, lowerScores, score, autoScore, brokeDown ? "Yes" : "No","Delete"]
+                var properties = [comp, team, teamName,match, upperScores, middleScores, lowerScores, score, autoScore, offence, defence, brokeDown ? "Yes" : "No","Expand","Delete"]
 
                 for (var i of properties){
                     var td = document.createElement("td")
@@ -56,6 +59,23 @@ function loadData(run){
         
                     if(i == "Delete"){
                         td.onclick=removeMatch
+                    }
+
+                    if(i == "Expand"){
+                        td.onclick = function() {
+                            this.classList.toggle("active");
+                            var panel = this.children[0];
+                            if (panel.style.display === "block") {
+                              panel.style.display = "none";
+                            } else {
+                              panel.style.display = "block";
+                            }
+                        }
+                        var commentDiv = document.createElement("div")
+                        commentDiv.className = "panel"
+                        commentDiv.innerHTML = comment
+                        commentDiv.style.display = "none"
+                        td.appendChild(commentDiv)
                     }
 
                     tr.appendChild(td)
@@ -155,7 +175,7 @@ function getScores(teamNum){
             return true
         } else return false
     })
-    var obj = {score: 0, autoScore: 0, matches: 0, upper: 0, middle: 0, lower: 0, breakdowns: 0}
+    var obj = {score: 0, autoScore: 0, matches: 0, upper: 0, middle: 0, lower: 0, offense: 0, defense: 0, breakdowns: 0}
 
     for(var i of filteredMatches) {
 
@@ -186,6 +206,13 @@ function getScores(teamNum){
         obj.upper += counts[0]
         obj.middle += counts[1]
         obj.lower += counts[2]
+        obj.offense += i.offense
+        obj.defense += i.defense
     }
     return obj
 }
+
+select = document.getElementById("selection")
+option = document.createElement("option")
+option.innerHTML = "THE TEXT I WANT TO DISPLAY"
+select.appendChild(option)

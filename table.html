@@ -7,7 +7,7 @@
     <body>
         <div style="padding: 100px" id="content">
             <label class="mb-3" for="filters" >Filter Search: </label>
-            <select class="mb-3 form-select small-width name="filters" id="filters" onchange="updateFilter()">
+            <select class="mb-3 form-select small-width" name="filters" id="filters" onchange="updateFilter()">
               <option value="comp">Competition</option>
               <option value="teamname">Team Name</option>
               <option value="teamnum">Team Number</option>
@@ -25,7 +25,10 @@
                     <th>Lower Scored</th>
                     <th>Total Points</th>
                     <th>Auto Points</th>
+                    <th>Offense (1-10)</th>
+                    <th>Defense (1-10)</th>
                     <th>Broke Down</th>
+                    <th>Comments</th>
                     <th id="deleteAll" onclick="deleteAll()">Delete</th>
                 </tr>
             </table>
