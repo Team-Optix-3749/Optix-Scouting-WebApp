@@ -214,8 +214,3 @@ function getScores(teamNum){
     }
     return obj
 }
-
-select = document.getElementById("selection")
-option = document.createElement("option")
-option.innerHTML = "THE TEXT I WANT TO DISPLAY"
-select.appendChild(option)
