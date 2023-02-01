@@ -83,9 +83,3 @@
         }).catch(err => {
         // handle err
         });
-
-        // testing
-        document.getElementById("test").onclick = function(){
-            storeScannedData(scannedText)
-            console.log(scannedText)
-        }
