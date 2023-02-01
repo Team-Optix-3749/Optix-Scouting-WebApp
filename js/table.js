@@ -171,7 +171,7 @@ function deleteAll(){
 function getScores(teamNum){
     var data = JSON.parse(localStorage.getItem("StorageData"))
     var filteredMatches = data.filter((element) =>{
-        if (element.teamNumber.toString().includes(teamNum)){
+        if (element.teamNumber.toString() == teamNum){
             return true
         } else return false
     })
