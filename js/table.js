@@ -151,6 +151,9 @@ function clearTable(){
         <th>Middle Scored</th>
         <th>Lower Scored</th>
         <th>Total Points</th>
+        <th>Auto Points</th>
+        <th>Offense (1-10)</th>
+        <th>Defense (1-10)</th>
         <th>Broke Down</th>
         <th>Delete</th>
     </tr>`

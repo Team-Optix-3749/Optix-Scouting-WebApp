@@ -8,8 +8,13 @@ document.getElementById("downloadLinkJSON").setAttribute("href", dataUri)
 
 document.getElementById("downloadLinkCSV").setAttribute("href", dataUriCSV)
 
+function generateID(scout){
+    return `${scout.teamNumber}-${scout.matchNumber}-${scout.comp}`
+}
+
 document.getElementById("fileUpload").onsubmit = async function(event){
     event.preventDefault()
+
     var fileInput = document.getElementById("upload");
     var file = fileInput.files[0];
     var content = JSON.parse(await file.text())
@@ -19,11 +24,18 @@ document.getElementById("fileUpload").onsubmit = async function(event){
         var existingStorage = JSON.parse(localStorage.getItem("StorageData"))
 
         if(!Array.isArray(content)){
-            existingStorage.push(JSON.parse(content))
+            var contentID = generateID(content)
+            existingStorage = existingStorage.filter((cont) => {
+                return generateID(cont) != contentID
+            })
+            existingStorage.push(content)
         } else{
             content.forEach((c) =>{
-            console.log(c)
-            existingStorage.push(c)
+                var contentID = generateID(c)
+                existingStorage = existingStorage.filter((cont) => {
+                    return generateID(cont) != contentID
+                })
+                existingStorage.push(c)
             })
         }
         localStorage.setItem("StorageData", JSON.stringify(existingStorage))
