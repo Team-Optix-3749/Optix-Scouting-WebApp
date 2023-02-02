@@ -59,9 +59,11 @@ function loadData(run){
         
                     if(i == "Delete"){
                         td.onclick=removeMatch
+                        td.classList = "clickable"
                     }
 
                     if(i == "Expand"){
+                        td.classList = "clickable"
                         td.onclick = function() {
                             this.classList.toggle("active");
                             var panel = this.children[0];
@@ -155,7 +157,8 @@ function clearTable(){
         <th>Offense (1-10)</th>
         <th>Defense (1-10)</th>
         <th>Broke Down</th>
-        <th>Delete</th>
+        <th>Comments</th>
+        <th class="clickable" id="deleteAll" onclick="deleteAll()">Delete</th>
     </tr>`
 }
 
