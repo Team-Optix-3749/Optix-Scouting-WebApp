@@ -17,7 +17,17 @@ document.getElementById("fileUpload").onsubmit = async function(event){
 
     var fileInput = document.getElementById("upload");
     var file = fileInput.files[0];
-    var content = JSON.parse(await file.text())
+    var content;
+    try{
+        content = JSON.parse(await file.text())
+        document.getElementById("error").style.display = "block"
+        document.getElementById("error").innerHTML = "Good JSON"
+    } catch (e){
+        console.log("You Silly Goose " + e)
+        document.getElementById("error").innerHTML = "Bad JSON"
+        document.getElementById("error").style.display = "block"
+        return
+    }
     if(localStorage.getItem("StorageData") == null){
         localStorage.setItem("StorageData", JSON.stringify(content))
     } else {
@@ -40,6 +50,8 @@ document.getElementById("fileUpload").onsubmit = async function(event){
         }
         localStorage.setItem("StorageData", JSON.stringify(existingStorage))
     }
+    document.getElementById("error").style.display = "block"
+    document.getElementById("error").innerHTML = "Saved"
 }
 
 function exportCSV(){
