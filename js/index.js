@@ -60,6 +60,10 @@ function updateDropdown(devices){
     });
 }
 
+Html5Qrcode.getCameras().then(devices => {
+    updateDropdown(devices)
+})
+
 function getCamera(label){
     return Html5Qrcode.getCameras().then(devices => {
         return devices.find(element => {
