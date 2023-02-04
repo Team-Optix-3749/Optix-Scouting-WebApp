@@ -80,12 +80,7 @@ function updateHeatmap(){
         });
         i++
     });
-}
-
-var clicked = 0
-document.getElementById("border").onclick = function(){
-    if(clicked % 2 == 0){
-        var ctx = canvas.getContext("2d")
+    var ctx = canvas.getContext("2d")
         var sq = height/9
         ctx.fillStyle = "rgb(255, 255, 255)"
         ctx.fillRect(sq - sq/100, 0, sq/50, sq * 9)
@@ -93,9 +88,23 @@ document.getElementById("border").onclick = function(){
         for (let i = 1; i < 9; i++) {
             ctx.fillRect(0, sq * i - sq/100, sq * 3, sq / 50)
         }
-    } else {
-        matches = 0
-        updateHeatmap()
-    }
-    clicked++
 }
+
+// var clicked = 3
+
+// document.getElementById("border").onclick = function(){
+//     if(clicked % 2 == 1){
+//         var ctx = canvas.getContext("2d")
+//         var sq = height/9
+//         ctx.fillStyle = "rgb(255, 255, 255)"
+//         ctx.fillRect(sq - sq/100, 0, sq/50, sq * 9)
+//         ctx.fillRect(sq + sq - sq/100, 0, sq/50, sq * 9)
+//         for (let i = 1; i < 9; i++) {
+//             ctx.fillRect(0, sq * i - sq/100, sq * 3, sq / 50)
+//         }
+//     } else {
+//         matches = 0
+//         updateHeatmap()
+//     }
+//     clicked++
+// }
