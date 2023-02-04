@@ -96,6 +96,5 @@ document.getElementById("startScanning").onclick = async () => {
         fps: 10,
         qrbox: {height:250, width:250}
     }
-    html5QrCode.start({ facingMode: "environment" }, options, qrCodeSuccessCallback);
     html5QrCode.start(cameraId, options, qrCodeSuccessCallback)
 }
