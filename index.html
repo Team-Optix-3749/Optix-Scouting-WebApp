@@ -11,6 +11,11 @@
         <div style="padding: 100px;" id="content">
             <p id="text" onclick="document.getElementById('text').innerHTML = localStorage.getItem('StorageData')">data</p>
             <br>
+
+            <select name="cameras" id="cameras">
+            </select>
+            <button id="startScanning">Start Qr Scanning</button>
+            <br>
             <p id="statusText">Status: Not Scanned</p> 
             
             <button class="btn btn-primary mb-3" id="scanNext">Scan Next </button>
