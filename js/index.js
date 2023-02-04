@@ -75,31 +75,27 @@ function getCamera(label){
     })
 }
 
+function qrCodeSuccessCallback (decodedText, decodedResult){
+    if (scanned) return
+    scanned = true
+
+    document.getElementById("statusText").innerHTML = "Status: Scanned"
+    console.log(decodedText)
+    if (decodedText!= null){
+        scannedText = decodedText
+    }
+}
+
 document.getElementById("startScanning").onclick = async () => {
     l = document.getElementById("cameras")
     label = l.options[l.selectedIndex].text
-        const html5QrCode = new Html5Qrcode("reader", verbose=false);
-        var cameraId = (await getCamera(label)).id
-        html5QrCode.start(
-            cameraId, 
-            {
-                fps: 10,
-                qrbox: {height:250, width:250}
-            },
-            (decodedText, decodedResult) => {
-                if (scanned) return
-                scanned = true
-
-                document.getElementById("statusText").innerHTML = "Status: Scanned"
-                console.log(decodedText)
-                if (decodedText!= null){
-                    scannedText = decodedText
-                }
-            },
-            (errorMessage) => {
-                // parse error, ignore it.
-            })
-            .catch((err) => {
-            // Start failed, handle it.
-            });
+    const html5QrCode = new Html5Qrcode("reader", verbose=false);
+    var cameraId = (await getCamera(label)).id
+    options =
+    {
+        fps: 10,
+        qrbox: {height:250, width:250}
+    }
+    html5QrCode.start({ facingMode: "environment" }, options, qrCodeSuccessCallback);
+    html5QrCode.start(cameraId, options, qrCodeSuccessCallback)
 }
