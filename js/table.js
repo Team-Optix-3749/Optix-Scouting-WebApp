@@ -15,11 +15,17 @@ function loadData(run){
                 const teamName = dataStor.teamName
                 const match = dataStor.matchNumber
                 const comp = dataStor.comp
-                const brokeDown = dataStor.break
+                const brokeDown = dataStor.break ? "Yes" : "No"
                 const comment = dataStor.notes
                 const offence = dataStor.offense
                 const defence = dataStor.defense
                 const alliance = dataStor.alliance
+                const balAuto = dataStor.balanced.toString().substring(0, 1)
+                const balTele = dataStor.balanced.toString().substring(1, 2)
+                const balanceAuto = balAuto === "2" ? "Engaged" : balAuto == "1" ? "Docked" : "Nothing"
+                const balanceTele = balTele === "2" ? "Engaged" : balTele == "1" ? "Docked" : "Nothing"
+
+
                 // upper, lower, middle
                 var scores = [0, 0, 0]
                 dataStor.events.forEach((element, index) => {
@@ -52,7 +58,7 @@ function loadData(run){
 
                 var tr = document.createElement("tr");
 
-                var properties = [comp, team, teamName, match, alliance, upperScores, middleScores, lowerScores, score, autoScore, offence, defence, brokeDown ? "Yes" : "No","Expand","Delete"]
+                var properties = [comp, team, teamName, match, alliance, upperScores, middleScores, lowerScores, score, autoScore, offence, defence, balanceAuto, balanceTele, brokeDown,"Expand","Delete"]
 
                 for (var i of properties){
                     var td = document.createElement("td")
@@ -158,6 +164,7 @@ function clearTable(){
         <th>Auto Points</th>
         <th>Offense (1-10)</th>
         <th>Defense (1-10)</th>
+        <th>Charge Station State</th>
         <th>Broke Down</th>
         <th>Comments</th>
         <th class="clickable" id="deleteAll" onclick="deleteAll()">Delete</th>
@@ -183,12 +190,13 @@ function getScores(teamNum){
             return true
         } else return false
     })
-    var obj = {score: 0, autoScore: 0, matches: 0, upper: 0, middle: 0, lower: 0, offense: 0, defense: 0, breakdowns: 0}
+    var obj = {score: 0, autoScore: 0, matches: 0, upper: 0, middle: 0, lower: 0, offense: 0, defense: 0, breakdowns: 0, teleScore: 0}
 
     for(var i of filteredMatches) {
 
         var score = 0
         var autoScore = 0
+        var teleScore = 0
         var scoreValuesAuto = [6, 4, 3]
         var scoreValuesTele = [5, 3, 2]
         var counts = [0,0,0]
@@ -200,6 +208,7 @@ function getScores(teamNum){
                     score += scoreValuesAuto[index]
                     counts[index]++
                 } else if (e==1){
+                    teleScore += scoreValuesTele[index]
                     score += scoreValuesTele[index]
                     counts[index]++
                 }
@@ -216,6 +225,7 @@ function getScores(teamNum){
         obj.lower += counts[2]
         obj.offense += i.offense
         obj.defense += i.defense
+        obj.teleScore += teleScore
     }
     return obj
 }
