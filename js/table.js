@@ -19,6 +19,7 @@ function loadData(run){
                 const comment = dataStor.notes
                 const offence = dataStor.offense
                 const defence = dataStor.defense
+                const alliance = dataStor.alliance
                 // upper, lower, middle
                 var scores = [0, 0, 0]
                 dataStor.events.forEach((element, index) => {
@@ -51,7 +52,7 @@ function loadData(run){
 
                 var tr = document.createElement("tr");
 
-                var properties = [comp, team, teamName,match, upperScores, middleScores, lowerScores, score, autoScore, offence, defence, brokeDown ? "Yes" : "No","Expand","Delete"]
+                var properties = [comp, team, teamName, match, alliance, upperScores, middleScores, lowerScores, score, autoScore, offence, defence, brokeDown ? "Yes" : "No","Expand","Delete"]
 
                 for (var i of properties){
                     var td = document.createElement("td")
@@ -149,6 +150,7 @@ function clearTable(){
         <th>Team Number</th>
         <th>Team Name</th>
         <th>Match Number</th>
+        <th>Alliance</th>
         <th>Upper Scored</th>
         <th>Middle Scored</th>
         <th>Lower Scored</th>
