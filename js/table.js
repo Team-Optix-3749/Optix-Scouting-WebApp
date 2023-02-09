@@ -190,7 +190,7 @@ function getScores(teamNum){
             return true
         } else return false
     })
-    var obj = {score: 0, autoScore: 0, matches: 0, upper: 0, middle: 0, lower: 0, offense: 0, defense: 0, breakdowns: 0, teleScore: 0}
+    var obj = {score: 0, autoScore: 0, matches: 0, upper: 0, middle: 0, lower: 0, offense: 0, defense: 0, breakdowns: 0, teleScore: 0, balanceAuto: 0, balanceTele: 0}
 
     for(var i of filteredMatches) {
 
@@ -200,6 +200,8 @@ function getScores(teamNum){
         var scoreValuesAuto = [6, 4, 3]
         var scoreValuesTele = [5, 3, 2]
         var counts = [0,0,0]
+        var chargeScoreValuesAuto = [6, 8]
+        var chargeScoreValuesTele = [10, 12]
 
         i.events.forEach((element, index) => {
             element.forEach(e => {
@@ -217,6 +219,12 @@ function getScores(teamNum){
         if(i.break){
             obj.breakdowns++
         }
+
+        const balAuto = i.balanced.toString().substring(0, 1)
+        const balTele = i.balanced.toString().substring(1, 2)
+        const balanceAuto = balAuto === "2" ? 12 : balAuto == "1" ? 8 : 0
+        const balanceTele = balTele === "2" ? 10 : balTele == "1" ? 6 : 0
+
         obj.score += score
         obj.autoScore += autoScore
         obj.matches++
@@ -226,6 +234,8 @@ function getScores(teamNum){
         obj.offense += i.offense
         obj.defense += i.defense
         obj.teleScore += teleScore
+        obj.balanceAuto += balanceAuto
+        obj.balanceTele += balanceTele
     }
     return obj
 }
