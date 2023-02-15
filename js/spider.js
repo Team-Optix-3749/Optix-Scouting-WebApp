@@ -1,4 +1,5 @@
-const ctx = document.getElementById('chart1');
+const ctxRed = document.getElementById('chartRed');
+const ctxBlue = document.getElementById('chartBlue');
 
 const colors = {
   'red0': 'rgb(255, 22, 71)',
@@ -16,7 +17,10 @@ const colorsWithAlpha = {
   'blue1': 'rgba(71, 135, 255, 0.2)',
   'blue2': 'rgba(71, 222, 255, 0.2)'
 }
-var curChart;
+var curChart = {
+  'Red': undefined,
+  'Blue': undefined
+}
 
 const createDataset = (label, data, color) => ({
   label: label,
@@ -122,13 +126,14 @@ function getScores(teamNum){
   return obj
 }
 
-document.getElementById("submit").onclick = () => {
+function createChart(color){
 
-  var teamNum0 = document.getElementById("number0").value
-  var teamNum1 = document.getElementById("number1").value
-  var teamNum2 = document.getElementById("number2").value
+  var teamNum0 = document.getElementById(`number${color}0`).value
+  var teamNum1 = document.getElementById(`number${color}1`).value
+  var teamNum2 = document.getElementById(`number${color}2`).value
 
-  var color = 'blue'
+  console.log(teamNum0 + "blank")
+  console.log(document.getElementById(`number${color}0`))
 
   var nums = [teamNum0, teamNum1, teamNum2]
 
@@ -148,17 +153,32 @@ document.getElementById("submit").onclick = () => {
       avg(scoreInfo.balanceTele), avg(scoreInfo.balanceAuto)];
 
     if (teamNum != '')
-    data.datasets.push(createDataset(teamNum, fields, color + i))
+    data.datasets.push(createDataset(teamNum, fields, color.toLowerCase() + i))
 
   });
 
   config.data = data
 
+  var ctx
+
+  if (color == 'Red'){
+    ctx = ctxRed
+  } else {
+    ctx = ctxBlue
+  }
+
   try{
-    curChart.destroy()
+    curChart[color].destroy()
   } catch{
-    curChart = new Chart(ctx, config)
+    curChart[color] = new Chart(ctx, config)
     return
   }
-  curChart = new Chart(ctx, config)
+  curChart[color] = new Chart(ctx, config)
+}
+
+document.getElementById("submitRed").onclick = () => {
+  createChart('Red')
+}
+document.getElementById("submitBlue").onclick = () => {
+  createChart('Blue')
 }
