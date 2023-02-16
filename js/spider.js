@@ -1,6 +1,11 @@
 const ctxRed = document.getElementById('chartRed');
 const ctxBlue = document.getElementById('chartBlue');
 
+var currentScores = {
+  'Red': [0,0],
+  'Blue': [0,0]
+}
+
 const colors = {
   'red0': 'rgb(255, 22, 71)',
   'red1': 'rgb(255, 108, 71)',
@@ -159,13 +164,7 @@ function createChart(color){
 
   config.data = data
 
-  var ctx
-
-  if (color == 'Red'){
-    ctx = ctxRed
-  } else {
-    ctx = ctxBlue
-  }
+  var ctx = color == 'Red' ? ctxRed : ctxBlue
 
   try{
     curChart[color].destroy()
@@ -176,9 +175,98 @@ function createChart(color){
   curChart[color] = new Chart(ctx, config)
 }
 
+function createCompareChart(color){
+  var teamNum0 = document.getElementById(`number${color}0`).value
+  var teamNum1 = document.getElementById(`number${color}1`).value
+  var teamNum2 = document.getElementById(`number${color}2`).value
+
+  // var teamNumRed0 = document.getElementById(`numberRed0`).value
+  // var teamNumRed1 = document.getElementById(`numberRed1`).value
+  // var teamNumRed2 = document.getElementById(`numberRed2`).value
+  // var teamNumBlue0 = document.getElementById(`numberBlue0`).value
+  // var teamNumBlue1 = document.getElementById(`numberBlue1`).value
+  // var teamNumBlue2 = document.getElementById(`numberBlue2`).value
+
+  var nums = [teamNum0, teamNum1, teamNum2]
+
+  var data = createDataGeneric()
+  var config = createConfigGeneric()
+
+  data.datasets = []
+
+  var highestTele = 0
+  var highestAuto = 0
+
+  nums.forEach(teamNum => {
+    var scoreInfo = getScores(teamNum)
+
+    var avg = (p) => p/scoreInfo.matches;
+
+
+    if (avg(scoreInfo.score) > highestTele){
+      highestTele = avg(scoreInfo.score)
+    }
+
+    if (avg(scoreInfo.autoScore) > highestAuto){
+      highestAuto = avg(scoreInfo.autoScore)
+    }
+  })
+
+  for (const key in currentScores) {
+      if (highestTele > currentScores[key][0]){
+        currentScores[key][0] = highestTele
+      }
+      if (highestAuto > currentScores[key][1])
+        currentScores[key][1] = highestAuto
+  }
+
+  highestTele = currentScores[color][0]
+  highestAuto = currentScores[color][1]
+
+  nums.forEach((teamNum, i) => {
+
+    var scoreInfo = getScores(teamNum)
+
+    var avg = (p) => p/scoreInfo.matches;
+
+    var fields = [avg(scoreInfo.score)/highestTele, avg(scoreInfo.autoScore)/highestAuto, 
+      avg(scoreInfo.offense)/10, avg(scoreInfo.defense)/10, 
+      avg(scoreInfo.balanceTele)/10, avg(scoreInfo.balanceAuto)/12];
+    
+    
+
+    if (teamNum != '')
+    data.datasets.push(createDataset(teamNum, fields, color.toLowerCase() + i))
+
+  });
+
+  config.data = data
+
+  var ctx = color == 'Red' ? ctxRed : ctxBlue
+
+  try{
+    curChart[color].destroy()
+  } catch{
+    curChart[color] = new Chart(ctx, config)
+    return
+  }
+  curChart[color] = new Chart(ctx, config)
+}
+
+
 document.getElementById("submitRed").onclick = () => {
-  createChart('Red')
+  check = document.getElementById("compare").checked
+  if (check){
+    createCompareChart('Red')
+  } else {
+    createChart('Red')
+  }
 }
 document.getElementById("submitBlue").onclick = () => {
-  createChart('Blue')
+  check = document.getElementById("compare").checked
+  if (check){
+    createCompareChart('Blue')
+  } else {
+    createChart('Blue')
+  }
 }
