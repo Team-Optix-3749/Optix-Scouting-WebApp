@@ -80,14 +80,42 @@ function updateHeatmap(){
         });
         i++
     });
+
+    var sq = height/9
+    ctx.fillStyle = "rgb(255, 255, 255)"
+    ctx.fillRect(sq - sq/100, 0, sq/50, sq * 9)
+    ctx.fillRect(sq + sq - sq/100, 0, sq/50, sq * 9)
+    for (let i = 1; i < 9; i++) {
+        ctx.fillRect(0, sq * i - sq/100, sq * 3, sq / 50)
+    }
+}
+
+function resetCanvas(){
     var ctx = canvas.getContext("2d")
-        var sq = height/9
-        ctx.fillStyle = "rgb(255, 255, 255)"
-        ctx.fillRect(sq - sq/100, 0, sq/50, sq * 9)
-        ctx.fillRect(sq + sq - sq/100, 0, sq/50, sq * 9)
-        for (let i = 1; i < 9; i++) {
-            ctx.fillRect(0, sq * i - sq/100, sq * 3, sq / 50)
-        }
+    ctx.fillRect(0, 0, height/3, height)
+}
+
+document.getElementById("reset").onclick = function(){
+    clearTable()
+    loadData(false)
+    document.getElementById("averages").innerHTML = 
+    `
+    <tr>
+    <th>Team Number</th>
+    <th>Matches</th>
+    <th>Upper Scored</th>
+    <th>Middle Scored</th>
+    <th>Lower Scored</th>
+    <th>Points</th>
+    <th>Auto Points</th>
+    <th>Offense</th>
+    <th>Defense</th>
+    <th>Breakdowns</th>
+    </tr>
+    <tr id="averagesData">
+    </tr>
+    `
+    resetCanvas()
 }
 
 // var clicked = 3

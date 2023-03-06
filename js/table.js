@@ -164,7 +164,8 @@ function clearTable(){
         <th>Auto Points</th>
         <th>Offense (1-10)</th>
         <th>Defense (1-10)</th>
-        <th>Charge Station State</th>
+        <th>Charge Station State Auto</th>
+        <th>Charge Station State Endgame</th>
         <th>Broke Down</th>
         <th>Comments</th>
         <th class="clickable" id="deleteAll" onclick="deleteAll()">Delete</th>

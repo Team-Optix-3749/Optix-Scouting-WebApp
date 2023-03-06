@@ -19,19 +19,20 @@
     <body>
         <div style="padding: 100px" id="content">
             <button class="btn btn-primary">
-                <a id="downloadLinkJSON" download="ScoutingData.json">
+                <a id="downloadLinkJSON" download="">
                     Download as JSON
                 </a>
             </button>
             <button class="btn btn-secondary m-3">
-                <a id="downloadLinkCSV" download="ScoutingData.csv">
+                <a id="downloadLinkCSV" download="">
                     Download as CSV
                 </a>
             </button>
             <form id="fileUpload">
                 <div class="row">
                     <div class="col">
-                        <input class="form-control" type="file" id="upload">
+                        <label for="upload">Import as JSON:</label>
+                        <input class="form-control mt-3" type="file" id="upload">
                     </div>
                     <div class="col">
                         <input class="btn btn-dark" type="submit">
@@ -46,7 +47,7 @@
             </form> -->
         </div>
     </body>
-    <script src="js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/nav.js"></script>
     <script src="js/files.js"></script>
 </html>

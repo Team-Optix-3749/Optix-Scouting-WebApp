@@ -11,6 +11,12 @@ document.getElementById("downloadLinkCSV").setAttribute("href", dataUriCSV)
 function generateID(scout){
     return `${scout.teamNumber}-${scout.matchNumber}-${scout.comp}`
 }
+var date = new Date()
+var day = date.toLocaleDateString()
+var sec = date.toTimeString().substring(0, 8)
+var currentDate = day + "-" + sec
+document.getElementById("downloadLinkJSON").download = `ScoutingData-${currentDate}.json`
+document.getElementById("downloadLinkCSV").download = `ScoutingData-${currentDate}.csv`
 
 document.getElementById("fileUpload").onsubmit = async function(event){
     event.preventDefault()
