@@ -97,3 +97,21 @@ function exportCSV(){
     })
     return csvData
 }
+
+// document.getElementById("insertData").onsubmit = (event) => {
+//     event.preventDefault()
+
+//     var existingData = localStorage.getItem('StorageData')
+//     var rawData = document.getElementById("manualData").value
+//     var data
+
+//     try {
+//         data = JSON.parse(data)
+//     } catch {
+//         alert("Wrong Format!")
+//         return
+//     }
+    
+    
+
+// }
