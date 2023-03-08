@@ -74,7 +74,7 @@ function updateHeatmap(){
             ctx.fillStyle = `rgb(${e * 255} , 0, 0)`
             ctx.fillRect(i * sq, j * sq, sq, sq)
             ctx.fillStyle = `rgb(255, 255, 255)`
-            ctx.font = `${sq/4}px comic sans ms`;
+            ctx.font = `${sq/4}px sans serif`;
             ctx.fillText((e.toFixed(2)), i * sq + sq/4, j * sq + sq/1.75)
             j++
         });
@@ -116,6 +116,77 @@ document.getElementById("reset").onclick = function(){
     </tr>
     `
     resetCanvas()
+}
+
+var hasRun = false
+var totalPoints = 0
+var totalAutoPoints = 0
+loadData(hasRun)
+
+function loadData(){
+    if (localStorage.getItem("StorageData") == null){
+        clearTable()
+    } else {
+        var data = JSON.parse(localStorage.getItem("StorageData"))
+
+        for(var i of data) {
+            var dataStor = i
+            const team = dataStor.teamNumber
+            const teamName = dataStor.teamName
+            const match = dataStor.matchNumber
+            const comp = dataStor.comp
+            const offence = dataStor.offense
+            const defence = dataStor.defense
+            const balAuto = dataStor.balanced.toString().substring(0, 1)
+            const balTele = dataStor.balanced.toString().substring(1, 2)
+            const balanceAuto = balAuto === "2" ? "Engaged" : balAuto == "1" ? "Docked" : "Nothing"
+            const balanceTele = balTele === "2" ? "Engaged" : balTele == "1" ? "Docked" : "Nothing"
+
+
+            // upper, lower, middle
+            var scores = [0, 0, 0]
+            dataStor.events.forEach((element, index) => {
+                element.forEach(e => {
+                    scores[index] += e > 0 ? 1 : 0
+                })
+            })
+            var [upperScores, middleScores, lowerScores] = scores
+
+            var score = 0
+            var autoScore = 0
+            var scoreValuesAuto = [6, 4, 3]
+            var scoreValuesTele = [5, 3, 2]
+
+            dataStor.events.forEach((element, index) => {
+                element.forEach(e => {
+                    if(e==2){
+                        autoScore += scoreValuesAuto[index]
+                        score += scoreValuesAuto[index]
+                    } else if (e==1){
+                        score += scoreValuesTele[index]
+                    }
+                })
+            })
+
+            hasRun = true
+
+            totalPoints += score
+            totalAutoPoints += autoScore
+
+            var tr = document.createElement("tr");
+
+            var properties = [comp, team, teamName, match, upperScores, middleScores, lowerScores, score, autoScore, offence, defence, balanceAuto, balanceTele]
+
+            for (var i of properties){
+                var td = document.createElement("td")
+                td.innerHTML = i
+
+                tr.appendChild(td)
+            }
+
+            document.getElementById("matches").appendChild(tr)
+        }
+    }
 }
 
 // var clicked = 3

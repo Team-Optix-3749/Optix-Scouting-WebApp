@@ -1,7 +1,6 @@
 var hasRun = false
 var totalPoints = 0
 var totalAutoPoints = 0
-loadData(hasRun)
 function loadData(run){
     if(!run){
         if (localStorage.getItem("StorageData") == null){
