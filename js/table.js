@@ -243,7 +243,7 @@ function getScores(teamNum){
 function findLinks(events){
     var links = 0
     var test = 0
-    
+
     events.forEach(event => {
         event.forEach(e => {
             test += e > 0 ? 1 : 0
@@ -253,5 +253,38 @@ function findLinks(events){
                 test = 0
             }
         }) 
+    });
+}
+
+function setTeamData(){
+
+    teamData = JSON.parse(localStorage.getItem("StorageData"))
+    matchData = JSON.parse(localStorage.getItem("MatchData"))
+
+    var matchKeys = []
+    matchData.forEach(match => {
+        matchKeys.push(match.key)
+    });
+
+    teamData.forEach(team => {
+        var key = team.comp + team.teamNumber + team.matchNumber
+        if(matchKeys.includes(key)){
+            var existingEvents = matchData.key.events
+            var teamEvents = team.events
+            existingEvents.forEach((event, index) => {
+                var teamEventColumn = teamEvents[index]
+                event.map((x, i) => {
+                    var teamEventPlace = teamEventColumn[i] > 0 ? 1 : 0
+                    if (x != teamEventPlace){
+                        x = teamEventPlace
+                    }
+                })
+            })
+            var obj = {
+                key: {
+                    "events": ""
+                }
+            }
+        }
     });
 }
