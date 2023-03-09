@@ -43,8 +43,8 @@ const createDataGeneric = () => ({
   labels: [
     'Teleop Points',
     'Autonomous Points',
-    'Defense',
     'Offense',
+    'Defense',
     'Charge Station Tele',
     'Charge Station Auto',
   ],

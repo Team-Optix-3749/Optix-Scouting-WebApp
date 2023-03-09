@@ -239,3 +239,19 @@ function getScores(teamNum){
     }
     return obj
 }
+
+function findLinks(events){
+    var links = 0
+    var test = 0
+    
+    events.forEach(event => {
+        event.forEach(e => {
+            test += e > 0 ? 1 : 0
+            console.log(test)
+            if (test == 3){
+                links += 1
+                test = 0
+            }
+        }) 
+    });
+}
