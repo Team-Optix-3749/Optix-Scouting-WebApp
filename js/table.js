@@ -149,26 +149,26 @@ function removeMatch(event){
 }
 
 function clearTable(){
-    document.getElementById("matches").innerHTML = 
-    `<tr>
-        <th>Competition</th>
-        <th>Team Number</th>
-        <th>Team Name</th>
-        <th>Match Number</th>
-        <th>Alliance</th>
-        <th>Upper Scored</th>
-        <th>Middle Scored</th>
-        <th>Lower Scored</th>
-        <th>Total Points</th>
-        <th>Auto Points</th>
-        <th>Offense (1-10)</th>
-        <th>Defense (1-10)</th>
-        <th>Charge Station State Auto</th>
-        <th>Charge Station State Endgame</th>
-        <th>Broke Down</th>
-        <th>Comments</th>
-        <th class="clickable" id="deleteAll" onclick="deleteAll()">Delete</th>
-    </tr>`
+    document.getElementById("matches").innerHTML = document.getElementById("blank").innerHTML
+    // `<tr>
+    //     <th>Competition</th>
+    //     <th>Team Number</th>
+    //     <th>Team Name</th>
+    //     <th>Match Number</th>
+    //     <th>Alliance</th>
+    //     <th>Upper Scored</th>
+    //     <th>Middle Scored</th>
+    //     <th>Lower Scored</th>
+    //     <th>Total Points</th>
+    //     <th>Auto Points</th>
+    //     <th>Offense (1-10)</th>
+    //     <th>Defense (1-10)</th>
+    //     <th>Charge Station State Auto</th>
+    //     <th>Charge Station State Endgame</th>
+    //     <th>Broke Down</th>
+    //     <th>Comments</th>
+    //     <th class="clickable" id="deleteAll" onclick="deleteAll()">Delete</th>
+    // </tr>`
 }
 
 
