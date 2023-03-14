@@ -19,6 +19,7 @@ function loadData(run){
                 const offence = dataStor.offense
                 const defence = dataStor.defense
                 const alliance = dataStor.alliance
+                const links = dataStor.links
                 const balAuto = dataStor.balanced.toString().substring(0, 1)
                 const balTele = dataStor.balanced.toString().substring(1, 2)
                 const balanceAuto = balAuto === "2" ? "Engaged" : balAuto == "1" ? "Docked" : "Nothing"
@@ -57,7 +58,7 @@ function loadData(run){
 
                 var tr = document.createElement("tr");
 
-                var properties = [comp, team, teamName, match, alliance, upperScores, middleScores, lowerScores, score, autoScore, offence, defence, balanceAuto, balanceTele, brokeDown,"Expand","Delete"]
+                var properties = [comp, team, teamName, match, alliance, upperScores, middleScores, lowerScores, score, autoScore, links, offence, defence, balanceAuto, balanceTele, brokeDown,"Expand","Delete"]
 
                 for (var i of properties){
                     var td = document.createElement("td")
@@ -150,25 +151,6 @@ function removeMatch(event){
 
 function clearTable(){
     document.getElementById("matches").innerHTML = document.getElementById("blank").innerHTML
-    // `<tr>
-    //     <th>Competition</th>
-    //     <th>Team Number</th>
-    //     <th>Team Name</th>
-    //     <th>Match Number</th>
-    //     <th>Alliance</th>
-    //     <th>Upper Scored</th>
-    //     <th>Middle Scored</th>
-    //     <th>Lower Scored</th>
-    //     <th>Total Points</th>
-    //     <th>Auto Points</th>
-    //     <th>Offense (1-10)</th>
-    //     <th>Defense (1-10)</th>
-    //     <th>Charge Station State Auto</th>
-    //     <th>Charge Station State Endgame</th>
-    //     <th>Broke Down</th>
-    //     <th>Comments</th>
-    //     <th class="clickable" id="deleteAll" onclick="deleteAll()">Delete</th>
-    // </tr>`
 }
 
 
