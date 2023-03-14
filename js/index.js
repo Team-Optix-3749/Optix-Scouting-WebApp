@@ -31,23 +31,19 @@ function storeScannedData(scannedText) {
 
     console.log("saving", scannedText)
 
-    if(localStorage.getItem(storageKey) == null){
-        newStorage = '[ ' + scannedText + ' ]'
-    } else {
-        var existingStorage = JSON.parse(localStorage.getItem(storageKey))
-        var parseText = JSON.parse(scannedText)
-        var key = parseText.comp.toString() + parseText.teamNumber.toString() + parseText.matchNumber.toString()
-        existingStorage = existingStorage.filter(element =>{
-            var key2 = element.comp.toString() + element.teamNumber.toString() + element.matchNumber.toString()
-            if(key == key2){
-                return false
-            } else return true
-        })
-        existingStorage.push(parseText)
-
-        newStorage = JSON.stringify(existingStorage)
-    }
-
+    var existingStorage = JSON.parse(localStorage.getItem(storageKey))
+    if (existingStorage == null) existingStorage = []
+    var parseText = JSON.parse(scannedText)
+    var key = parseText.comp.toString() + parseText.teamNumber.toString() + parseText.matchNumber.toString()
+    existingStorage = existingStorage.filter(element =>{
+        var key2 = element.comp.toString() + element.teamNumber.toString() + element.matchNumber.toString()
+        if(key == key2){
+            return false
+        } else return true
+    })
+    existingStorage.push(parseText)
+    existingStorage = appendLinks(existingStorage)
+    newStorage = JSON.stringify(existingStorage)
     localStorage.setItem(storageKey, newStorage)
 }
 
@@ -97,4 +93,51 @@ document.getElementById("startScanning").onclick = async () => {
         qrbox: {height:250, width:250}
     }
     html5QrCode.start(cameraId, options, qrCodeSuccessCallback)
+}
+
+function findLinks(events){
+    var links = 0
+    var test = 0
+
+    events.forEach(event => {
+        event.forEach(e => {
+            test += e > 0 ? 1 : 0
+            if (e == 0) test = 0
+            if (test == 3){
+                links += 1
+                test = 0
+            }
+        }) 
+    });
+    return links
+}
+
+function appendLinks(teamData){
+
+    // var teamData = JSON.parse(localStorage.getItem("StorageData"))
+    var matchData = {}
+
+    teamData.forEach(matchTeam => {
+        var key = matchTeam.comp + matchTeam.alliance + matchTeam.matchNumber
+        if (matchData[key] == null) matchData[key] = {events: [[0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0]]}
+
+        var teamEvents = matchTeam.events
+
+        matchData[key].events.forEach((event, index) => {
+            var teamEventColumn = teamEvents[index]
+            event.map((x, i) => {
+                matchData[key].events[index][i] = Math.max(x, teamEventColumn[i])
+            })
+        })
+
+    });
+
+    teamData.forEach(matchTeam => {
+        var key = matchTeam.comp + matchTeam.alliance + matchTeam.matchNumber
+        matchTeam.links = findLinks(matchData[key].events)
+    })
+
+    // localStorage.setItem("StorageData", JSON.stringify(teamData))
+    console.log(matchData)
+    return teamData
 }
