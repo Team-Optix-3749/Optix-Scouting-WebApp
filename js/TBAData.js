@@ -3,7 +3,7 @@ const link = "https://www.thebluealliance.com/api/v3"
 
 $.ajaxSetup({
     headers: {
-        'X-TBA-Auth-Key': 'LckgK7jWmITgnBODZiGKVqjU9kHo1GeknTbIrw3NJY1qIzEombAfU1BIlyGHm8Zv',
+        'X-TBA-Auth-Key': 'Ue5lGW4YPg6MWgRegaABwv95QwTdNPEtenLmxuvF4KNsWeUEdE0X9mYhpBZocHcW',
     }
 })
 
@@ -46,7 +46,13 @@ async function getTeamKeys(comp){
 //     })
 // })
 
-function getTeamOpr(teamKey, compKey){
+async function downloadThings(){
+    var data = await $.get(`https://www.thebluealliance.com/api/v3/events/2023`)
+    var keys = []
+    data.forEach(element => {
+        keys.push(element.name)
+    });
+    console.log(JSON.stringify(keys))
 
 }
 
