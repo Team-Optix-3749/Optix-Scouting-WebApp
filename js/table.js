@@ -67,10 +67,12 @@ function loadData(run){
                     if(i == "Delete"){
                         td.onclick=removeMatch
                         td.classList = "clickable"
+                        td.style = "user-select: none;"
                     }
 
                     if(i == "Expand"){
                         td.classList = "clickable"
+                        td.style = "user-select: none;"
                         td.onclick = function() {
                             this.classList.toggle("active");
                             var panel = this.children[0];
