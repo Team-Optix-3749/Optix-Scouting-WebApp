@@ -20,14 +20,12 @@
                             <label class="col-form-label" for="selectCompText">Competition:</label>
                         </div>
                         <div class="col-auto">
-                            <input list="compList" class="form-control small-width" type="text" id="selectCompText">
-                            <datalist id="compList">
-                                
-                            </datalist>
+                            <input onclick="this.select()" style="user-select: all;" list="compList" class="form-control small-width" type="text" id="selectCompText">
+                            <datalist id="compList"></datalist>
                         </div>
-                        <div class="col-auto">
+                        <!-- <div class="col-auto">
                             <input class="btn btn-primary" type="submit" id="selectCompSubmit">
-                        </div>
+                        </div> -->
                     </div>
                     <div class="row align-items-center">
                         <div class="col-auto">
@@ -36,8 +34,12 @@
                         <div class="col-auto">
                             <input class="form-control small-width" type="text" id="fillTeams" onkeyup="fillMatch()">
                         </div>
+                        <div class="col-auto">
+                            <input class="btn btn-primary" type="submit" id="submitNum" onclick="fillMatch()">
+                        </div>
                     </div>
                 </div>
+
                 <div style="display: flex; flex-wrap: wrap; flex-direction: row; justify-content: space-between;">
                     
                     <div>

@@ -137,9 +137,6 @@ function createChart(color){
   var teamNum1 = document.getElementById(`number${color}1`).value
   var teamNum2 = document.getElementById(`number${color}2`).value
 
-  console.log(teamNum0 + "blank")
-  console.log(document.getElementById(`number${color}0`))
-
   var nums = [teamNum0, teamNum1, teamNum2]
 
   var data = createDataGeneric()
@@ -343,3 +340,55 @@ comps.forEach(comp => {
   option.value = comp
   document.getElementById("compList").appendChild(option)
 });
+
+function fillMatch(){
+
+  var comp = document.getElementById("selectCompText").value
+
+  var matchNum = document.getElementById("fillTeams").value
+  var data = JSON.parse(localStorage.getItem("StorageData"))
+  var redTeams = []
+  var blueTeams = []
+  data.forEach(element => {
+
+    if(element.comp != comp){
+      return
+    }
+
+    if(element.matchNumber == matchNum){
+      if(element.alliance == "Red"){
+        redTeams.push(element.teamNumber)
+      } else {
+        blueTeams.push(element.teamNumber)
+
+      }
+    }
+  })
+  
+  redTeams.forEach((element, index) => {
+    document.getElementById(`numberRed${index}`).value = element
+  })
+  blueTeams.forEach((element, index) => {
+    document.getElementById(`numberBlue${index}`).value = element
+  })
+
+  check = document.getElementById("compare").checked
+  if (check){
+    createCompareChart('Blue')
+    createCompareChart('Red')
+  } else {
+    createChart('Blue')
+    createChart('Red')
+  }
+}
+
+document.getElementById("compare").onclick = () => {
+  check = document.getElementById("compare").checked
+  if (check){
+    createCompareChart('Blue')
+    createCompareChart('Red')
+  } else {
+    createChart('Blue')
+    createChart('Red')
+  }
+}
