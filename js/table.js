@@ -247,7 +247,11 @@ function sortTable(event){
     for (var i=5; i < 13; i++){
         if (headers.children[i] == column){
             console.log(`FOUND AT ${headers.children[i].innerHTML}`)
+            headers.children[i].innerHTML += "⬇️"
             searchForIndex = i
+        }
+        else {
+            headers.children[i].innerHTML = headers.children[i].innerHTML.replace("⬇️","")
         }
     }
 
