@@ -223,3 +223,22 @@ function getScores(teamNum){
     }
     return obj
 }
+
+function addOnClicks(){
+    let children = document.getElementById("blank").children
+    console.log(children)
+    for (let i = 0; i < children.length; i++) {
+        let tableChild = children[i];
+        tableChild.onclick = sortTable
+      }
+    console.log(children)
+}
+
+addOnClicks()
+
+function sortTable(event){
+    event.preventDefault()
+    let row = event.currentTarget
+    let rowss = row.parentElement
+    console.log(row.parentElement)
+}

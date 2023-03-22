@@ -382,7 +382,23 @@ function fillMatch(){
   }
 }
 
-document.getElementById("compare").onclick = () => {
+ 
+
+function resetTeamNums(event){
+  event.preventDefault()
+  var thisEl = event.currentTarget
+  var wholeDiv = thisEl.parentElement.parentElement.parentElement
+  var children = wholeDiv.children
+  for(var i=1; i<4; i++ ){
+    children[i].value = ""
+  }
+  loadCharts()
+}
+
+document.getElementById("clear1").onclick = resetTeamNums
+document.getElementById("clear2").onclick = resetTeamNums
+
+function loadCharts() {
   check = document.getElementById("compare").checked
   if (check){
     createCompareChart('Blue')
@@ -392,3 +408,4 @@ document.getElementById("compare").onclick = () => {
     createChart('Red')
   }
 }
+document.getElementById("compare").onclick = loadCharts()
