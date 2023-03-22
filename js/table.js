@@ -152,7 +152,7 @@ function removeMatch(event){
 }
 
 function clearTable(){
-    document.getElementById("matches").innerHTML = document.getElementById("blank").innerHTML
+    document.getElementById("matches").innerHTML = ""
 }
 
 
@@ -227,7 +227,7 @@ function getScores(teamNum){
 function addOnClicks(){
     let children = document.getElementById("blank").children
     console.log(children)
-    for (let i = 0; i < children.length; i++) {
+    for (let i = 5; i < 13; i++) {
         let tableChild = children[i];
         tableChild.onclick = sortTable
       }
@@ -238,7 +238,38 @@ addOnClicks()
 
 function sortTable(event){
     event.preventDefault()
-    let row = event.currentTarget
-    let rowss = row.parentElement
-    console.log(row.parentElement)
+    let column = event.currentTarget
+    let tableInfo = document.getElementById("matches")
+    let headers = document.getElementById("blank")
+    var searchForIndex = -1;
+
+
+    for (var i=5; i < 13; i++){
+        if (headers.children[i] == column){
+            console.log(`FOUND AT ${headers.children[i].innerHTML}`)
+            searchForIndex = i
+        }
+    }
+
+    if (searchForIndex === -1) return
+
+    var tableRows = tableInfo.children
+    var elementArray = []
+
+
+    for (var i=0; i < tableRows.length; i++){
+        elementArray.push(tableRows[i])
+    }
+
+    elementArray.sort((a, b) => {
+        return parseInt(b.children[searchForIndex].innerHTML) - parseInt(a.children[searchForIndex].innerHTML)
+    })
+
+    while (tableInfo.firstChild) {
+        tableInfo.removeChild(tableInfo.lastChild);
+    }
+
+    elementArray.forEach((e) => {
+        tableInfo.appendChild(e)
+    })
 }

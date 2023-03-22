@@ -16,27 +16,32 @@
               <option value="matchnum">Match Number</option>
             </select>
             <input class="form-control mb-3 small-width" type="text" id="filter" onkeyup="updateFilter()">
-            <table id="matches">
-                <tr id="blank">
-                    <th>Competition</th>
-                    <th>Team Number</th>
-                    <th>Team Name</th>
-                    <th>Match Number</th>
-                    <th>Alliance</th>
-                    <th>Upper Scored</th>
-                    <th>Middle Scored</th>
-                    <th>Lower Scored</th>
-                    <th>Total Points</th>
-                    <th>Auto Points</th>
-                    <th>Alliance Links</th>
-                    <th>Offense (1-10)</th>
-                    <th>Defense (1-10)</th>
-                    <th>Charge Station State Auto</th>
-                    <th>Charge Station State Endgame</th>
-                    <th>Broke Down</th>
-                    <th>Comments</th>
-                    <th style="user-select: none;" class="clickable" id="deleteAll" onclick="deleteAll()">Delete All</th>
-                </tr>
+            <table id="matchTable">
+                <thead>
+                    <tr id="blank">
+                        <th>Competition</th>
+                        <th>Team Number</th>
+                        <th>Team Name</th>
+                        <th>Match Number</th>
+                        <th>Alliance</th>
+                        <th>Upper Scored</th>
+                        <th>Middle Scored</th>
+                        <th>Lower Scored</th>
+                        <th>Total Points</th>
+                        <th>Auto Points</th>
+                        <th>Alliance Links</th>
+                        <th>Offense (1-10)</th>
+                        <th>Defense (1-10)</th>
+                        <th>Charge Station State Auto</th>
+                        <th>Charge Station State Endgame</th>
+                        <th>Broke Down</th>
+                        <th>Comments</th>
+                        <th style="user-select: none;" class="clickable" id="deleteAll" onclick="deleteAll()">Delete All</th>
+                    </tr>
+                </thead>
+                <tbody id="matches">
+
+                </tbody>
             </table>
         </div>
     </body>
