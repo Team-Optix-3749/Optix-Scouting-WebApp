@@ -245,6 +245,12 @@ function sortTable(event){
 
 
     for (var i=5; i < 13; i++){
+        if (headers.children[i] == column && headers.children[i].innerHTML.includes("⬇️")){
+            headers.children[i].innerHTML = headers.children[i].innerHTML.replace("⬇️","")
+            clearTable()
+            loadData(false)
+            break
+        }
         if (headers.children[i] == column){
             console.log(`FOUND AT ${headers.children[i].innerHTML}`)
             headers.children[i].innerHTML += "⬇️"
