@@ -287,8 +287,13 @@ function sortTable(event){
             try {
                 loadHeatmap()
             } catch {
-                loadData()
-            }
+                try {
+                    loadAllAverages()
+                } catch (error) {
+                    console.log(error)
+                    loadData()
+                }
+            } // This is a REALLY bad way of doing this
             updateFilter()
             break
         }
@@ -310,7 +315,6 @@ function sortTable(event){
     for (var i=0; i < tableRows.length; i++){
         elementArray.push(tableRows[i])
     }
-
     elementArray.sort((a, b) => {
         return parseInt(b.children[searchForIndex].innerHTML) - parseInt(a.children[searchForIndex].innerHTML)
     })

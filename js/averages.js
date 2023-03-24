@@ -11,7 +11,7 @@ function loadAllAverages(){
         }
     });
 
-    var tbody = document.getElementById("averagesBody")
+    var tbody = document.getElementById("matches")
 
     teamNums.forEach(teamNum => {
         var tr = document.createElement("tr")

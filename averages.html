@@ -8,17 +8,17 @@
 
     <body>
         <div class="my-3 center" style="padding: 10px; position: absolute; left: 5%; right: 5%;" id="content">
-            <label class="mb-3" for="filters" >Filter Search: </label>
+            <!-- <label class="mb-3" for="filters" >Filter Search: </label>
             <select class="mb-3 form-select small-width" name="filters" id="filters" onchange="updateFilter()">
               <option value="comp">Competition</option>
               <option value="teamname">Team Name</option>
               <option value="teamnum">Team Number</option>
               <option value="matchnum">Match Number</option>
             </select>
-            <input class="form-control mb-3 small-width" type="text" id="filter" onkeyup="updateFilter()">
-            <table class="mx-3" id="averages">
+            <input class="form-control mb-3 small-width" type="text" id="filter" onkeyup="updateFilter()"> -->
+            <table class="mx-3" id="matchTable">
                 <thead>
-                    <tr>
+                    <tr id="blank">
                         <th>Team Number</th>
                         <th>Matches</th>
                         <th>Upper Scored</th>
@@ -32,8 +32,7 @@
                         <th>Breakdowns</th>
                     </tr>
                 </thead>
-                <tbody id="averagesBody">
-                    <tr id="averagesData"></tr>
+                <tbody id="matches">
                 </tbody>
             </table>
         </div>
@@ -45,7 +44,6 @@
     <script src="js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <script src="js/nav.js"></script>
     <script src="js/table.js"></script>
-    <script src="js/heatmap.js"></script>
     <script src="js/averages.js"></script>
     <script>loadAllAverages()</script>
 </html>
