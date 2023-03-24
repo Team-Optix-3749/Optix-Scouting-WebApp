@@ -2,6 +2,7 @@ table {
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
+    position: relative;
   }
   table td, table th {
     border: 1px solid #0aa1b5;
@@ -11,14 +12,15 @@ table {
   table tr:nth-child(odd){background-color: #0bafc5;}
   table tr:hover {background-color: #0aa1b5;}
   table th {
-    position: sticky;
-    top: 0;
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
     background-color: #0b2262;
     color: white;
+    position: sticky;
+    top: 0;
   }
+
 
 .small-width {
   width:15em !important;
