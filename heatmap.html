@@ -15,7 +15,7 @@
                     <input type="submit" id="submit" class="btn btn-primary mb-3">
                     <input type="reset" id="reset" class="btn btn-dark mb-3 ">
                 </form>
-                <div style="display: flex; justify-content: space-around; align-items: center;">
+                <div style="display: flex; justify-content: space-around; align-items: normal;">
                     <canvas width="150" height="450" id="canva" style="border: 4px solid #000000;"></canvas>
 
                     <div style="display:flex; flex-direction: column;">
@@ -29,6 +29,7 @@
                                 <th>Lower Scored</th>
                                 <th>Points</th>
                                 <th>Auto Points</th>
+                                <th>Links</th>
                                 <th>Offense</th>
                                 <th>Defense</th>
                                 <th>Breakdowns</th>
@@ -36,22 +37,28 @@
                             <tr id="averagesData">
                             </tr>
                         </table>
-                        <table class="m-3" id="matches">
-                            <tr>
-                                <th>Competition</th>
-                                <th>Team Number</th>
-                                <th>Team Name</th>
-                                <th>Match Number</th>
-                                <th>Upper Scored</th>
-                                <th>Middle Scored</th>
-                                <th>Lower Scored</th>
-                                <th>Total Points</th>
-                                <th>Auto Points</th>
-                                <th>Offense (1-10)</th>
-                                <th>Defense (1-10)</th>
-                                <th>Charge Station State Auto</th>
-                                <th>Charge Station State Endgame</th>
-                            </tr>
+                        <table class="m-3" id="matchTable">
+                            <thead>
+                                <tr id="blank">
+                                    <th>Competition</th>
+                                    <th>Team Number</th>
+                                    <th>Team Name</th>
+                                    <th>Match Number</th>
+                                    <th>Upper Scored</th>
+                                    <th>Middle Scored</th>
+                                    <th>Lower Scored</th>
+                                    <th>Total Points</th>
+                                    <th>Auto Points</th>
+                                    <th>Links</th>
+                                    <th>Offense (1-10)</th>
+                                    <th>Defense (1-10)</th>
+                                    <th>Auto: <ul><li>Charge Station</li><li>Mobility</li></ul></th>
+                                    <th>Endgame: <ul><li>Charge Station</li><li>Parked</li></ul></th>
+                                </tr>
+                            </thead>
+                            <tbody id="matches">
+
+                            </tbody>
                         </table>
                     </div>
                 </div>

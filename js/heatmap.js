@@ -38,7 +38,7 @@ document.getElementById("input").onsubmit = function(event) {
     var avg = (i) => i/scoreInfo.matches;
 
 
-    var fields = [teamNum, scoreInfo.matches, avg(scoreInfo.upper), avg(scoreInfo.middle), avg(scoreInfo.lower), scoreInfo.score/scoreInfo.matches, scoreInfo.autoScore/scoreInfo.matches, avg(scoreInfo.offense), avg(scoreInfo.defense), avg(scoreInfo.breakdowns)]
+    var fields = [teamNum, scoreInfo.matches, avg(scoreInfo.upper), avg(scoreInfo.middle), avg(scoreInfo.lower), scoreInfo.score/scoreInfo.matches, scoreInfo.autoScore/scoreInfo.matches, avg(scoreInfo.links), avg(scoreInfo.offense), avg(scoreInfo.defense), avg(scoreInfo.breakdowns)]
 
     for (var field of fields){
         var td = document.createElement("td")
@@ -97,7 +97,7 @@ function resetCanvas(){
 
 document.getElementById("reset").onclick = function(){
     clearTable()
-    loadData(false)
+    loadHeatmap()
     document.getElementById("averages").innerHTML = 
     `
     <tr>
@@ -121,9 +121,9 @@ document.getElementById("reset").onclick = function(){
 var hasRun = false
 var totalPoints = 0
 var totalAutoPoints = 0
-loadData(hasRun)
+loadHeatmap()
 
-function loadData(){
+function loadHeatmap(){
     if (localStorage.getItem("StorageData") == null){
         clearTable()
     } else {
@@ -135,13 +135,21 @@ function loadData(){
             const teamName = dataStor.teamName
             const match = dataStor.matchNumber
             const comp = dataStor.comp
+            const brokeDown = dataStor.break ? "Yes" : "No"
+            const comment = dataStor.notes
             const offence = dataStor.offense
             const defence = dataStor.defense
+            const alliance = dataStor.alliance
+            const links = dataStor.links
             const balAuto = dataStor.balanced.toString().substring(0, 1)
             const balTele = dataStor.balanced.toString().substring(1, 2)
+            const mobility = dataStor.mobility === true ? "Yes" : "No"
+            const parked = dataStor.park === true ? "Yes" : "No"
             const balanceAuto = balAuto === "2" ? "Engaged" : balAuto == "1" ? "Docked" : "Nothing"
             const balanceTele = balTele === "2" ? "Engaged" : balTele == "1" ? "Docked" : "Nothing"
 
+            const auto = [balanceAuto, mobility]
+            const tele = [balanceTele, parked]
 
             // upper, lower, middle
             var scores = [0, 0, 0]
@@ -173,13 +181,30 @@ function loadData(){
             totalPoints += score
             totalAutoPoints += autoScore
 
+            const mobilityScore = dataStor.mobility ? 3 : 0
+            const parkedScore = dataStor.park ? 2 : 0
+            
+            score += parkedScore
+            autoScore += mobilityScore
+
             var tr = document.createElement("tr");
 
-            var properties = [comp, team, teamName, match, upperScores, middleScores, lowerScores, score, autoScore, offence, defence, balanceAuto, balanceTele]
+            var properties = [comp, team, teamName, match, upperScores, middleScores, lowerScores, score, autoScore, links, offence, defence, auto, tele]
 
             for (var i of properties){
                 var td = document.createElement("td")
                 td.innerHTML = i
+
+                if (i == auto || i == tele){
+                    td.innerHTML = ''
+                    var ul = document.createElement("ul")
+                    i.forEach(element => {
+                        var li = document.createElement("li")
+                        li.innerHTML = element
+                        ul.appendChild(li)
+                    });
+                    td.appendChild(ul)
+                }
 
                 tr.appendChild(td)
             }
@@ -188,6 +213,8 @@ function loadData(){
         }
     }
 }
+
+
 
 // var clicked = 3
 

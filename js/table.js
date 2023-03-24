@@ -1,123 +1,121 @@
-var hasRun = false
 var totalPoints = 0
 var totalAutoPoints = 0
-function loadData(run){
-    if(!run){
-        if (localStorage.getItem("StorageData") == null){
-            clearTable()
-        } else {
-            var data = JSON.parse(localStorage.getItem("StorageData"))
+function loadData(){
+    if (localStorage.getItem("StorageData") == null){
+        clearTable()
+    } else {
+        var data = JSON.parse(localStorage.getItem("StorageData"))
 
-            for(var i of data) {
-                var dataStor = i
-                const team = dataStor.teamNumber
-                const teamName = dataStor.teamName
-                const match = dataStor.matchNumber
-                const comp = dataStor.comp
-                const brokeDown = dataStor.break ? "Yes" : "No"
-                const comment = dataStor.notes
-                const offence = dataStor.offense
-                const defence = dataStor.defense
-                const alliance = dataStor.alliance
-                const links = dataStor.links
-                const balAuto = dataStor.balanced.toString().substring(0, 1)
-                const balTele = dataStor.balanced.toString().substring(1, 2)
-                const mobility = dataStor.mobility === true ? "Yes" : "No"
-                const parked = dataStor.park === true ? "Yes" : "No"
-                const balanceAuto = balAuto === "2" ? "Engaged" : balAuto == "1" ? "Docked" : "Nothing"
-                const balanceTele = balTele === "2" ? "Engaged" : balTele == "1" ? "Docked" : "Nothing"
+        for(var i of data) {
+            var dataStor = i
+            const team = dataStor.teamNumber
+            const teamName = dataStor.teamName
+            const match = dataStor.matchNumber
+            const comp = dataStor.comp
+            const brokeDown = dataStor.break ? "Yes" : "No"
+            const comment = dataStor.notes
+            const offence = dataStor.offense
+            const defence = dataStor.defense
+            const alliance = dataStor.alliance
+            const links = dataStor.links
+            const balAuto = dataStor.balanced.toString().substring(0, 1)
+            const balTele = dataStor.balanced.toString().substring(1, 2)
+            const mobility = dataStor.mobility === true ? "Yes" : "No"
+            const parked = dataStor.park === true ? "Yes" : "No"
+            const balanceAuto = balAuto === "2" ? "Engaged" : balAuto == "1" ? "Docked" : "Nothing"
+            const balanceTele = balTele === "2" ? "Engaged" : balTele == "1" ? "Docked" : "Nothing"
 
-                const auto = [balanceAuto, mobility]
-                const tele = [balanceTele, parked]
+            const auto = [balanceAuto, mobility]
+            const tele = [balanceTele, parked]
 
 
-                // upper, lower, middle
-                var scores = [0, 0, 0]
-                dataStor.events.forEach((element, index) => {
-                    element.forEach(e => {
-                        scores[index] += e > 0 ? 1 : 0
-                    })
+            // upper, lower, middle
+            var scores = [0, 0, 0]
+            dataStor.events.forEach((element, index) => {
+                element.forEach(e => {
+                    scores[index] += e > 0 ? 1 : 0
                 })
-                var [upperScores, middleScores, lowerScores] = scores
+            })
+            var [upperScores, middleScores, lowerScores] = scores
 
-                var score = 0
-                var autoScore = 0
-                var scoreValuesAuto = [6,4,3]
-                var scoreValuesTele = [5, 3, 2]
+            var score = 0
+            var autoScore = 0
+            var scoreValuesAuto = [6,4,3]
+            var scoreValuesTele = [5, 3, 2]
 
-                dataStor.events.forEach((element, index) => {
-                    element.forEach(e => {
-                        if(e==2){
-                            autoScore += scoreValuesAuto[index]
-                            score += scoreValuesAuto[index]
-                        } else if (e==1){
-                            score += scoreValuesTele[index]
-                        }
-                    })
+            dataStor.events.forEach((element, index) => {
+                element.forEach(e => {
+                    if(e==2){
+                        autoScore += scoreValuesAuto[index]
+                        score += scoreValuesAuto[index]
+                    } else if (e==1){
+                        score += scoreValuesTele[index]
+                    }
                 })
+            })
 
-                hasRun = true
+            hasRun = true
 
-                totalPoints += score
-                totalAutoPoints += autoScore
+            totalPoints += score
+            totalAutoPoints += autoScore
 
-                const mobilityScore = dataStor.mobility ? 3 : 0
-                const parkedScore = dataStor.park ? 2 : 0
-                
-                score += parkedScore
-                autoScore += mobilityScore
+            const mobilityScore = dataStor.mobility ? 3 : 0
+            const parkedScore = dataStor.park ? 2 : 0
+            
+            score += parkedScore
+            autoScore += mobilityScore
 
-                var tr = document.createElement("tr");
+            var tr = document.createElement("tr");
 
-                var properties = [comp, team, teamName, match, alliance, upperScores, middleScores, lowerScores, score, autoScore, links, offence, defence, auto, tele, brokeDown,"Expand","Delete"]
+            var properties = [comp, team, teamName, match, alliance, upperScores, middleScores, lowerScores, score, autoScore, links, offence, defence, auto, tele, brokeDown,"Expand","Delete"]
 
-                for (var i of properties){
-                    var td = document.createElement("td")
-                    td.innerHTML = i
+            for (var i of properties){
+                var td = document.createElement("td")
+                td.innerHTML = i
 
-                    if (i == auto || i == tele){
-                        td.innerHTML = ''
-                        var ul = document.createElement("ul")
-                        i.forEach(element => {
-                            var li = document.createElement("li")
-                            li.innerHTML = element
-                            ul.appendChild(li)
-                        });
-                        td.appendChild(ul)
-                    }
-        
-                    if(i == "Delete"){
-                        td.onclick=removeMatch
-                        td.classList = "clickable"
-                        td.style = "user-select: none;"
-                    }
-
-                    if(i == "Expand"){
-                        td.classList = "clickable"
-                        td.style = "user-select: none;"
-                        td.onclick = function() {
-                            this.classList.toggle("active");
-                            var panel = this.children[0];
-                            if (panel.style.display === "block") {
-                              panel.style.display = "none";
-                            } else {
-                              panel.style.display = "block";
-                            }
-                        }
-                        var commentDiv = document.createElement("div")
-                        commentDiv.className = "panel"
-                        commentDiv.innerHTML = comment
-                        commentDiv.style.display = "none"
-                        td.appendChild(commentDiv)
-                    }
-
-                    tr.appendChild(td)
+                if (i == auto || i == tele){
+                    td.innerHTML = ''
+                    var ul = document.createElement("ul")
+                    i.forEach(element => {
+                        var li = document.createElement("li")
+                        li.innerHTML = element
+                        ul.appendChild(li)
+                    });
+                    td.appendChild(ul)
+                }
+    
+                if(i == "Delete"){
+                    td.onclick=removeMatch
+                    td.classList = "clickable"
+                    td.style = "user-select: none;"
                 }
 
-                document.getElementById("matches").appendChild(tr)
+                if(i == "Expand"){
+                    td.classList = "clickable"
+                    td.style = "user-select: none;"
+                    td.onclick = function() {
+                        this.classList.toggle("active");
+                        var panel = this.children[0];
+                        if (panel.style.display === "block") {
+                            panel.style.display = "none";
+                        } else {
+                            panel.style.display = "block";
+                        }
+                    }
+                    var commentDiv = document.createElement("div")
+                    commentDiv.className = "panel"
+                    commentDiv.innerHTML = comment
+                    commentDiv.style.display = "none"
+                    td.appendChild(commentDiv)
+                }
+
+                tr.appendChild(td)
             }
+
+            document.getElementById("matches").appendChild(tr)
         }
     }
+    updateFilter()
 }
 
 function updateFilter(){
@@ -170,7 +168,7 @@ function removeMatch(event){
     })
     localStorage.setItem("StorageData", JSON.stringify(storage))
     clearTable()
-    loadData(false)
+    loadData()
 }
 
 function clearTable(){
@@ -182,7 +180,7 @@ var deleteAllPressed = 2
 function deleteAll(){
     if(deleteAllPressed % 2 == 1){
         localStorage.clear()
-        loadData(false)
+        loadData()
     } else {
         document.getElementById("deleteAll").innerHTML = "Are You Sure?"
     }
@@ -196,7 +194,7 @@ function getScores(teamNum){
             return true
         } else return false
     })
-    var obj = {score: 0, autoScore: 0, matches: 0, upper: 0, middle: 0, lower: 0, offense: 0, defense: 0, breakdowns: 0, teleScore: 0, balanceAuto: 0, balanceTele: 0}
+    var obj = {score: 0, autoScore: 0, matches: 0, upper: 0, middle: 0, lower: 0, links: 0, offense: 0, defense: 0, breakdowns: 0, teleScore: 0, balanceAuto: 0, balanceTele: 0}
 
     for(var i of filteredMatches) {
 
@@ -242,6 +240,7 @@ function getScores(teamNum){
         obj.upper += counts[0]
         obj.middle += counts[1]
         obj.lower += counts[2]
+        obj.links += i.links
         obj.offense += i.offense
         obj.defense += i.defense
         obj.teleScore += teleScore
@@ -251,15 +250,23 @@ function getScores(teamNum){
     return obj
 }
 
+var rightHeaderIndexStart
+
 function addOnClicks(){
     let children = document.getElementById("blank").children
-    console.log(children)
-    for (let i = 5; i < 13; i++) {
+
+    for (let i = 0; i < children.length; i++) {
+        if (children[i].innerHTML == "Upper Scored"){
+            rightHeaderIndexStart = i
+        }
+      }
+
+    var d = rightHeaderIndexStart
+    for (let i = d; i < d+8; i++) {
         let tableChild = children[i];
         tableChild.onclick = sortTable
         tableChild.classList = "clickable"
       }
-    console.log(children)
 }
 
 addOnClicks()
@@ -271,16 +278,21 @@ function sortTable(event){
     let headers = document.getElementById("blank")
     var searchForIndex = -1;
 
+    var d = rightHeaderIndexStart
 
-    for (var i=5; i < 13; i++){
+    for (var i=d; i < d+8; i++){
         if (headers.children[i] == column && headers.children[i].innerHTML.includes("⬇️")){
             headers.children[i].innerHTML = headers.children[i].innerHTML.replace("⬇️","")
             clearTable()
-            loadData(false)
+            try {
+                loadHeatmap()
+            } catch {
+                loadData()
+            }
+            updateFilter()
             break
         }
         if (headers.children[i] == column){
-            console.log(`FOUND AT ${headers.children[i].innerHTML}`)
             headers.children[i].innerHTML += "⬇️"
             searchForIndex = i
         }
