@@ -11,6 +11,8 @@ table {
   table tr:nth-child(odd){background-color: #0bafc5;}
   table tr:hover {background-color: #0aa1b5;}
   table th {
+    position: sticky;
+    top: 0;
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
