@@ -7,6 +7,9 @@ table {
     border: 1px solid #0aa1b5;
     padding: 8px;
   }
+  table thead {
+    position:sticky;
+  }
   table tr:nth-child(even){background-color: #0bbcd2;}
   table tr:nth-child(odd){background-color: #0bafc5;}
   table tr:hover {background-color: #0aa1b5;}
