@@ -409,3 +409,5 @@ function loadCharts() {
   }
 }
 document.getElementById("compare").onclick = loadCharts()
+
+document.getElementById("compare").addEventListener(onclick, loadCharts())

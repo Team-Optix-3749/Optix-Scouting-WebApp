@@ -22,8 +22,13 @@ function loadData(run){
                 const links = dataStor.links
                 const balAuto = dataStor.balanced.toString().substring(0, 1)
                 const balTele = dataStor.balanced.toString().substring(1, 2)
+                const mobility = dataStor.mobility === true ? "Yes" : "No"
+                const parked = dataStor.park === true ? "Yes" : "No"
                 const balanceAuto = balAuto === "2" ? "Engaged" : balAuto == "1" ? "Docked" : "Nothing"
                 const balanceTele = balTele === "2" ? "Engaged" : balTele == "1" ? "Docked" : "Nothing"
+
+                const auto = [balanceAuto, mobility]
+                const tele = [balanceTele, parked]
 
 
                 // upper, lower, middle
@@ -58,11 +63,22 @@ function loadData(run){
 
                 var tr = document.createElement("tr");
 
-                var properties = [comp, team, teamName, match, alliance, upperScores, middleScores, lowerScores, score, autoScore, links, offence, defence, balanceAuto, balanceTele, brokeDown,"Expand","Delete"]
+                var properties = [comp, team, teamName, match, alliance, upperScores, middleScores, lowerScores, score, autoScore, links, offence, defence, auto, tele, brokeDown,"Expand","Delete"]
 
                 for (var i of properties){
                     var td = document.createElement("td")
                     td.innerHTML = i
+
+                    if (i == auto || i == tele){
+                        td.innerHTML = ''
+                        var ul = document.createElement("ul")
+                        i.forEach(element => {
+                            var li = document.createElement("li")
+                            li.innerHTML = element
+                            ul.appendChild(li)
+                        });
+                        td.appendChild(ul)
+                    }
         
                     if(i == "Delete"){
                         td.onclick=removeMatch
@@ -230,6 +246,7 @@ function addOnClicks(){
     for (let i = 5; i < 13; i++) {
         let tableChild = children[i];
         tableChild.onclick = sortTable
+        tableChild.classList = "clickable"
       }
     console.log(children)
 }

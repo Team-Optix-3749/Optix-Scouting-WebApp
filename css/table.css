@@ -23,6 +23,7 @@ table {
 }
 .clickable:hover {
   cursor: pointer;
+  user-select: none;
 }
 .accordion {
   background-color: #eee;
