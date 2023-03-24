@@ -61,6 +61,12 @@ function loadData(run){
                 totalPoints += score
                 totalAutoPoints += autoScore
 
+                const mobilityScore = dataStor.mobility ? 3 : 0
+                const parkedScore = dataStor.park ? 2 : 0
+                
+                score += parkedScore
+                autoScore += mobilityScore
+
                 var tr = document.createElement("tr");
 
                 var properties = [comp, team, teamName, match, alliance, upperScores, middleScores, lowerScores, score, autoScore, links, offence, defence, auto, tele, brokeDown,"Expand","Delete"]
@@ -224,8 +230,13 @@ function getScores(teamNum){
         const balTele = i.balanced.toString().substring(1, 2)
         const balanceAuto = balAuto === "2" ? 12 : balAuto == "1" ? 8 : 0
         const balanceTele = balTele === "2" ? 10 : balTele == "1" ? 6 : 0
+        const mobility = i.mobility ? 3 : 0
+        const parked = i.park ? 2 : 0
 
-        obj.score += score
+        score += parked
+        autoScore += mobility
+
+        obj.score += score 
         obj.autoScore += autoScore
         obj.matches++
         obj.upper += counts[0]
