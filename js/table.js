@@ -85,7 +85,7 @@ function loadData(){
                 }
     
                 if(i == "Delete"){
-                    td.onclick=removeMatch
+                    td.onclick= removeMatch
                     td.classList = "clickable"
                     td.style = "user-select: none;"
                 }
@@ -151,17 +151,15 @@ function updateFilter(){
 }
 
 function removeMatch(event){
-
     var removeTd = event.currentTarget
     var tr = removeTd.parentElement
-    var matchNum = tr.getElementsByTagName("td")[2].innerHTML
-    var teamNum = tr.getElementsByTagName("td")[1].innerHTML
-    var comp = tr.getElementsByTagName("td")[0].innerHTML
+    var matchNum = tr.getElementsByTagName("td")[3].innerHTML.toString()
+    var teamNum = tr.getElementsByTagName("td")[1].innerHTML.toString()
+    var comp = tr.getElementsByTagName("td")[0].innerHTML.toString()
     var key = comp + teamNum + matchNum
-
     var storage = JSON.parse(localStorage.getItem("StorageData"))
     storage = storage.filter((element) => {
-    var key2 = element.comp.toString() + element.teamNumber.toString() + element.matchNumber.toString()
+        var key2 = element.comp.toString() + element.teamNumber.toString() + element.matchNumber.toString()
         if(key === key2){
             return false
         } else return true
@@ -290,7 +288,6 @@ function sortTable(event){
                 try {
                     loadAllAverages()
                 } catch (error) {
-                    console.log(error)
                     loadData()
                 }
             } // This is a REALLY bad way of doing this
