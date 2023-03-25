@@ -1,8 +1,12 @@
 var longText = localStorage.getItem("StorageData");
 var longTextCSV = exportCSV()
+try {
+    longText = longText.replaceAll("’","").replaceAll("Σ", "E")
+    longTextCSV = longTextCSV.replaceAll("’","").replaceAll("Σ", "E")
+} catch {}
 
-var dataUri = "data:text/plain;base64," + btoa(longText.replaceAll("’","").replaceAll("Σ", "E"));
-var dataUriCSV = "data:text/plain;base64," + btoa(longTextCSV.replaceAll("’","").replaceAll("Σ", "E"));
+var dataUri = "data:text/plain;base64," + btoa(longText);
+var dataUriCSV = "data:text/plain;base64," + btoa(longTextCSV);
 
 document.getElementById("downloadLinkJSON").setAttribute("href", dataUri)
 
