@@ -1,8 +1,8 @@
 var longText = localStorage.getItem("StorageData");
 var longTextCSV = exportCSV()
 
-var dataUri = "data:text/plain;base64," + btoa(decodeURI(encodeURIComponent(longText)));
-var dataUriCSV = "data:text/plain;base64," + btoa(decodeURI(encodeURIComponent(longTextCSV)));
+var dataUri = "data:text/plain;base64," + btoa(decodeURI(encodeURIComponent(longText.replaceAll(".", ""))));
+var dataUriCSV = "data:text/plain;base64," + btoa(decodeURI(encodeURIComponent(longTextCSV.replaceAll(".", ""))));
 
 document.getElementById("downloadLinkJSON").setAttribute("href", dataUri)
 
