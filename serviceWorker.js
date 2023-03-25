@@ -13,6 +13,7 @@ const assets = [
   "css/table.css",
   "js/bootstrap.bundle.min.js",
   "js/averages.js",
+  "js/chart.js",
   "js/heatmap.js",
   "js/files.js",
   "js/html5-qrcode.min.js",
