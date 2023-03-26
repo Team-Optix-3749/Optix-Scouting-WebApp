@@ -313,7 +313,7 @@ function sortTable(event){
         elementArray.push(tableRows[i])
     }
     elementArray.sort((a, b) => {
-        return parseInt(b.children[searchForIndex].innerHTML) - parseInt(a.children[searchForIndex].innerHTML)
+        return parseFloat(b.children[searchForIndex].innerHTML) - parseFloat(a.children[searchForIndex].innerHTML)
     })
 
     while (tableInfo.firstChild) {
