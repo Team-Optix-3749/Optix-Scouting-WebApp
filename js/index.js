@@ -7,14 +7,22 @@ if ("serviceWorker" in navigator) {
     })
 }
 
-document.getElementById("scanNext").onclick = () => {
+function resetScanner () {
     scannedText = ""
     scanned = false
     document.getElementById("statusText").innerHTML = "Status: Not Scanned"
 }
 
+document.getElementById("scanNext").onclick = resetScanner
+
 document.getElementById("save").onclick = () => {
     storeScannedData(scannedText)
+    document.getElementById("scanNext").disabled = false
+}
+
+document.getElementById("cancel").onclick = () => {
+    resetScanner()
+    document.getElementById("scanNext").disabled = false
 }
 
 // testing data storage and usage
@@ -76,7 +84,8 @@ function qrCodeSuccessCallback (decodedText, decodedResult){
     scanned = true
 
     document.getElementById("statusText").innerHTML = "Status: Scanned"
-    console.log(decodedText)
+    document.getElementById("scanNext").disabled = true
+
     if (decodedText!= null){
         scannedText = decodedText
     }
