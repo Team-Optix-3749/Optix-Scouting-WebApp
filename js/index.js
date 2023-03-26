@@ -7,6 +7,11 @@ if ("serviceWorker" in navigator) {
     })
 }
 
+var scannedText = ''
+var scanned = false
+var teamNum = 0
+var matchNum = 0
+
 function resetScanner () {
     scannedText = ""
     scanned = false
@@ -27,9 +32,6 @@ document.getElementById("cancel").onclick = () => {
     document.getElementById("scanNext").disabled = false
 }
 
-// testing data storage and usage
-var scannedText = ''
-var scanned = false
 
 function storeScannedData(scannedText) {
     
@@ -44,6 +46,8 @@ function storeScannedData(scannedText) {
     var existingStorage = JSON.parse(localStorage.getItem(storageKey))
     if (existingStorage == null) existingStorage = []
     var parseText = JSON.parse(scannedText)
+    parseText.teamNumber = document.getElementById("teamNum").valueAsNumber
+    parseText.matchNumber = document.getElementById("matchNum").valueAsNumber
     var key = parseText.comp.toString() + parseText.teamNumber.toString() + parseText.matchNumber.toString()
     existingStorage = existingStorage.filter(element =>{
         var key2 = element.comp.toString() + element.teamNumber.toString() + element.matchNumber.toString()
@@ -90,6 +94,9 @@ function qrCodeSuccessCallback (decodedText, decodedResult){
 
     if (decodedText!= null){
         scannedText = decodedText
+        var data = JSON.parse(scannedText)
+        document.getElementById("teamNum").value = data.teamNumber
+        document.getElementById("matchNum").value = data.matchNumber
     }
 }
 

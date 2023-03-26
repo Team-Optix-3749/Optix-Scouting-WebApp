@@ -8,6 +8,7 @@
         <script src="js/nav.js"></script>
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/nav.css" rel="stylesheet">
+        <link href="css/table.css" rel="stylesheet">
     </head>
 
     <body>
@@ -25,6 +26,23 @@
             <button class="btn btn-secondary mb-3" id="save">Save</button>
             <button class="btn btn-secondary mb-3" id="cancel">Cancel</button>
             <p style="display: none;" id="savedIndicator">Saved</p>
+            <br>
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <label class="mb-3" for="teamNum" >Change Team Number: </label>
+                </div>
+                <div class="col-auto">
+                    <input class="form-control mb-3 small-width" type="number" id="teamNum">
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <label class="mb-3" for="matchNum" >Change Match Number: </label>
+                </div>
+                <div class="col-auto">
+                    <input class="form-control mb-3 small-width" type="number" id="matchNum">
+                </div>
+            </div>
 
                 <div style="width: 500px; background-color: white;" id="reader">
                     <p>Camera Not Working</p>
