@@ -10,6 +10,7 @@ if ("serviceWorker" in navigator) {
 function resetScanner () {
     scannedText = ""
     scanned = false
+    document.getElementById("savedIndicator").style.display = "none"
     document.getElementById("statusText").innerHTML = "Status: Not Scanned"
 }
 
@@ -17,6 +18,7 @@ document.getElementById("scanNext").onclick = resetScanner
 
 document.getElementById("save").onclick = () => {
     storeScannedData(scannedText)
+    document.getElementById("savedIndicator").style.display = "inline-block"
     document.getElementById("scanNext").disabled = false
 }
 
