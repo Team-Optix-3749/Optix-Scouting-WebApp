@@ -56,7 +56,6 @@ function storeScannedData(scannedText) {
         } else return true
     })
     existingStorage.push(parseText)
-    existingStorage = appendLinks(existingStorage)
     newStorage = JSON.stringify(existingStorage)
     localStorage.setItem(storageKey, newStorage)
 }
@@ -128,34 +127,4 @@ function findLinks(events){
         }) 
     });
     return links
-}
-
-function appendLinks(teamData){
-
-    // var teamData = JSON.parse(localStorage.getItem("StorageData"))
-    var matchData = {}
-
-    teamData.forEach(matchTeam => {
-        var key = matchTeam.comp + matchTeam.alliance + matchTeam.matchNumber
-        if (matchData[key] == null) matchData[key] = {events: [[0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0]]}
-
-        var teamEvents = matchTeam.events
-
-        matchData[key].events.forEach((event, index) => {
-            var teamEventColumn = teamEvents[index]
-            event.map((x, i) => {
-                matchData[key].events[index][i] = Math.max(x, teamEventColumn[i])
-            })
-        })
-
-    });
-
-    teamData.forEach(matchTeam => {
-        var key = matchTeam.comp + matchTeam.alliance + matchTeam.matchNumber
-        matchTeam.links = findLinks(matchData[key].events)
-    })
-
-    // localStorage.setItem("StorageData", JSON.stringify(teamData))
-    console.log(matchData)
-    return teamData
 }
