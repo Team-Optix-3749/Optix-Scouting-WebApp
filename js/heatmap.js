@@ -1,11 +1,10 @@
 var storage = JSON.parse(localStorage.getItem("StorageData"))
 var teamNum = ""
 var matches = 0
-var data = [[2,0,0,2,0,0,2,0,0],[0,0,0,1,0,2,1,0,0],[0,1,0,0,0,0,0,1,1]]
 var canvas = document.getElementById("canva")
 var height = 1800
 canvas.height = height
-var width = 600
+var width = 700
 canvas.width = width
 canvas.style.width = "150px"
 canvas.style.height = "450px"
@@ -60,8 +59,10 @@ function updateHeatmap(){
             element.a3c.forEach((i) => {
                 heatArray[0][i-1] = 1;
             });
+            heatArray[0][3] = -1;
+            heatArray[0][4] = -1;
             element.a5c.forEach((i) => {
-                heatArray[0][i-1] = 1;
+                heatArray[1][i-1] = 1;
             });
         }
     });
@@ -73,11 +74,15 @@ function updateHeatmap(){
     newHeatArray.forEach(element => {
         var j = 0
         element.forEach(e => {
-            ctx.fillStyle = `rgb(${e * 255} , 0, 0)`
+            ctx.fillStyle = `rgb(${Math.max(0, e) * 255} , 0, 0)`
             ctx.fillRect(i * sq, j * sq, sq, sq)
             ctx.fillStyle = `rgb(255, 255, 255)`
             ctx.font = `${sq/4}px sans serif`;
-            ctx.fillText((e.toFixed(2)), i * sq + sq/4, j * sq + sq/1.75)
+            if (e >= 0) {
+                ctx.fillText((e.toFixed(2)), i * sq + sq/4, j * sq + sq/1.75)
+            } else {
+                ctx.fillText("N/A", i * sq + sq/4, j * sq + sq/1.75)
+            }
             j++
         });
         i++
@@ -159,7 +164,7 @@ function loadHeatmap(){
 
             var tr = document.createElement("tr");
 
-            var properties = [comp, team, teamName, match, alliance, autoSpeaker, autoAmp, park, teleSpeaker, teleAmp, harmony, trap, humanPlayer, offence, defence, brokeDown,"Expand","Delete"]
+            var properties = [comp, team, teamName, match, alliance, autoSpeaker, autoAmp, park, teleSpeaker, teleAmp, harmony, trap, humanPlayer, offence, defence]
 
             for (var i of properties){
                 var td = document.createElement("td")
