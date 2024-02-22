@@ -24,7 +24,7 @@ function loadData(){
             const teleAmp = dataStor.tamp
             const harmony = dataStor.harmony
             const trap = dataStor.trap
-            const humanPlayer = dataStor.humanPlayer?.length ?? "";
+            const humanPlayer = dataStor.hp?.length ?? "";
 
             var tr = document.createElement("tr");
 
@@ -163,8 +163,8 @@ function getScores(teamNum){
         obj.defense += i.defense
         obj.matches++
 
-        if (i.humanPlayer !== null) {
-            hpTot += i.humanPlayer.length;
+        if (i.hp !== null) {
+            hpTot += i.hp.length;
             hpCount++;
         }
     }

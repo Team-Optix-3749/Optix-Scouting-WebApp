@@ -155,7 +155,7 @@ function loadHeatmap(){
             const teleAmp = dataStor.tamp
             const harmony = dataStor.harmony
             const trap = dataStor.trap
-            const humanPlayer = dataStor.humanPlayer?.length ?? "";
+            const humanPlayer = dataStor.hp?.length ?? "";
 
             var tr = document.createElement("tr");
 
@@ -164,17 +164,6 @@ function loadHeatmap(){
             for (var i of properties){
                 var td = document.createElement("td")
                 td.innerHTML = i
-
-                if (i == auto || i == tele){
-                    td.innerHTML = ''
-                    var ul = document.createElement("ul")
-                    i.forEach(element => {
-                        var li = document.createElement("li")
-                        li.innerHTML = element
-                        ul.appendChild(li)
-                    });
-                    td.appendChild(ul)
-                }
 
                 tr.appendChild(td)
             }
