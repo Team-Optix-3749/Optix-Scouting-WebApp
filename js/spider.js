@@ -41,12 +41,12 @@ const createDataset = (label, data, color) => ({
 
 const createDataGeneric = () => ({
   labels: [
-    'Teleop Points',
-    'Autonomous Points',
-    'Offense',
+    'Auto Speaker',
+    'Auto Amp',
+    'Tele Speaker',
+    'Tele Amp',
+    'Harmony',
     'Defense',
-    'Charge Station Tele',
-    'Charge Station Auto',
   ],
   datasets: [{
     label: 'lmao',
@@ -74,63 +74,6 @@ const createConfigGeneric = () => ({
   },
 })
 
-function getScores(teamNum){
-  var data = JSON.parse(localStorage.getItem("StorageData"))
-  var filteredMatches = data.filter((element) =>{
-      if (element.teamNumber.toString() == teamNum){
-          return true
-      } else return false
-  })
-  var obj = {score: 0, autoScore: 0, matches: 0, upper: 0, middle: 0, lower: 0, offense: 0, defense: 0, breakdowns: 0, teleScore: 0, balanceAuto: 0, balanceTele: 0}
-
-  for(var i of filteredMatches) {
-
-      var score = 0
-      var autoScore = 0
-      var teleScore = 0
-      var scoreValuesAuto = [6, 4, 3]
-      var scoreValuesTele = [5, 3, 2]
-      var counts = [0,0,0]
-      var chargeScoreValuesAuto = [6, 8]
-      var chargeScoreValuesTele = [10, 12]
-
-      i.events.forEach((element, index) => {
-          element.forEach(e => {
-              if(e==2){
-                  autoScore += scoreValuesAuto[index]
-                  score += scoreValuesAuto[index]
-                  counts[index]++
-              } else if (e==1){
-                  teleScore += scoreValuesTele[index]
-                  score += scoreValuesTele[index]
-                  counts[index]++
-              }
-          })
-      })
-      if(i.break){
-          obj.breakdowns++
-      }
-
-      const balAuto = i.balanced.toString().substring(0, 1)
-      const balTele = i.balanced.toString().substring(1, 2)
-      const balanceAuto = balAuto === "2" ? 12 : balAuto == "1" ? 8 : 0
-      const balanceTele = balTele === "2" ? 10 : balTele == "1" ? 6 : 0
-
-      obj.score += score
-      obj.autoScore += autoScore
-      obj.matches++
-      obj.upper += counts[0]
-      obj.middle += counts[1]
-      obj.lower += counts[2]
-      obj.offense += i.offense
-      obj.defense += i.defense
-      obj.teleScore += teleScore
-      obj.balanceAuto += balanceAuto
-      obj.balanceTele += balanceTele
-  }
-  return obj
-}
-
 function createChart(color){
 
   var teamNum0 = document.getElementById(`number${color}0`).value
@@ -150,9 +93,9 @@ function createChart(color){
 
     var avg = (p) => p/scoreInfo.matches;
 
-    var fields = [avg(scoreInfo.score), avg(scoreInfo.autoScore), 
-      avg(scoreInfo.offense), avg(scoreInfo.defense), 
-      avg(scoreInfo.balanceTele), avg(scoreInfo.balanceAuto)];
+    var fields = [avg(scoreInfo.autoAmp), avg(scoreInfo.autoSpeaker), 
+      avg(scoreInfo.teleAmp), avg(scoreInfo.teleSpeaker), 
+      avg(scoreInfo.harmony), avg(scoreInfo.defense)];
 
     if (teamNum != '')
     data.datasets.push(createDataset(teamNum, fields, color.toLowerCase() + i))
