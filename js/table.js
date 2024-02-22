@@ -26,9 +26,6 @@ function loadData(){
             const trap = dataStor.trap
             const humanPlayer = dataStor.humanPlayer?.length ?? "";
 
-            const auto = [balanceAuto, mobility]
-            const tele = [balanceTele, parked]
-
             var tr = document.createElement("tr");
 
             var properties = [comp, team, teamName, match, alliance, autoSpeaker, autoAmp, park, teleSpeaker, teleAmp, harmony, trap, humanPlayer, offence, defence, brokeDown,"Expand","Delete"]

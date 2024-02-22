@@ -35,10 +35,11 @@ document.getElementById("input").onsubmit = function(event) {
     tr.innerHTML = ""
 
     var scoreInfo = getScores(teamNum);
-    
-    var avg = (i) => Math.round((i/scoreInfo.matches) * 100) / 100;
 
-    var fields = [teamNum, scoreInfo.matches, avg(scoreInfo.upper), avg(scoreInfo.middle), avg(scoreInfo.lower), avg(scoreInfo.score), avg(scoreInfo.autoScore), avg(scoreInfo.links), avg(scoreInfo.offense), avg(scoreInfo.defense), avg(scoreInfo.breakdowns)]
+    var rnd = (i) => Math.round(i * 100) / 100;
+    var avg = (i) => rnd(i/scoreInfo.matches);
+
+    var fields = [teamNum, scoreInfo.matches, avg(scoreInfo.autoAmp), avg(scoreInfo.autoSpeaker), avg(scoreInfo.park), avg(scoreInfo.teleAmp), avg(scoreInfo.teleSpeaker), avg(scoreInfo.harmony), avg(scoreInfo.trap), scoreInfo.humanPlayerAv == -1 ? "" : rnd(scoreInfo.humanPlayerAv), avg(scoreInfo.offense), avg(scoreInfo.defense), avg(scoreInfo.breakdowns)]
 
     for (var field of fields){
         var td = document.createElement("td")
@@ -52,21 +53,22 @@ document.getElementById("input").onsubmit = function(event) {
 
 function updateHeatmap(){
     
-    var heatArray = [[0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0],[0,0,0,0,0,0,0,0,0]]
+    var heatArray = [[0,0,0,0,0],[0,0,0,0,0]]
     storage.forEach(element => {
         if(element.teamNumber.toString() === teamNum){
             matches++
-            element.events.forEach((row, rowNum) => {
-                row.forEach((point, colNum) => {
-                    heatArray[rowNum][colNum] += point > 0 ? 1 : 0
-                });
+            element.a3c.forEach((i) => {
+                heatArray[0][i-1] = 1;
+            });
+            element.a5c.forEach((i) => {
+                heatArray[0][i-1] = 1;
             });
         }
     });
 
     var newHeatArray = heatArray.map(row => row.map(point => point/matches))
     var ctx = canvas.getContext("2d")
-    var sq = height/9
+    var sq = height/5
     var i = 0
     newHeatArray.forEach(element => {
         var j = 0
@@ -81,18 +83,18 @@ function updateHeatmap(){
         i++
     });
 
-    var sq = height/9
+    var sq = height/5
     ctx.fillStyle = "rgb(255, 255, 255)"
-    ctx.fillRect(sq - sq/100, 0, sq/50, sq * 9)
-    ctx.fillRect(sq + sq - sq/100, 0, sq/50, sq * 9)
-    for (let i = 1; i < 9; i++) {
-        ctx.fillRect(0, sq * i - sq/100, sq * 3, sq / 50)
+    ctx.fillRect(sq - sq/100, 0, sq/50, sq * 5)
+    ctx.fillRect(sq + sq - sq/100, 0, sq/50, sq * 5)
+    for (let i = 1; i < 5; i++) {
+        ctx.fillRect(0, sq * i - sq/100, sq * 2, sq / 50)
     }
 }
 
 function resetCanvas(){
     var ctx = canvas.getContext("2d")
-    ctx.fillRect(0, 0, height/3, height)
+    ctx.fillRect(0, 0, height/2, height)
 }
 
 document.getElementById("reset").onclick = function(){
@@ -100,20 +102,26 @@ document.getElementById("reset").onclick = function(){
     loadHeatmap()
     document.getElementById("averages").innerHTML = 
     `
+    <thead>
     <tr>
-    <th>Team Number</th>
-    <th>Matches</th>
-    <th>Upper Scored</th>
-    <th>Middle Scored</th>
-    <th>Lower Scored</th>
-    <th>Points</th>
-    <th>Auto Points</th>
-    <th>Offense</th>
-    <th>Defense</th>
-    <th>Breakdowns</th>
+        <th>Team Number</th>
+        <th>Matches</th>
+        <th>Amp (Auto)</th>
+        <th>Speaker (Auto)</th>
+        <th>Parks (Auto)</th>
+        <th>Amp (Tele)</th>
+        <th>Speaker (Tele)</th>
+        <th>Harmony</th>
+        <th>Trap</th>
+        <th>Human Player</th>
+        <th>Offense</th>
+        <th>Defense</th>
+        <th>Breakdowns</th>
     </tr>
-    <tr id="averagesData">
-    </tr>
+    </thead>
+    <tbody>
+        <tr id="averagesData"></tr>
+    </tbody>
     `
     resetCanvas()
 }
@@ -140,56 +148,18 @@ function loadHeatmap(){
             const offence = dataStor.offense
             const defence = dataStor.defense
             const alliance = dataStor.alliance
-            const links = dataStor.links
-            const balAuto = dataStor.balanced.toString().substring(0, 1)
-            const balTele = dataStor.balanced.toString().substring(1, 2)
-            const mobility = dataStor.mobility === true ? "Yes" : "No"
-            const parked = dataStor.park === true ? "Yes" : "No"
-            const balanceAuto = balAuto === "2" ? "Engaged" : balAuto == "1" ? "Docked" : "Nothing"
-            const balanceTele = balTele === "2" ? "Engaged" : balTele == "1" ? "Docked" : "Nothing"
-
-            const auto = [balanceAuto, mobility]
-            const tele = [balanceTele, parked]
-
-            // upper, lower, middle
-            var scores = [0, 0, 0]
-            dataStor.events.forEach((element, index) => {
-                element.forEach(e => {
-                    scores[index] += e > 0 ? 1 : 0
-                })
-            })
-            var [upperScores, middleScores, lowerScores] = scores
-
-            var score = 0
-            var autoScore = 0
-            var scoreValuesAuto = [6, 4, 3]
-            var scoreValuesTele = [5, 3, 2]
-
-            dataStor.events.forEach((element, index) => {
-                element.forEach(e => {
-                    if(e==2){
-                        autoScore += scoreValuesAuto[index]
-                        score += scoreValuesAuto[index]
-                    } else if (e==1){
-                        score += scoreValuesTele[index]
-                    }
-                })
-            })
-
-            hasRun = true
-
-            totalPoints += score
-            totalAutoPoints += autoScore
-
-            const mobilityScore = dataStor.mobility ? 3 : 0
-            const parkedScore = dataStor.park ? 2 : 0
-            
-            score += parkedScore
-            autoScore += mobilityScore
+            const autoSpeaker = dataStor.aspeak
+            const autoAmp = dataStor.aamp
+            const park = dataStor.park ? "Yes" : "No"
+            const teleSpeaker = dataStor.tspeak
+            const teleAmp = dataStor.tamp
+            const harmony = dataStor.harmony
+            const trap = dataStor.trap
+            const humanPlayer = dataStor.humanPlayer?.length ?? "";
 
             var tr = document.createElement("tr");
 
-            var properties = [comp, team, teamName, match, upperScores, middleScores, lowerScores, score, autoScore, links, offence, defence, auto, tele]
+            var properties = [comp, team, teamName, match, alliance, autoSpeaker, autoAmp, park, teleSpeaker, teleAmp, harmony, trap, humanPlayer, offence, defence, brokeDown,"Expand","Delete"]
 
             for (var i of properties){
                 var td = document.createElement("td")
