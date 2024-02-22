@@ -144,8 +144,8 @@ function getScores(teamNum){
     })
     var obj = {autoSpeaker: 0, teleSpeaker: 0, autoAmp: 0, teleAmp: 0, harmony: 0, trap: 0, humanPlayerAv: 0, park: 0, breakdowns: 0, offense: 0, defense: 0}
 
-    const hpTot = 0;
-    const hpCount = 0;
+    var hpTot = 0;
+    var hpCount = 0;
 
     for(var i of filteredMatches) {
         if(i.break){
@@ -184,13 +184,13 @@ function addOnClicks(){
     let children = document.getElementById("blank").children
 
     for (let i = 0; i < children.length; i++) {
-        if (children[i].innerHTML == "Upper Scored"){
+        if (children[i].innerHTML == "Speaker Scored (Auto)"){
             rightHeaderIndexStart = i
         }
       }
 
     var d = rightHeaderIndexStart
-    for (let i = d; i < d+8; i++) {
+    for (let i = d; i < d+10; i++) {
         let tableChild = children[i];
         tableChild.onclick = sortTable
         tableChild.classList = "clickable"
@@ -208,7 +208,7 @@ function sortTable(event){
 
     var d = rightHeaderIndexStart
 
-    for (var i=d; i < d+8; i++){
+    for (var i=d; i < d+10; i++){
         if (headers.children[i] == column && headers.children[i].innerHTML.includes("⬇️")){
             headers.children[i].innerHTML = headers.children[i].innerHTML.replace("⬇️","")
             clearTable()
@@ -243,7 +243,7 @@ function sortTable(event){
         elementArray.push(tableRows[i])
     }
     elementArray.sort((a, b) => {
-        return parseFloat(b.children[searchForIndex].innerHTML) - parseFloat(a.children[searchForIndex].innerHTML)
+        return parseFloat(b.children[searchForIndex].innerHTML === "" ? "-5" : b.children[searchForIndex].innerHTML === "") - parseFloat(a.children[searchForIndex].innerHTML === "" ? "-5" : a.children[searchForIndex].innerHTML === "")
     })
 
     while (tableInfo.firstChild) {
