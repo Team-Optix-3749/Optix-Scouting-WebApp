@@ -156,59 +156,39 @@ function getScores(teamNum){
             return true
         } else return false
     })
-    var obj = {score: 0, autoScore: 0, matches: 0, upper: 0, middle: 0, lower: 0, links: 0, offense: 0, defense: 0, breakdowns: 0, teleScore: 0, balanceAuto: 0, balanceTele: 0}
+    var obj = {autoSpeaker: 0, teleSpeaker: 0, autoAmp: 0, teleAmp: 0, harmony: 0, trap: 0, humanPlayerAv: 0, park: 0, breakdowns: 0, offense: 0, defense: 0}
+
+    const hpTot = 0;
+    const hpCount = 0;
 
     for(var i of filteredMatches) {
-
-        var score = 0
-        var autoScore = 0
-        var teleScore = 0
-        var scoreValuesAuto = [6, 4, 3]
-        var scoreValuesTele = [5, 3, 2]
-        var counts = [0,0,0]
-        var chargeScoreValuesAuto = [6, 8]
-        var chargeScoreValuesTele = [10, 12]
-
-        i.events.forEach((element, index) => {
-            element.forEach(e => {
-                if(e==2){
-                    autoScore += scoreValuesAuto[index]
-                    score += scoreValuesAuto[index]
-                    counts[index]++
-                } else if (e==1){
-                    teleScore += scoreValuesTele[index]
-                    score += scoreValuesTele[index]
-                    counts[index]++
-                }
-            })
-        })
         if(i.break){
             obj.breakdowns++
         }
 
-        const balAuto = i.balanced.toString().substring(0, 1)
-        const balTele = i.balanced.toString().substring(1, 2)
-        const balanceAuto = balAuto === "2" ? 12 : balAuto == "1" ? 8 : 0
-        const balanceTele = balTele === "2" ? 10 : balTele == "1" ? 6 : 0
-        const mobility = i.mobility ? 3 : 0
-        const parked = i.park ? 2 : 0
-
-        score += parked
-        autoScore += mobility
-
-        obj.score += score 
-        obj.autoScore += autoScore
-        obj.matches++
-        obj.upper += counts[0]
-        obj.middle += counts[1]
-        obj.lower += counts[2]
-        obj.links += i.links
+        obj.autoAmp += i.aamp
+        obj.autoSpeaker += i.aspeak
+        obj.teleAmp += i.tamp
+        obj.teleSpeaker += i.tspeak
+        obj.harmony += i.harmony
+        obj.trap += i.trap
+        obj.park += i.park ? 1 : 0
         obj.offense += i.offense
         obj.defense += i.defense
-        obj.teleScore += teleScore
-        obj.balanceAuto += balanceAuto
-        obj.balanceTele += balanceTele
+        obj.matches++
+
+        if (i.humanPlayer !== null) {
+            hpTot += i.humanPlayer.length;
+            hpCount++;
+        }
     }
+
+    if (hpCount > 0) {
+        obj.humanPlayerAv = hpTot / hpCount;
+    } else {
+        obj.humanPlayerAv = -1;
+    }
+
     return obj
 }
 

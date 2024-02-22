@@ -16,10 +16,11 @@ function loadAllAverages(){
     teamNums.forEach(teamNum => {
         var tr = document.createElement("tr")
         var scoreInfo = getScores(teamNum);
-        
-        var avg = (i) => Math.round((i/scoreInfo.matches) * 100) / 100;
 
-        var fields = [teamNum, scoreInfo.matches, avg(scoreInfo.upper), avg(scoreInfo.middle), avg(scoreInfo.lower), avg(scoreInfo.score), avg(scoreInfo.autoScore), avg(scoreInfo.links), avg(scoreInfo.offense), avg(scoreInfo.defense), avg(scoreInfo.breakdowns)]
+        var rnd = (i) => Math.round(i * 100) / 100;
+        var avg = (i) => rnd(i/scoreInfo.matches);
+
+        var fields = [teamNum, scoreInfo.matches, avg(scoreInfo.autoAmp), avg(scoreInfo.autoSpeaker), avg(scoreInfo.park), avg(scoreInfo.teleAmp), avg(scoreInfo.teleSpeaker), avg(scoreInfo.harmony), avg(scoreInfo.trap), scoreInfo.humanPlayerAv == -1 ? "" : rnd(scoreInfo.humanPlayerAv), avg(scoreInfo.offense), avg(scoreInfo.defense), avg(scoreInfo.breakdowns)]
 
         for (var field of fields){
             var td = document.createElement("td")
