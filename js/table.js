@@ -17,57 +17,21 @@ function loadData(){
             const offence = dataStor.offense
             const defence = dataStor.defense
             const alliance = dataStor.alliance
-            const links = dataStor.links
-            const balAuto = dataStor.balanced.toString().substring(0, 1)
-            const balTele = dataStor.balanced.toString().substring(1, 2)
-            const mobility = dataStor.mobility === true ? "Yes" : "No"
-            const parked = dataStor.park === true ? "Yes" : "No"
-            const balanceAuto = balAuto === "2" ? "Engaged" : balAuto == "1" ? "Docked" : "Nothing"
-            const balanceTele = balTele === "2" ? "Engaged" : balTele == "1" ? "Docked" : "Nothing"
+            const autoSpeaker = dataStor.aspeak
+            const autoAmp = dataStor.aamp
+            const park = dataStor.park ? "Yes" : "No"
+            const teleSpeaker = dataStor.tspeak
+            const teleAmp = dataStor.tamp
+            const harmony = dataStor.harmony
+            const trap = dataStor.trap
+            const humanPlayer = dataStor.humanPlayer?.length ?? "";
 
             const auto = [balanceAuto, mobility]
             const tele = [balanceTele, parked]
 
-
-            // upper, lower, middle
-            var scores = [0, 0, 0]
-            dataStor.events.forEach((element, index) => {
-                element.forEach(e => {
-                    scores[index] += e > 0 ? 1 : 0
-                })
-            })
-            var [upperScores, middleScores, lowerScores] = scores
-
-            var score = 0
-            var autoScore = 0
-            var scoreValuesAuto = [6,4,3]
-            var scoreValuesTele = [5, 3, 2]
-
-            dataStor.events.forEach((element, index) => {
-                element.forEach(e => {
-                    if(e==2){
-                        autoScore += scoreValuesAuto[index]
-                        score += scoreValuesAuto[index]
-                    } else if (e==1){
-                        score += scoreValuesTele[index]
-                    }
-                })
-            })
-
-            hasRun = true
-
-            totalPoints += score
-            totalAutoPoints += autoScore
-
-            const mobilityScore = dataStor.mobility ? 3 : 0
-            const parkedScore = dataStor.park ? 2 : 0
-            
-            score += parkedScore
-            autoScore += mobilityScore
-
             var tr = document.createElement("tr");
 
-            var properties = [comp, team, teamName, match, alliance, upperScores, middleScores, lowerScores, score, autoScore, links, offence, defence, auto, tele, brokeDown,"Expand","Delete"]
+            var properties = [comp, team, teamName, match, alliance, autoSpeaker, autoAmp, park, teleSpeaker, teleAmp, harmony, trap, humanPlayer, offence, defence, brokeDown,"Expand","Delete"]
 
             for (var i of properties){
                 var td = document.createElement("td")
