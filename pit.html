@@ -8,29 +8,38 @@
         <script src="js/nav.js"></script>
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/nav.css" rel="stylesheet">
+        <link href="css/table.css" rel="stylesheet">
     </head>
-    <body>
-        <div id="content">
-            <div class="container center mt-3">
-                <h1>IN DEVELOPMENT</h1>
-                <div style="display: flex; flex-wrap: nowrap; flex-direction: row; justify-content: space-around">
-                    <div>
-                        <h1>Team Name:</h1>
-                        Team Number:
-                        <br>
-                        Robot Type:
-                        <br>
-                        Drive Train:
-                        <br>
-                        Arm Type:
-                    </div>
-                    <div style="max-width: 40%;">
-                        <h1>Comments:</h1>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sit amet eros vitae orci varius facilisis. Vestibulum egestas accumsan nibh, eget condimentum nunc condimentum ac. Cras eget magna auctor, lobortis enim vel, tristique velit. Nulla sagittis et leo molestie rhoncus.
-                    </div>
-                </div>
 
+    <body>
+        <div style="padding: 100px;" id="content">
+            <h1 class="mb-3">Pit Scan</h1>
+            <p id="text" onclick="document.getElementById('text').innerHTML = localStorage.getItem('PitData')">data</p>
+            <br>
+
+            <select class="mb-3 form-select" name="cameras" id="cameras">
+            </select>
+            <button class="btn btn-primary mb-3" id="startScanning">Start Qr Scanning</button>
+            <br>
+            <p id="statusText">Status: Not Scanned</p> 
+            
+            <button class="btn btn-primary mb-3" id="scanNext">Scan Next </button>
+            <button class="btn btn-secondary mb-3" id="save">Save</button>
+            <button class="btn btn-secondary mb-3" id="cancel">Cancel</button>
+            <p style="display: none;" id="savedIndicator">Saved</p>
+            <br>
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <label class="mb-3" for="teamNum" >Change Team Number: </label>
+                </div>
+                <div class="col-auto">
+                    <input class="form-control mb-3 small-width" type="number" id="teamNum">
+                </div>
             </div>
+
+                <div style="width: 500px; background-color: white;" id="reader">
+                    <p>Camera Not Working</p>
+                </div>
         </div>
     </body>
     <script src="js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>

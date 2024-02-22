@@ -1,4 +1,6 @@
 var storage = JSON.parse(localStorage.getItem("StorageData"))
+var pitStorage = JSON.parse(localStorage.getItem("PitData"))
+
 var teamNum = ""
 var matches = 0
 var canvas = document.getElementById("canva")
@@ -51,6 +53,14 @@ document.getElementById("input").onsubmit = function(event) {
 }
 
 function updateHeatmap(){
+
+    // insert pit scouting data
+    if (pitStorage != null) {
+        const pitData = pitStorage.find(element => { element.teamNumber == teamNum });
+        if (pitData) {
+            document.getElementById("pit").innerHTML = `Pit Scouting: ${element.value}`
+        }
+    }
     
     var heatArray = [[0,0,0,0,0],[0,0,0,0,0]]
     storage.forEach(element => {
