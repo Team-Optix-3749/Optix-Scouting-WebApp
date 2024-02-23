@@ -36,12 +36,12 @@ function storeScannedData(scannedText) {
     var existingStorage = JSON.parse(localStorage.getItem(storageKey))
     if (existingStorage == null) existingStorage = []
     var parseText = JSON.parse(scannedText)
+    parseText.value = parseText[Object.keys(parseText)[0]]
     parseText.teamNumber = document.getElementById("teamNum").value
-    parseText.value = parseText[parseText.teamNumber]
-    var key = parseText.teamNumber.toString()
+    var key = parseText.teamNumber
     existingStorage = existingStorage.filter(element =>{
         var key2 = element.teamNumber
-        if(key == key2){
+        if(key === key2){
             return false
         } else return true
     })
