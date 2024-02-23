@@ -35,21 +35,25 @@ document.getElementById("input").onsubmit = function(event) {
     var tr = document.getElementById("averagesData")
     tr.innerHTML = ""
 
-    var scoreInfo = getScores(teamNum);
+    try {
+        var scoreInfo = getScores(teamNum);
 
-    var rnd = (i) => Math.round(i * 100) / 100;
-    var avg = (i) => rnd(i/scoreInfo.matches);
+        var rnd = (i) => Math.round(i * 100) / 100;
+        var avg = (i) => rnd(i/scoreInfo.matches);
 
-    var fields = [teamNum, scoreInfo.matches, avg(scoreInfo.autoAmp), avg(scoreInfo.autoSpeaker), avg(scoreInfo.park), avg(scoreInfo.teleAmp), avg(scoreInfo.teleSpeaker), avg(scoreInfo.harmony), avg(scoreInfo.trap), scoreInfo.humanPlayerAv == -1 ? "" : rnd(scoreInfo.humanPlayerAv), avg(scoreInfo.offense), avg(scoreInfo.defense), avg(scoreInfo.breakdowns)]
+        var fields = [teamNum, scoreInfo.matches, avg(scoreInfo.autoAmp), avg(scoreInfo.autoSpeaker), avg(scoreInfo.park), avg(scoreInfo.teleAmp), avg(scoreInfo.teleSpeaker), avg(scoreInfo.harmony), avg(scoreInfo.trap), scoreInfo.humanPlayerAv == -1 ? "" : rnd(scoreInfo.humanPlayerAv), avg(scoreInfo.offense), avg(scoreInfo.defense), avg(scoreInfo.breakdowns)]
 
-    for (var field of fields){
-        var td = document.createElement("td")
-        td.innerHTML = field
-        tr.appendChild(td)
+        for (var field of fields){
+            var td = document.createElement("td")
+            td.innerHTML = field
+            tr.appendChild(td)
+        }
+    } catch (ex) {
+        console.log("Error getting scores: " + ex);
+        console.log(ex.stack)
     }
 
     updateHeatmap()
-
 }
 
 function updateHeatmap(){
