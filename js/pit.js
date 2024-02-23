@@ -36,7 +36,7 @@ function storeScannedData(scannedText) {
     var existingStorage = JSON.parse(localStorage.getItem(storageKey))
     if (existingStorage == null) existingStorage = []
     var parseText = JSON.parse(scannedText)
-    parseText.teamNumber = document.getElementById("teamNum").valueAsNumber
+    parseText.teamNumber = document.getElementById("teamNum").value
     parseText.value = parseText[parseText.teamNumber]
     var key = parseText.teamNumber.toString()
     existingStorage = existingStorage.filter(element =>{
