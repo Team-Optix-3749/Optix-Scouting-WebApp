@@ -60,9 +60,9 @@ function updateHeatmap(){
 
     // insert pit scouting data
     if (pitStorage != null) {
-        const pitData = pitStorage.find(element => { element.teamNumber == teamNum });
+        const pitData = pitStorage.find(element => element.teamNumber === teamNum);
         if (pitData) {
-            document.getElementById("pit").innerHTML = `Pit Scouting: ${element.value}`
+            document.getElementById("pit").innerHTML = `Pit Scouting: ${pitData.value}`
         }
     }
     
