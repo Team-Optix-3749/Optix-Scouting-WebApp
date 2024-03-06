@@ -1,5 +1,5 @@
 var longText = localStorage.getItem("StorageData");
-var longTextCSV = exportCSV()
+var longTextCSV = ""
 try {
     longText = longText.replaceAll("’","").replaceAll("Σ", "E")
     longTextCSV = longTextCSV.replaceAll("’","").replaceAll("Σ", "E")
