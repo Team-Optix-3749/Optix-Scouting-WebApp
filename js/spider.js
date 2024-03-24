@@ -2,8 +2,8 @@ const ctxRed = document.getElementById('chartRed');
 const ctxBlue = document.getElementById('chartBlue');
 
 var currentScores = {
-  'Red': [0,0],
-  'Blue': [0,0]
+  'Red': [0,0,0,0,0,0],
+  'Blue': [0,0,0,0,0,0]
 }
 
 const colors = {
@@ -136,6 +136,10 @@ function createCompareChart(color){
 
   var highestTele = 0
   var highestAuto = 0
+  var highestAutoAmp = 0
+  var highestAutoSpeaker = 0
+  var highestDef = 0
+  var highestHarmony = 0
 
   nums.forEach(teamNum => {
     var scoreInfo = getScores(teamNum)
@@ -150,6 +154,18 @@ function createCompareChart(color){
     if (avg(scoreInfo.autoScore) > highestAuto){
       highestAuto = avg(scoreInfo.autoScore)
     }
+    if (avg(scoreInfo.autoAmp) > highestAutoAmp){
+      highestAutoAmp = avg(scoreInfo.autoAmp)
+    }
+    if (avg(scoreInfo.autoSpeaker) > highestAutoSpeaker){
+      highestAutoSpeaker = avg(scoreInfo.autoSpeaker)
+    }
+    if (avg(scoreInfo.defense) > highestDef){
+      highestDef = avg(scoreInfo.highestDef)
+    }
+    if (avg(scoreInfo.harmony) > highestHarmony){
+      highestHarmony = avg(scoreInfo.highestHarmony)
+    }
   })
 
   for (const key in currentScores) {
@@ -158,10 +174,19 @@ function createCompareChart(color){
       }
       if (highestAuto > currentScores[key][1])
         currentScores[key][1] = highestAuto
+      if (highestAutoAmp > currentScore[key][2]) currentScores[key][2] = highestAutoAmp
+      if (highestAutoSpeaker > currentScore[key][3]) currentScores[key][3] = highestAutoSpeaker
+      if (highestDef > currentScore[key][4]) currentScores[key][4] = highestDef
+      if (highestHarmony > currentScore[key][5]) currentScores[key][5] = highestHarmony
+
   }
 
   highestTele = currentScores[color][0]
   highestAuto = currentScores[color][1]
+  highestAutoAmp = currentScores[color][2]
+  highestAutoSpeaker = currentScores[color][3]
+  highestDef = currentScores[color][4]
+  highestHarmony = currentScores[color][5]
 
   nums.forEach((teamNum, i) => {
 
