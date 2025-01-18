@@ -9,44 +9,70 @@
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/nav.css" rel="stylesheet">
         <link href="css/table.css" rel="stylesheet">
+        <style>
+            body {
+                background-color: #2e2e2e; /* Medium-dark gray */
+                color: white; /* Text contrast */
+            }
+            button {
+                font-size: 1.5rem;
+                padding: 15px 30px;
+                margin: 10px 0;
+            }
+            #reader {
+                width: 500px;
+                height: 400px;
+                background-color: white;
+                color: black;
+                margin: 20px auto;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 2px solid #db4938;
+                border-radius: 8px;
+            }
+            #content {
+                padding: 50px;
+            }
+    
+        </style>
     </head>
 
     <body>
-        <div style="padding: 100px;" id="content">
+        <div style = "background-color: #2e2e2e;"id="content">
             <p id="text" onclick="document.getElementById('text').innerHTML = localStorage.getItem('StorageData')">data</p>
             <br>
 
-            <select class="mb-3 form-select" name="cameras" id="cameras">
+            <select class="mb-3 form-select form-select-lg" name="cameras" id="cameras">
             </select>
             <button class="btn btn-primary mb-3" id="startScanning">Start Qr Scanning</button>
-            <br>
             <p id="statusText">Status: Not Scanned</p> 
-            
-            <button class="btn btn-primary mb-3" id="scanNext">Scan Next </button>
-            <button class="btn btn-secondary mb-3" id="save">Save</button>
-            <button class="btn btn-secondary mb-3" id="cancel">Cancel</button>
+
+            <button class="btn btn-primary" id="scanNext">Scan Next</button>
+            <button class="btn btn-secondary" id="save">Save</button>
+            <button class="btn btn-secondary" id="cancel">Cancel</button>
             <p style="display: none;" id="savedIndicator">Saved</p>
-            <br>
+
             <div class="row align-items-center">
                 <div class="col-auto">
-                    <label class="mb-3" for="teamNum" >Change Team Number: </label>
+                    <label class="mb-3" for="teamNum">Change Team Number:</label>
                 </div>
                 <div class="col-auto">
-                    <input class="form-control mb-3 small-width" type="number" id="teamNum">
+                    <input class="form-control form-control-lg mb-3 small-width" type="number" id="teamNum">
                 </div>
             </div>
             <div class="row align-items-center">
                 <div class="col-auto">
-                    <label class="mb-3" for="matchNum" >Change Match Number: </label>
+                    <label class="mb-3" for="matchNum">Change Match Number:</label>
                 </div>
                 <div class="col-auto">
-                    <input class="form-control mb-3 small-width" type="number" id="matchNum">
+                    <input class="form-control form-control-lg mb-3 small-width" type="number" id="matchNum">
                 </div>
             </div>
 
-                <div style="width: 500px; background-color: white;" id="reader">
-                    <p>Camera Not Working</p>
-                </div>
+            <div id="reader">
+                <p>QR Scanner Area</p>
+            </div>
         </div>
     </body>
     <script src="js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
