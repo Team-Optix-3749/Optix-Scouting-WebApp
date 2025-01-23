@@ -13,68 +13,108 @@
             body {
                 background-color: #2e2e2e; /* Medium-dark gray */
                 color: white; /* Text contrast */
+                font-family: Arial, sans-serif; /* Clean font */
             }
-            button {
-                font-size: 1.5rem;
-                padding: 15px 30px;
-                margin: 10px 0;
+
+            #content {
+                padding: 50px;
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                gap: 40px;
             }
+
+            /* QR Scanner Area */
             #reader {
-                width: 500px;
-                height: 400px;
+                width: 700px; /* Balanced camera area */
+                height: 550px;
                 background-color: white;
                 color: black;
-                margin: 20px auto;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                border: 2px solid #db4938;
+                border: 3px solid #007bff;
+                border-radius: 12px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
+
+            /* Button Section Styling */
+            #leftSection {
+                max-width: 450px;
+                display: flex;
+                flex-direction: column; /* Stack buttons vertically */
+                gap: 20px; /* Spacing between buttons */
+            }
+
+            select {
+                font-size: 1.8rem; /* Adjusted for better readability */
+                padding: 20px;
                 border-radius: 8px;
+                margin-bottom: 20px;
+                width: 100%;
+                border: 1px solid #db4938;
             }
-            #content {
-                padding: 50px;
+
+            button {
+                font-size: 2.5rem; /* Larger text */
+                padding: 20px; /* Adjusted for proportional size */
+                border-radius: 8px; /* Slightly rounded corners */
+                background-color: #007bff; /* Blue */
+                color: white;
+                border: none;
+                cursor: pointer;
+                font-weight: bold; /* Make the text bold */
+                transition: all 0.3s ease-in-out;
+                width: 100%; /* Full width */
+                height: 100px; /* Larger button height */
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
             }
-    
+
+            button:hover {
+                background-color: #0056b3; /* Darker blue on hover */
+                transform: scale(1.03); /* Slight zoom effect */
+            }
+
+            button {
+                width: 200%; /* Double horizontal size */
+            }
+
+            /* Status Text */
+            #statusText {
+                font-size: 2rem; /* Consistent sizing */
+                margin-top: 20px;
+                font-weight: bold;
+            }
+
+            #savedIndicator {
+                font-size: 1.8rem;
+                color: lightgreen;
+            }
         </style>
     </head>
 
     <body>
-        <div style = "background-color: #2e2e2e;"id="content">
-            <p id="text" onclick="document.getElementById('text').innerHTML = localStorage.getItem('StorageData')">data</p>
-            <br>
+        <div id="content">
+            <!-- Left Section: Buttons and Inputs -->
+            <div id="leftSection">
+                <select name="cameras" id="cameras"></select>
+                <button id="startScanning">Start QR Scanning</button>
+                <button id="scanNext">Scan Next</button>
+                <button id="save">Save</button>
+                <button id="cancel">Cancel</button>
 
-            <select class="mb-3 form-select form-select-lg" name="cameras" id="cameras">
-            </select>
-            <button class="btn btn-primary mb-3" id="startScanning">Start Qr Scanning</button>
-            <p id="statusText">Status: Not Scanned</p> 
+                <p id="statusText">Status: Not Scanned</p> 
+                <p style="display: none;" id="savedIndicator">Saved</p>
 
-            <button class="btn btn-primary" id="scanNext">Scan Next</button>
-            <button class="btn btn-secondary" id="save">Save</button>
-            <button class="btn btn-secondary" id="cancel">Cancel</button>
-            <p style="display: none;" id="savedIndicator">Saved</p>
-
-            <div class="row align-items-center">
-                <div class="col-auto">
-                    <label class="mb-3" for="teamNum">Change Team Number:</label>
-                </div>
-                <div class="col-auto">
-                    <input class="form-control form-control-lg mb-3 small-width" type="number" id="teamNum">
-                </div>
-            </div>
-            <div class="row align-items-center">
-                <div class="col-auto">
-                    <label class="mb-3" for="matchNum">Change Match Number:</label>
-                </div>
-                <div class="col-auto">
-                    <input class="form-control form-control-lg mb-3 small-width" type="number" id="matchNum">
-                </div>
             </div>
 
+            <!-- Right Section: Camera -->
             <div id="reader">
                 <p>QR Scanner Area</p>
             </div>
         </div>
     </body>
+
     <script src="js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <script src="js/html5-qrcode.min.js"></script>
     <script src="js/index.js"></script>
