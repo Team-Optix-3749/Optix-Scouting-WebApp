@@ -3,53 +3,87 @@
     <head>
         <link rel="manifest" href="manifest.json">
         <link rel="apple-touch-icon" href="optix.png" />
-        <meta name="apple-mobile-web-app-status-bar" content="#db4938" />
-        <meta name="theme-color" content="#db4938" />
+        <meta name="apple-mobile-web-app-status-bar" content="#28a745" />
+        <meta name="theme-color" content="#28a745" />
         <script src="js/nav.js"></script>
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/nav.css" rel="stylesheet">
         <link href="css/table.css" rel="stylesheet">
+        <link href="css/custom.css" rel="stylesheet"> <!-- Include custom styles -->
     </head>
 
     <body>
-        <div style="padding: 100px;" id="content">
-            <p id="text" onclick="document.getElementById('text').innerHTML = localStorage.getItem('StorageData')">data</p>
-            <br>
-
-            <select class="mb-3 form-select" name="cameras" id="cameras">
-            </select>
-            <button class="btn btn-primary mb-3" id="startScanning">Start Qr Scanning</button>
-            <br>
-            <p id="statusText">Status: Not Scanned</p> 
-            
-            <button class="btn btn-primary mb-3" id="scanNext">Scan Next </button>
-            <button class="btn btn-secondary mb-3" id="save">Save</button>
-            <button class="btn btn-secondary mb-3" id="cancel">Cancel</button>
-            <p style="display: none;" id="savedIndicator">Saved</p>
-            <br>
-            <div class="row align-items-center">
-                <div class="col-auto">
-                    <label class="mb-3" for="teamNum" >Change Team Number: </label>
-                </div>
-                <div class="col-auto">
-                    <input class="form-control mb-3 small-width" type="number" id="teamNum">
-                </div>
-            </div>
-            <div class="row align-items-center">
-                <div class="col-auto">
-                    <label class="mb-3" for="matchNum" >Change Match Number: </label>
-                </div>
-                <div class="col-auto">
-                    <input class="form-control mb-3 small-width" type="number" id="matchNum">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Optix</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="nav-items">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="table.html">Table</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="averages.html">Team Averages</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="files.html">Import/Export</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
+        </nav>
 
-                <div style="width: 500px; background-color: white;" id="reader">
-                    <p>Camera Not Working</p>
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <select class="form-select" name="cameras" id="cameras">
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <button class="btn btn-primary" id="startScanning">Start Qr Scanning</button>
+                            </div>
+                            <p id="statusText">Status: Not Scanned</p>
+                            <div class="mb-3">
+                                <button class="btn btn-primary" id="scanNext">Scan Next</button>
+                                <button class="btn btn-secondary" id="save">Save</button>
+                                <button class="btn btn-secondary" id="cancel">Cancel</button>
+                            </div>
+                            <p style="display: none;" id="savedIndicator">Saved</p>
+                            <div class="row align-items-center mb-3">
+                                <div class="col-auto">
+                                    <label for="teamNum">Change Team Number:</label>
+                                </div>
+                                <div class="col-auto">
+                                    <input class="form-control" type="number" id="teamNum">
+                                </div>
+                            </div>
+                            <div class="row align-items-center mb-3">
+                                <div class="col-auto">
+                                    <label for="matchNum">Change Match Number:</label>
+                                </div>
+                                <div class="col-auto">
+                                    <input class="form-control" type="number" id="matchNum">
+                                </div>
+                            </div>
+                            <div class="text-center" id="reader" style="width: 500px; background-color: white;">
+                                <p>Camera Not Working</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
         </div>
+
+        <script src="js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+        <script src="js/html5-qrcode.min.js"></script>
+        <script src="js/index.js"></script>
     </body>
-    <script src="js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-    <script src="js/html5-qrcode.min.js"></script>
-    <script src="js/index.js"></script>
 </html>
