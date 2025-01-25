@@ -1,6 +1,5 @@
-
 async function addNav() {
-    const resp = await fetch("nav.html");
+    const resp = await fetch("nav.html?cache-bust=" + new Date().getTime());
     const html = await resp.text();
     document.getElementById("content").insertAdjacentHTML("beforebegin", html);
 
