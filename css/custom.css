@@ -1,5 +1,9 @@
 body {
-    background-color: #f8f9fa; /* Light grey background for the body */
+    background-image: url('../optix.png'); /* Path to your image */
+    background-size: cover; /* Cover the entire background */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-attachment: fixed; /* Fixed background */
+    background-position: center; /* Center the background image */
     color: #212529; /* Dark text color */
 }
 
@@ -18,6 +22,11 @@ body {
 
 .navbar .navbar-toggler-icon {
     filter: invert(1); /* White color for the toggler icon */
+}
+
+#navbar-logo {
+    height: 40px; /* Adjust the height as needed */
+    width: auto; /* Maintain aspect ratio */
 }
 
 .card {
