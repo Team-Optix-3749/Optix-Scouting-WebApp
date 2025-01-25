@@ -1,49 +1,33 @@
 table {
-    font-family: Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-    position: relative;
-  }
-  table td, table th {
-    border: 1px solid #0aa1b5;
-    padding: 8px;
-  }
-  table tr:nth-child(even){background-color: #0bbcd2;}
-  table tr:nth-child(odd){background-color: #0bafc5;}
-  table tr:hover {background-color: #0aa1b5;}
-  table th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #0b2262;
-    color: white;
-    position: sticky;
-    top: 0;
-  }
-
-
-.small-width {
-  width:15em !important;
-}
-.clickable:hover {
-  cursor: pointer;
-  user-select: none;
-}
-.accordion {
-  background-color: #eee;
-  color: #444;
-  cursor: pointer;
-  padding: 18px;
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
   width: 100%;
-  text-align: left;
-  border-radius: 5px;
-  outline: none;
-  transition: 0.4s;
+  position: relative;
 }
-.panel {
-  padding: 18px;
-  display: none;
-  border-radius: 20px;
-  overflow: hidden;
-  background-color: #b2f218;
+
+table td, table th {
+  border: 1px solid #28a745; /* Green border for table cells */
+  padding: 8px;
+}
+
+table tr:nth-child(even) {
+  background-color: #d4edda; /* Light green background for even rows */
+}
+
+table tr:nth-child(odd) {
+  background-color: #ffffff; /* White background for odd rows */
+}
+
+table tr:hover {
+  background-color: #c3e6cb; /* Slightly darker green on hover */
+}
+
+table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #28a745; /* Green background for table headers */
+  color: white; /* White text for table headers */
+  position: sticky;
+  top: 0;
 }
