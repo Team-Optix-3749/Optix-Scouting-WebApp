@@ -1,0 +1,51 @@
+body {
+    background-color: #f8f9fa; /* Light grey background for the body */
+    color: #212529; /* Dark text color */
+}
+
+.navbar {
+    background-color: #28a745; /* Green background for the navbar */
+}
+
+.navbar .navbar-brand,
+.navbar .nav-link {
+    color: #000000 !important; /* Black text for the navbar brand and links */
+}
+
+.navbar .nav-link.active {
+    color: #000000 !important; /* Black text for the active link */
+}
+
+.navbar .navbar-toggler-icon {
+    filter: invert(1); /* White color for the toggler icon */
+}
+
+.card {
+    border: 1px solid #28a745; /* Green border for cards */
+}
+
+.card .card-body {
+    background-color: #ffffff; /* White background for card body */
+}
+
+.btn-primary {
+    background-color: #28a745; /* Green background for primary buttons */
+    border-color: #28a745; /* Green border for primary buttons */
+}
+
+.btn-primary:hover {
+    background-color: #218838; /* Darker green on hover */
+    border-color: #1e7e34; /* Darker green border on hover */
+}
+
+.btn-secondary {
+    background-color: #ffffff; /* White background for secondary buttons */
+    border-color: #28a745; /* Green border for secondary buttons */
+    color: #28a745; /* Green text for secondary buttons */
+}
+
+.btn-secondary:hover {
+    background-color: #d4edda; /* Light green on hover */
+    border-color: #28a745; /* Green border on hover */
+    color: #155724; /* Darker green text on hover */
+}
