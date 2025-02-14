@@ -45,12 +45,24 @@ function storeScannedData(scannedText) {
 
     var existingStorage = JSON.parse(localStorage.getItem(storageKey))
     if (existingStorage == null) existingStorage = []
-    var parseText = JSON.parse(scannedText)
+    try {
+        console.log("Attempting to parse scanned text:", scannedText)
+        var parseText = JSON.parse(scannedText)
+    } catch (e) {
+        console.error("Error parsing scanned text:", e)
+        return
+    }
     parseText.teamNumber = document.getElementById("teamNum").valueAsNumber
     parseText.matchNumber = document.getElementById("matchNum").valueAsNumber
-    var key = parseText.comp.toString() + parseText.teamNumber.toString() + parseText.matchNumber.toString()
+
+    if (!parseText.c) {
+        console.error("Error: 'comp' field is missing in the scanned text.")
+        return
+    }
+
+    var key = parseText.c.toString() + parseText.teamNumber.toString() + parseText.matchNumber.toString()
     existingStorage = existingStorage.filter(element =>{
-        var key2 = element.comp.toString() + element.teamNumber.toString() + element.matchNumber.toString()
+        var key2 = element.c.toString() + element.teamNumber.toString() + element.matchNumber.toString()
         if(key == key2){
             return false
         } else return true
