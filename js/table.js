@@ -8,27 +8,47 @@ function loadData(){
 
         for(var i of data) {
             var dataStor = i
-            const team = dataStor.teamNumber
-            const teamName = dataStor.teamName
-            const match = dataStor.matchNumber
-            const comp = dataStor.comp
-            const brokeDown = dataStor.break ? "Yes" : "No"
-            const comment = dataStor.notes
-            const offence = dataStor.offense
-            const defence = dataStor.defense
-            const alliance = dataStor.alliance
-            const autoSpeaker = dataStor.aspeak
-            const autoAmp = dataStor.aamp
-            const park = dataStor.park ? "Yes" : "No"
-            const teleSpeaker = dataStor.tspeak
-            const teleAmp = dataStor.tamp
-            const harmony = dataStor.harmony
-            const trap = dataStor.trap
-            const humanPlayer = dataStor.hp?.length ?? "";
+
+            const match = dataStor.m;
+            const team = dataStor.tnu;
+            const teamName = dataStor.tna;
+            const teamAlliance = dataStor.ta;
+
+            const l1ScoreAuto = dataStor.a[0];
+            const l2ScoreAuto = dataStor.a[1];
+            const l3ScoreAuto = dataStor.a[2];
+            const l4ScoreAuto = dataStor.a[3];
+            const netShotsAuto = dataStor.a[4];
+            const processorShotsAuto = dataStor.a[5];
+
+            const l1ScoreTeleop = dataStor.t[0];
+            const l2ScoreTeleop = dataStor.t[1];
+            const l3ScoreTeleop = dataStor.t[2];
+            const l4ScoreTeleop = dataStor.t[3];
+            const netShotsTeleop = dataStor.t[4];
+            const processorShotsTeleop = dataStor.t[5];
+
+            let endgame = "";
+            if (dataStor.p[0] == 1) {
+                endgame = "shallow";
+            } else if (dataStor.p[1] == 1) {
+                endgame = "park";
+            } else if (dataStor.p[2] == 1) {
+                endgame = "deep";
+            }
+
+            const defense = dataStor.d[0] === 1 ? true : false;
+            const robotBroke = dataStor.d[1] === 1 ? true : false;
+            const comments = dataStor.c;
 
             var tr = document.createElement("tr");
 
-            var properties = [comp, team, teamName, match, alliance, autoSpeaker, autoAmp, park, teleSpeaker, teleAmp, harmony, trap, humanPlayer, offence, defence, brokeDown,"Expand","Delete"]
+            var properties = [
+                match, team, teamName, teamAlliance,
+                l1ScoreAuto, l2ScoreAuto, l3ScoreAuto, l4ScoreAuto, netShotsAuto, processorShotsAuto,
+                l1ScoreTeleop, l2ScoreTeleop, l3ScoreTeleop, l4ScoreTeleop, netShotsTeleop, processorShotsTeleop,
+                endgame, defense, robotBroke, comments, "Expand", "Delete"
+            ];
 
             for (var i of properties){
                 var td = document.createElement("td")
@@ -54,7 +74,7 @@ function loadData(){
                     }
                     var commentDiv = document.createElement("div")
                     commentDiv.className = "panel"
-                    commentDiv.innerHTML = comment
+                    commentDiv.innerHTML = comments
                     commentDiv.style.display = "none"
                     td.appendChild(commentDiv)
                 }
