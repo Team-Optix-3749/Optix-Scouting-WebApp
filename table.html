@@ -10,19 +10,18 @@
         <div class="my-3 center" style="padding: 10px; position: absolute; left: 5%; right: 5%;" id="content">
             <label class="mb-3" for="filters" >Filter Search: </label>
             <select class="mb-3 form-select small-width" name="filters" id="filters" onchange="updateFilter()">
-              <option value="comp">Competition</option>
+              <option value="comp">Match #</option>
               <option value="teamname">Team Name</option>
               <option value="teamnum">Team Number</option>
-              <option value="matchnum">Match Number</option>
+              <option value="matchnum">Alliance</option>
             </select>
             <input class="form-control mb-3 small-width" type="text" id="filter" onkeyup="updateFilter()">
             <table id="matchTable">
                 <thead>
                     <tr id="blank">
-                        <th>Competition</th>
+                        <th>Match #</th>
                         <th>Team Number</th>
                         <th>Team Name</th>
-                        <th>Match Number</th>
                         <th>Alliance</th>
                         <th>Level 1 Score (Auto)</th>
                         <th>Level 2 Score (Auto)</th>
