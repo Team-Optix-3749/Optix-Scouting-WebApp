@@ -49,31 +49,58 @@ document.getElementById('scanNext').onclick = function() {
     }
 };
 
-// Function to safely evaluate a JavaScript object expression
-function safeEvalObject(text) {
-    // Clean up the text by ensuring property names and string values are properly quoted
-    let cleanedText = text
-        // Add quotes to property names if they don't have them
-        .replace(/([{,])\s*([a-zA-Z0-9_]+)\s*:/g, '$1"$2":')
-        // Convert single quotes to double quotes for JSON compatibility
-        .replace(/'/g, '"')
-        // Handle empty arrays correctly
-        .replace(/\[\s*\]/g, '[]');
+// Function to properly process and fix the malformed JSON
+function fixJsonFormat(jsonStr) {
+    // First, let's handle the problematic comments field pattern
+    // Find where "c:" appears and check what follows
+    const cIndex = jsonStr.indexOf('"c":') !== -1 ? jsonStr.indexOf('"c":') : jsonStr.indexOf('c:');
     
-    try {
-        // Try to parse as JSON first
-        return JSON.parse(cleanedText);
-    } catch (jsonError) {
-        console.warn("JSON parsing failed, using Function constructor:", jsonError);
+    if (cIndex !== -1) {
+        // Look for the end of the string after 'c:'
+        const afterC = jsonStr.substring(cIndex + 3).trim();
         
-        try {
-            // If JSON parsing fails, use Function constructor (safer than eval)
-            // This allows us to handle JavaScript object literal syntax
-            return Function('"use strict"; return (' + text + ')')();
-        } catch (fnError) {
-            console.error("Function parsing failed:", fnError);
-            throw new Error("Unable to parse scanned data");
+        if (afterC.startsWith('}') || afterC === '}') {
+            // If 'c:' is immediately followed by '}', replace with empty string value
+            jsonStr = jsonStr.replace(/([{,])\s*(['"]{0,1})c\2\s*:\s*}/g, '$1"c":""}');
         }
+    }
+    
+    // Step 1: Convert JavaScript object notation to valid JSON
+    // Add quotes around property names if they don't have them
+    let fixedJson = jsonStr.replace(/([{,])\s*([a-zA-Z0-9_]+)\s*:/g, '$1"$2":');
+    
+    // Step 2: Add quotes around string values that don't have them
+    fixedJson = fixedJson.replace(/"([^"]+)":\s*([a-zA-Z]+)(?=[,}])/g, '"$1":"$2"');
+    
+    // Step 3: Handle specific edge cases for the comments field
+    fixedJson = fixedJson
+        .replace(/"c":\s*$/g, '"c":""')  // Handle empty comment field
+        .replace(/"c":\s*}/g, '"c":""}') // Handle comment field at the end of object
+        .replace(/"c":\s*,/g, '"c":"",'); // Handle empty comment field before other fields
+    
+    console.log("Fixed JSON format: " + fixedJson);
+    return fixedJson;
+}
+
+// Alternative approach: Parse the object directly from JavaScript notation
+function parseScannedObject(scannedText) {
+    try {
+        // Add a wrapper to make it a valid JavaScript expression
+        const jsExpression = `(${scannedText})`;
+        // Use eval in a controlled way to convert the expression to an object
+        // Note: eval is generally discouraged, but in this controlled context, 
+        // it's a practical solution for parsing non-standard JSON
+        const result = eval(jsExpression);
+        
+        // If comments field is empty or problematic, set it to empty string
+        if (!result.c || result.c === undefined) {
+            result.c = "";
+        }
+        
+        return result;
+    } catch (e) {
+        console.error("Cannot parse with JS eval:", e);
+        throw e;
     }
 }
 
@@ -84,8 +111,16 @@ function storeScannedData(scannedText) {
     try {
         console.log("Attempting to parse scanned text: " + scannedText);
         
-        // Parse the scanned data
-        const data = safeEvalObject(scannedText);
+        let data;
+        // Try first with the fixJsonFormat approach
+        try {
+            const fixedJson = fixJsonFormat(scannedText);
+            data = JSON.parse(fixedJson);
+        } catch (jsonError) {
+            console.warn("JSON parsing failed, trying alternative approach:", jsonError);
+            // If that fails, try the direct JavaScript parsing approach
+            data = parseScannedObject(scannedText);
+        }
         
         // Apply any team/match number overrides from the UI
         if (teamNumInput.value) {
@@ -94,9 +129,6 @@ function storeScannedData(scannedText) {
         if (matchNumInput.value) {
             data.m = parseInt(matchNumInput.value);
         }
-        
-        // Ensure all required fields exist
-        if (!data.c) data.c = "";
         
         // Get existing data from localStorage or initialize empty array
         let storageData = [];

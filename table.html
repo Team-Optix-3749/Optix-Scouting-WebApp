@@ -4,35 +4,9 @@
         <link rel="stylesheet" href="css/table.css">
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/nav.css" rel="stylesheet">
-        <title>Optix - Team Data Table</title>
     </head>
 
     <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">Optix</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="nav-items">
-                        <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="index.html">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link active" href="table.html">Table</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="averages.html">Team Averages</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="files.html">Import/Export</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
         <div class="my-3 center" style="padding: 10px; position: absolute; left: 5%; right: 5%;" id="content">
             <label class="mb-3" for="filters" >Filter Search: </label>
             <select class="mb-3 form-select small-width" name="filters" id="filters" onchange="updateFilter()">
@@ -65,23 +39,17 @@
                         <th>Defense</th>
                         <th>Robot Broke</th>
                         <th>Comments</th>
-                        <th>Expand</th>
                         <th style="user-select: none;" class="clickable" id="deleteAll" onclick="deleteAll()">Delete All</th>
                     </tr>
                 </thead>
                 <tbody id="matches">
-                    <!-- Data will be loaded here by JavaScript -->
+
                 </tbody>
             </table>
         </div>
-        
-        <script src="js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
-        <script src="js/nav.js"></script>
-        <script src="js/table.js"></script>
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                loadData();
-            });
-        </script>
     </body>
+    <script src="js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script src="js/nav.js"></script>
+    <script src="js/table.js"></script>
+    <script>loadData()</script>
 </html>
