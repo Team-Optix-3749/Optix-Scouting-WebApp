@@ -1,145 +1,218 @@
-if ("serviceWorker" in navigator) {
-    window.addEventListener("load", function() {
-        navigator.serviceWorker
-        .register("serviceWorker.js")
-        .then(res => console.log("service worker registered"))
-        .catch(err => console.log("service worker not registered", err))
-    })
+// HTML elements
+const cameraSelect = document.getElementById('cameras');
+const startScanningButton = document.getElementById('startScanning');
+const scanNextButton = document.getElementById('scanNext');
+const saveButton = document.getElementById('save');
+const cancelButton = document.getElementById('cancel');
+const readerDiv = document.getElementById('reader');
+const statusText = document.getElementById('statusText');
+const savedIndicator = document.getElementById('savedIndicator');
+const teamNumInput = document.getElementById('teamNum');
+const matchNumInput = document.getElementById('matchNum');
+
+// Global variables
+let html5QrCode;
+let currentData = null;
+
+// Initialize the QR code scanner
+function initScanner() {
+    html5QrCode = new Html5Qrcode("reader");
+    
+    Html5Qrcode.getCameras().then(devices => {
+        if (devices && devices.length) {
+            // Populate camera select dropdown
+            cameraSelect.innerHTML = '';
+            devices.forEach(device => {
+                const option = document.createElement('option');
+                option.value = device.id;
+                option.text = device.label;
+                cameraSelect.appendChild(option);
+            });
+        }
+    }).catch(err => {
+        console.error('Error getting cameras', err);
+    });
 }
 
-var scannedText = ''
-var scanned = false
-var teamNum = 0
-var matchNum = 0
+// Event listeners
+document.getElementById('startScanning').onclick = function() {
+    startScanning();
+};
 
-function resetScanner () {
-    scannedText = ""
-    scanned = false
-    document.getElementById("savedIndicator").style.display = "none"
-    document.getElementById("statusText").innerHTML = "Status: Not Scanned"
+document.getElementById('scanNext').onclick = function() {
+    if (currentData) {
+        storeScannedData(currentData);
+        statusText.innerText = "Status: Saved, ready for next scan";
+        currentData = null;
+    } else {
+        startScanning();
+    }
+};
+
+// Function to properly process and fix the malformed JSON
+function fixJsonFormat(jsonStr) {
+    // First, let's handle the problematic comments field pattern
+    // Find where "c:" appears and check what follows
+    const cIndex = jsonStr.indexOf('"c":') !== -1 ? jsonStr.indexOf('"c":') : jsonStr.indexOf('c:');
+    
+    if (cIndex !== -1) {
+        // Look for the end of the string after 'c:'
+        const afterC = jsonStr.substring(cIndex + 3).trim();
+        
+        if (afterC.startsWith('}') || afterC === '}') {
+            // If 'c:' is immediately followed by '}', replace with empty string value
+            jsonStr = jsonStr.replace(/([{,])\s*(['"]{0,1})c\2\s*:\s*}/g, '$1"c":""}');
+        }
+    }
+    
+    // Step 1: Convert JavaScript object notation to valid JSON
+    // Add quotes around property names if they don't have them
+    let fixedJson = jsonStr.replace(/([{,])\s*([a-zA-Z0-9_]+)\s*:/g, '$1"$2":');
+    
+    // Step 2: Add quotes around string values that don't have them
+    fixedJson = fixedJson.replace(/"([^"]+)":\s*([a-zA-Z]+)(?=[,}])/g, '"$1":"$2"');
+    
+    // Step 3: Handle specific edge cases for the comments field
+    fixedJson = fixedJson
+        .replace(/"c":\s*$/g, '"c":""')  // Handle empty comment field
+        .replace(/"c":\s*}/g, '"c":""}') // Handle comment field at the end of object
+        .replace(/"c":\s*,/g, '"c":"",'); // Handle empty comment field before other fields
+    
+    console.log("Fixed JSON format: " + fixedJson);
+    return fixedJson;
 }
 
-document.getElementById("scanNext").onclick = resetScanner
-
-document.getElementById("save").onclick = () => {
-    storeScannedData(scannedText)
-    document.getElementById("savedIndicator").style.display = "inline-block"
-    document.getElementById("scanNext").disabled = false
-}
-
-document.getElementById("cancel").onclick = () => {
-    resetScanner()
-    document.getElementById("scanNext").disabled = false
-}
-
-
-function storeScannedData(scannedText) {
-    if (!scannedText) return;
-
-    const storageKey = 'StorageData';
-
-    console.log("saving", scannedText);
-
-    var existingStorage = JSON.parse(localStorage.getItem(storageKey)) || [];
-
-    let parseText;
+// Alternative approach: Parse the object directly from JavaScript notation
+function parseScannedObject(scannedText) {
     try {
-        console.log("Attempting to parse scanned text:", scannedText);
-        parseText = JSON.parse(scannedText);
+        // Add a wrapper to make it a valid JavaScript expression
+        const jsExpression = `(${scannedText})`;
+        // Use eval in a controlled way to convert the expression to an object
+        // Note: eval is generally discouraged, but in this controlled context, 
+        // it's a practical solution for parsing non-standard JSON
+        const result = eval(jsExpression);
+        
+        // If comments field is empty or problematic, set it to empty string
+        if (!result.c || result.c === undefined) {
+            result.c = "";
+        }
+        
+        return result;
+    } catch (e) {
+        console.error("Cannot parse with JS eval:", e);
+        throw e;
+    }
+}
+
+// Function to store scanned data
+function storeScannedData(scannedText) {
+    console.log("saving " + scannedText);
+    
+    try {
+        console.log("Attempting to parse scanned text: " + scannedText);
+        
+        let data;
+        // Try first with the fixJsonFormat approach
+        try {
+            const fixedJson = fixJsonFormat(scannedText);
+            data = JSON.parse(fixedJson);
+        } catch (jsonError) {
+            console.warn("JSON parsing failed, trying alternative approach:", jsonError);
+            // If that fails, try the direct JavaScript parsing approach
+            data = parseScannedObject(scannedText);
+        }
+        
+        // Apply any team/match number overrides from the UI
+        if (teamNumInput.value) {
+            data.tnu = parseInt(teamNumInput.value);
+        }
+        if (matchNumInput.value) {
+            data.m = parseInt(matchNumInput.value);
+        }
+        
+        // Get existing data from localStorage or initialize empty array
+        let storageData = [];
+        if (localStorage.getItem("StorageData")) {
+            storageData = JSON.parse(localStorage.getItem("StorageData"));
+        }
+        
+        // Add new data
+        storageData.push(data);
+        
+        // Save back to localStorage
+        localStorage.setItem("StorageData", JSON.stringify(storageData));
+        
+        // Update UI
+        savedIndicator.style.display = "block";
+        setTimeout(() => {
+            savedIndicator.style.display = "none";
+        }, 2000);
+        
+        // Clear current data
+        currentData = null;
+        statusText.innerText = "Status: Data saved successfully";
+        
     } catch (e) {
         console.error("Error parsing scanned text:", e);
-        return;
+        statusText.innerText = "Status: Error - Invalid QR Code format";
     }
+}
 
-    // Ensure required properties exist
-    if (!parseText.c) {
-        console.error("Error: 'c' field is missing in the scanned text.");
-        return;
-    }
-
-    parseText.teamNumber = document.getElementById("teamNum").valueAsNumber || 0;
-    parseText.matchNumber = document.getElementById("matchNum").valueAsNumber || 0;
-
-    var key = parseText.c.toString() + parseText.teamNumber.toString() + parseText.matchNumber.toString();
-
-    existingStorage = existingStorage.filter(element => {
-        if (!element || !element.c || element.teamNumber == null || element.matchNumber == null) {
-            return true; // Skip invalid elements
+// Function to start scanning
+function startScanning() {
+    const cameraId = cameraSelect.value;
+    
+    html5QrCode.start(
+        cameraId, 
+        {
+            fps: 10,
+            qrbox: 250
+        },
+        (qrCodeMessage) => {
+            // On successful scan
+            console.log(`QR Code detected: ${qrCodeMessage}`);
+            html5QrCode.stop();
+            
+            currentData = qrCodeMessage;
+            statusText.innerText = "Status: QR Code Detected - Ready to save";
+        },
+        (errorMessage) => {
+            // Ignoring errors during scanning
         }
-        var key2 = element.c.toString() + element.teamNumber.toString() + element.matchNumber.toString();
-        return key !== key2;
-    });
-
-    existingStorage.push(parseText);
-    localStorage.setItem(storageKey, JSON.stringify(existingStorage));
-}
-
-
-function updateDropdown(devices){
-    select = document.getElementById("cameras")
-    devices.forEach(element => {
-        option = document.createElement("option")
-        option.innerHTML = element.label
-        select.appendChild(option)
+    ).catch((err) => {
+        console.error(`Unable to start scanning: ${err}`);
+        statusText.innerText = "Status: Camera Error";
     });
 }
 
-Html5Qrcode.getCameras().then(devices => {
-    updateDropdown(devices)
-})
-
-function getCamera(label){
-    return Html5Qrcode.getCameras().then(devices => {
-        return devices.find(element => {
-            if(element.label.toString() == label.toString()){
-                return true
-            }
-            return false
+// Function to stop scanning
+function stopScanning() {
+    if (html5QrCode) {
+        html5QrCode.stop().then(() => {
+            console.log('QR Code scanning stopped');
+        }).catch((err) => {
+            console.error('Error stopping QR Code scanning', err);
         });
-    })
-}
-
-function qrCodeSuccessCallback (decodedText, decodedResult){
-    if (scanned) return
-    scanned = true
-
-    document.getElementById("statusText").innerHTML = "Status: Scanned"
-    document.getElementById("scanNext").disabled = true
-
-    if (decodedText!= null){
-        scannedText = decodedText
-        var data = JSON.parse(scannedText)
-        document.getElementById("teamNum").value = data.teamNumber
-        document.getElementById("matchNum").value = data.matchNumber
     }
 }
 
-document.getElementById("startScanning").onclick = async () => {
-    l = document.getElementById("cameras")
-    label = l.options[l.selectedIndex].text
-    const html5QrCode = new Html5Qrcode("reader", verbose=false);
-    var cameraId = (await getCamera(label)).id
-    options =
-    {
-        fps: 10,
-        qrbox: {height:250, width:250}
+// Save button event handler
+saveButton.onclick = function() {
+    if (currentData) {
+        storeScannedData(currentData);
+    } else {
+        statusText.innerText = "Status: No data to save";
     }
-    html5QrCode.start(cameraId, options, qrCodeSuccessCallback)
-}
+};
 
-function findLinks(events){
-    var links = 0
-    var test = 0
+// Cancel button event handler
+cancelButton.onclick = function() {
+    currentData = null;
+    statusText.innerText = "Status: Cancelled";
+    stopScanning();
+};
 
-    events.forEach(event => {
-        event.forEach(e => {
-            test += e > 0 ? 1 : 0
-            if (e == 0) test = 0
-            if (test == 3){
-                links += 1
-                test = 0
-            }
-        }) 
-    });
-    return links
-}
+// Initialize scanner when page loads
+window.onload = function() {
+    initScanner();
+};
