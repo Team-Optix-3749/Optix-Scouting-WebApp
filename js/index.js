@@ -34,43 +34,46 @@ document.getElementById("cancel").onclick = () => {
 
 
 function storeScannedData(scannedText) {
-    
-    if(scannedText == undefined) return;
+    if (!scannedText) return;
 
-    const storageKey = 'StorageData'
+    const storageKey = 'StorageData';
 
-    var newStorage = ''
+    console.log("saving", scannedText);
 
-    console.log("saving", scannedText)
+    var existingStorage = JSON.parse(localStorage.getItem(storageKey)) || [];
 
-    var existingStorage = JSON.parse(localStorage.getItem(storageKey))
-    if (existingStorage == null) existingStorage = []
+    let parseText;
     try {
-        console.log("Attempting to parse scanned text:", scannedText)
-        var parseText = JSON.parse(scannedText)
+        console.log("Attempting to parse scanned text:", scannedText);
+        parseText = JSON.parse(scannedText);
     } catch (e) {
-        console.error("Error parsing scanned text:", e)
-        return
+        console.error("Error parsing scanned text:", e);
+        return;
     }
-    parseText.teamNumber = document.getElementById("teamNum").valueAsNumber
-    parseText.matchNumber = document.getElementById("matchNum").valueAsNumber
 
+    // Ensure required properties exist
     if (!parseText.c) {
-        console.error("Error: 'comp' field is missing in the scanned text.")
-        return
+        console.error("Error: 'c' field is missing in the scanned text.");
+        return;
     }
 
-    var key = parseText.c.toString() + parseText.teamNumber.toString() + parseText.matchNumber.toString()
-    existingStorage = existingStorage.filter(element =>{
-        var key2 = element.c.toString() + element.teamNumber.toString() + element.matchNumber.toString()
-        if(key == key2){
-            return false
-        } else return true
-    })
-    existingStorage.push(parseText)
-    newStorage = JSON.stringify(existingStorage)
-    localStorage.setItem(storageKey, newStorage)
+    parseText.teamNumber = document.getElementById("teamNum").valueAsNumber || 0;
+    parseText.matchNumber = document.getElementById("matchNum").valueAsNumber || 0;
+
+    var key = parseText.c.toString() + parseText.teamNumber.toString() + parseText.matchNumber.toString();
+
+    existingStorage = existingStorage.filter(element => {
+        if (!element || !element.c || element.teamNumber == null || element.matchNumber == null) {
+            return true; // Skip invalid elements
+        }
+        var key2 = element.c.toString() + element.teamNumber.toString() + element.matchNumber.toString();
+        return key !== key2;
+    });
+
+    existingStorage.push(parseText);
+    localStorage.setItem(storageKey, JSON.stringify(existingStorage));
 }
+
 
 function updateDropdown(devices){
     select = document.getElementById("cameras")
