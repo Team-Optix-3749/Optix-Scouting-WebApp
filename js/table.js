@@ -11,35 +11,47 @@ function loadData(){
 
             const match = dataStor.m;
             const team = dataStor.tnu;
-            const teamName = dataStor.tna;
-            const teamAlliance = dataStor.ta;
+            const teamName = dataStor.tna || "Unknown";
+            const teamAlliance = dataStor.ta || "";
 
-            const l1ScoreAuto = dataStor.a[0];
-            const l2ScoreAuto = dataStor.a[1];
-            const l3ScoreAuto = dataStor.a[2];
-            const l4ScoreAuto = dataStor.a[3];
-            const netShotsAuto = dataStor.a[4];
-            const processorShotsAuto = dataStor.a[5];
+            // Make sure arrays exist and have appropriate length
+            const autoArray = Array.isArray(dataStor.a) ? dataStor.a : [0, 0, 0, 0, 0, 0];
+            const teleopArray = Array.isArray(dataStor.t) ? dataStor.t : [0, 0, 0, 0, 0, 0];
+            const parkingArray = Array.isArray(dataStor.p) ? dataStor.p : [0, 0, 0];
+            const defenseArray = Array.isArray(dataStor.d) ? dataStor.d : [0, 0];
 
-            const l1ScoreTeleop = dataStor.t[0];
-            const l2ScoreTeleop = dataStor.t[1];
-            const l3ScoreTeleop = dataStor.t[2];
-            const l4ScoreTeleop = dataStor.t[3];
-            const netShotsTeleop = dataStor.t[4];
-            const processorShotsTeleop = dataStor.t[5];
+            // Ensure all arrays have the expected length
+            while (autoArray.length < 6) autoArray.push(0);
+            while (teleopArray.length < 6) teleopArray.push(0);
+            while (parkingArray.length < 3) parkingArray.push(0);
+            while (defenseArray.length < 2) defenseArray.push(0);
+
+            const l1ScoreAuto = autoArray[0];
+            const l2ScoreAuto = autoArray[1];
+            const l3ScoreAuto = autoArray[2];
+            const l4ScoreAuto = autoArray[3];
+            const netShotsAuto = autoArray[4];
+            const processorShotsAuto = autoArray[5];
+
+            const l1ScoreTeleop = teleopArray[0];
+            const l2ScoreTeleop = teleopArray[1];
+            const l3ScoreTeleop = teleopArray[2];
+            const l4ScoreTeleop = teleopArray[3];
+            const netShotsTeleop = teleopArray[4];
+            const processorShotsTeleop = teleopArray[5];
 
             let endgame = "";
-            if (dataStor.p[0] == 1) {
+            if (parkingArray[0] == 1) {
                 endgame = "shallow";
-            } else if (dataStor.p[1] == 1) {
+            } else if (parkingArray[1] == 1) {
                 endgame = "park";
-            } else if (dataStor.p[2] == 1) {
+            } else if (parkingArray[2] == 1) {
                 endgame = "deep";
             }
 
-            const defense = dataStor.d[0] === 1 ? true : false;
-            const robotBroke = dataStor.d[1] === 1 ? true : false;
-            const comments = dataStor.c;
+            const defense = defenseArray[0] === 1 ? true : false;
+            const robotBroke = defenseArray[1] === 1 ? true : false;
+            const comments = dataStor.c || "";
 
             var tr = document.createElement("tr");
 
@@ -50,17 +62,17 @@ function loadData(){
                 endgame, defense, robotBroke, comments, "Expand", "Delete"
             ];
 
-            for (var i of properties){
+            for (var j = 0; j < properties.length; j++){
                 var td = document.createElement("td")
-                td.innerHTML = i
+                td.innerHTML = properties[j]
     
-                if(i == "Delete"){
-                    td.onclick= removeMatch
+                if(properties[j] == "Delete"){
+                    td.onclick = removeMatch
                     td.classList = "clickable"
                     td.style = "user-select: none;"
                 }
 
-                if(i == "Expand"){
+                if(properties[j] == "Expand"){
                     td.classList = "clickable"
                     td.style = "user-select: none;"
                     td.onclick = function() {
@@ -123,14 +135,12 @@ function updateFilter(){
 function removeMatch(event){
     var removeTd = event.currentTarget
     var tr = removeTd.parentElement
-    var matchNum = tr.getElementsByTagName("td")[3].innerHTML.toString()
+    var matchNum = tr.getElementsByTagName("td")[0].innerHTML.toString()
     var teamNum = tr.getElementsByTagName("td")[1].innerHTML.toString()
-    var comp = tr.getElementsByTagName("td")[0].innerHTML.toString()
-    var key = comp + teamNum + matchNum
+    
     var storage = JSON.parse(localStorage.getItem("StorageData"))
     storage = storage.filter((element) => {
-        var key2 = element.comp.toString() + element.teamNumber.toString() + element.matchNumber.toString()
-        if(key === key2){
+        if(element.m == matchNum && element.tnu == teamNum){
             return false
         } else return true
     })
@@ -158,7 +168,7 @@ function deleteAll(){
 function getScores(teamNum){
     var data = JSON.parse(localStorage.getItem("StorageData"))
     var filteredMatches = data.filter((element) =>{
-        if (element.teamNumber.toString() == teamNum){
+        if (element.tnu == teamNum){
             return true
         } else return false
     })
@@ -168,22 +178,37 @@ function getScores(teamNum){
     var hpCount = 0;
 
     for(var i of filteredMatches) {
-        if(i.break){
+        if(i.d && i.d[1] === 1){
             obj.breakdowns++
         }
 
-        obj.autoAmp += i.aamp
-        obj.autoSpeaker += i.aspeak
-        obj.teleAmp += i.tamp
-        obj.teleSpeaker += i.tspeak
-        obj.harmony += i.harmony
-        obj.trap += i.trap
-        obj.park += i.park ? 1 : 0
-        obj.offense += i.offense
-        obj.defense += i.defense
+        // Check if auto array exists
+        if (i.a) {
+            obj.autoAmp += (i.a[0] || 0) + (i.a[1] || 0); // Level 1 & 2 considered Amp
+            obj.autoSpeaker += (i.a[2] || 0) + (i.a[3] || 0); // Level 3 & 4 considered Speaker
+        }
+        
+        // Check if teleop array exists
+        if (i.t) {
+            obj.teleAmp += (i.t[0] || 0) + (i.t[1] || 0); // Level 1 & 2 considered Amp
+            obj.teleSpeaker += (i.t[2] || 0) + (i.t[3] || 0); // Level 3 & 4 considered Speaker
+        }
+        
+        // Check if parking array exists
+        if (i.p) {
+            obj.harmony += i.p[0] === 1 ? 1 : 0; // Shallow
+            obj.park += i.p[1] === 1 ? 1 : 0; // Park
+            obj.trap += i.p[2] === 1 ? 1 : 0; // Deep
+        }
+        
+        // Check if defense array exists
+        if (i.d) {
+            obj.defense += i.d[0] === 1 ? 1 : 0; // Defense
+        }
+        
         obj.matches++
 
-        if (i.hp !== null) {
+        if (i.hp !== undefined && i.hp !== null) {
             hpTot += i.hp.length;
             hpCount++;
         }
@@ -204,20 +229,30 @@ function addOnClicks(){
     let children = document.getElementById("blank").children
 
     for (let i = 0; i < children.length; i++) {
-        if (children[i].innerHTML == "Speaker Scored (Auto)"){
+        if (children[i].innerHTML == "Level 1 Score (Auto)"){
             rightHeaderIndexStart = i
+            break
         }
-      }
+    }
+
+    if (rightHeaderIndexStart === undefined) {
+        rightHeaderIndexStart = 4; // Fallback to likely index if not found
+    }
 
     var d = rightHeaderIndexStart
     for (let i = d; i < d+10; i++) {
-        let tableChild = children[i];
-        tableChild.onclick = sortTable
-        tableChild.classList = "clickable"
-      }
+        if (i < children.length) {
+            let tableChild = children[i];
+            tableChild.onclick = sortTable
+            tableChild.classList = "clickable"
+        }
+    }
 }
 
-addOnClicks()
+// Call addOnClicks when the document is loaded to ensure HTML elements exist
+document.addEventListener('DOMContentLoaded', function() {
+    addOnClicks();
+});
 
 function sortTable(event){
     event.preventDefault()
@@ -229,12 +264,14 @@ function sortTable(event){
     var d = rightHeaderIndexStart
 
     for (var i=d; i < d+10; i++){
+        if (i >= headers.children.length) continue;
+        
         if (headers.children[i] == column && headers.children[i].innerHTML.includes("⬇️")){
             headers.children[i].innerHTML = headers.children[i].innerHTML.replace("⬇️","")
             clearTable()
             try {
                 loadHeatmap()
-            } catch {
+            } catch (error) {
                 try {
                     loadAllAverages()
                 } catch (error) {
@@ -263,7 +300,12 @@ function sortTable(event){
         elementArray.push(tableRows[i])
     }
     elementArray.sort((a, b) => {
-        return parseFloat(b.children[searchForIndex].innerHTML === "" ? "-5" : b.children[searchForIndex].innerHTML === "") - parseFloat(a.children[searchForIndex].innerHTML === "" ? "-5" : a.children[searchForIndex].innerHTML === "")
+        if (!a.children[searchForIndex] || !b.children[searchForIndex]) return 0;
+        
+        const aVal = a.children[searchForIndex].innerHTML === "" ? "-5" : a.children[searchForIndex].innerHTML;
+        const bVal = b.children[searchForIndex].innerHTML === "" ? "-5" : b.children[searchForIndex].innerHTML;
+        
+        return parseFloat(bVal) - parseFloat(aVal);
     })
 
     while (tableInfo.firstChild) {
