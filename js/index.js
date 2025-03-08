@@ -70,8 +70,10 @@ function fixJsonFormat(jsonStr) {
     let fixedJson = jsonStr.replace(/([{,])\s*([a-zA-Z0-9_]+)\s*:/g, '$1"$2":');
     
     // Step 2: Add quotes around string values that don't have them
-    fixedJson = fixedJson.replace(/"([^"]+)":\s*([a-zA-Z]+)(?=[,}])/g, '"$1":"$2"');
-    
+    fixedJson = fixedJson.replace(/"([^"]+)":\s*([a-zA-Z0-9 ]+)(?=[,}])/g, (match, key, value) => {
+        return `"${key}":"${value.trim()}"`;
+    });
+        
     // Step 3: Handle specific edge cases for the comments field
     fixedJson = fixedJson
         .replace(/"c":\s*$/g, '"c":""')  // Handle empty comment field
@@ -85,22 +87,55 @@ function fixJsonFormat(jsonStr) {
 // Alternative approach: Parse the object directly from JavaScript notation
 function parseScannedObject(scannedText) {
     try {
-        // Add a wrapper to make it a valid JavaScript expression
-        const jsExpression = `(${scannedText})`;
-        // Use eval in a controlled way to convert the expression to an object
-        // Note: eval is generally discouraged, but in this controlled context, 
-        // it's a practical solution for parsing non-standard JSON
-        const result = eval(jsExpression);
+        // First, try to handle common edge cases that might cause syntax errors
         
-        // If comments field is empty or problematic, set it to empty string
-        if (!result.c || result.c === undefined) {
-            result.c = "";
+        // Handle trailing commas in objects
+        let cleanedText = scannedText.replace(/,\s*}/g, '}');
+        
+        // Handle unquoted property names
+        cleanedText = cleanedText.replace(/(\{|\,)\s*([a-zA-Z0-9_]+)\s*:/g, '$1"$2":');
+        
+        // Handle empty or undefined comments
+        cleanedText = cleanedText.replace(/"c"\s*:\s*(?=[\,\}])/g, '"c":""');
+        
+        // Handle unquoted string values
+        cleanedText = cleanedText.replace(/:\s*([a-zA-Z0-9_]+)(\s*[,}])/g, ':"$1"$2');
+        
+        // Now try to parse it as JSON first (safer approach)
+        try {
+            return JSON.parse(cleanedText);
+        } catch (jsonError) {
+            console.warn("JSON parsing failed after cleanup, trying eval approach:", jsonError);
+            
+            // Add a wrapper to make it a valid JavaScript expression
+            const jsExpression = `(${cleanedText})`;
+            
+            // Use Function constructor instead of eval for slightly better security
+            // This creates a function that returns the parsed object
+            const parseFunction = new Function('return ' + jsExpression);
+            const result = parseFunction();
+            
+            // If comments field is empty or problematic, set it to empty string
+            if (!result.c || result.c === undefined) {
+                result.c = "";
+            }
+            
+            return result;
         }
-        
-        return result;
     } catch (e) {
         console.error("Cannot parse with JS eval:", e);
-        throw e;
+        // Instead of failing completely, return a basic object with error info
+        return {
+            tnu: teamNumInput.value ? parseInt(teamNumInput.value) : 0,
+            m: matchNumInput.value ? parseInt(matchNumInput.value) : 0,
+            tna: "Error",
+            ta: "",
+            a: [0, 0, 0, 0, 0, 0],
+            t: [0, 0, 0, 0, 0, 0],
+            p: [0, 0, 0],
+            d: [0, 0],
+            c: "Error parsing: " + scannedText.substring(0, 50) + "..."
+        };
     }
 }
 
